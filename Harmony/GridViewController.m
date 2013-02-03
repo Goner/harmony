@@ -11,7 +11,7 @@
 #import "PictureViewerController.h"
 #import "MWPhotoBrowser.h"
 #import "MediaResourceFetcher.h"
-#import "NASMediaLibrary.h"
+
 
 @interface GridViewController ()
 
@@ -59,7 +59,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self.rootController hideButtonBack: YES];
+    [self.rootController hideButtonBack: self.topGidView];
     [self.rootController hideBottomBar: NO];
     [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
 
@@ -117,11 +117,11 @@
     if (self.multiSelectionMode) {
         cell.selected = !cell.selected;
     } else if(self.topGidView) {
-        GridViewController *subGridViewController = [[GridViewController alloc] initWithNibName:@"GridViewController" bundle:nil];
-        subGridViewController.topGidView = FALSE;
+        self.topGidView = FALSE;
         MediaCategory *catogery = [self.mediaObjects objectAtIndex:cell.contentIndex];
-        subGridViewController.mediaObjects = [NASMediaLibrary getMediaItems:catogery];
-        [self.navigationController pushViewController:subGridViewController animated:YES];
+        self.mediaObjects = [NASMediaLibrary getMediaItems:catogery];
+        [self.gridView reloadData];
+        [[self rootController] hideButtonBack: FALSE];
     } else {
         PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate:self];
         browserController.rootController = self.rootController;
@@ -156,9 +156,12 @@
     return pic;
 }
 
--(void)loadItems:(NSArray *)mediaItems{
-    self.mediaObjects = mediaItems;
+- (void)loadTopCatogery:(MediaCategory *)topCategory{
+    NSArray* categories = [NASMediaLibrary getCategories:topCategory];
+    self.mediaObjects = categories;
     [self.gridView reloadData];
+    self.topGidView = TRUE;
+    [self.rootController hideButtonBack:TRUE];
 }
 
 @end

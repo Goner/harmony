@@ -45,7 +45,7 @@
         NSLog(@"Initialize failed.");
         return;
     }
-//    [self performSegueWithIdentifier:@"login" sender:self];
+    [self performSegueWithIdentifier:@"login" sender:self];
 }
 
 @end

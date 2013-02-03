@@ -82,6 +82,15 @@
 
 - (void) setCategoryIndex:(int)index
 {
+    if(index >= [self.mediaCategories count]){
+        return;
+    }
+    
+    if([self.navigationController.viewControllers count] > 1) {
+        [self.navigationController popViewControllerAnimated: YES];
+        _categoryIndex = -1;
+    }
+    
     if (_categoryIndex != index) {
         _categoryIndex = index;
         NSString *title = [[self.mediaCategories objectAtIndex: index] title];
@@ -92,8 +101,8 @@
 
         [self.cateButton setImage: img1 forState:UIControlStateNormal];
         [self.cateButton setImage: img2 forState:UIControlStateHighlighted];
-        NSArray* categories = [NASMediaLibrary getCategories:[self.mediaCategories objectAtIndex:index]];
-        [self.gridController loadItems:categories];
+
+        [self.gridController loadTopCatogery:[self.mediaCategories objectAtIndex:index]];
     }
     
 }
@@ -155,7 +164,11 @@
 }
 
 - (IBAction)onBackButtonPressed:(id)sender {
-    [self.navigationController popViewControllerAnimated: YES];
+    if([self.navigationController.viewControllers count] > 1) {
+        [self.navigationController popViewControllerAnimated: YES];
+    } else {
+        [self.gridController loadTopCatogery:[self.mediaCategories objectAtIndex:_categoryIndex]];
+    }
 }
 
 - (void) logout

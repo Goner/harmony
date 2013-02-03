@@ -11,6 +11,7 @@
 #import "GridCellView.h"
 #import "MWPhotoBrowser.h"
 #import "MainController.h"
+#import "NASMediaLibrary.h"
 
 @class MediaResourceFetcher;
 
@@ -25,6 +26,6 @@
 
 @property (nonatomic, strong) NSArray *mediaObjects;
 @property (nonatomic, strong) MediaResourceFetcher* fetcher;
--(void)loadItems:(NSArray*)mediaItems;
 
+- (void)loadTopCatogery:(MediaCategory *)topCategory;
 @end
