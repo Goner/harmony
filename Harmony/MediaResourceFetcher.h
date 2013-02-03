@@ -27,4 +27,5 @@ enum NETWORK_MODE {
 - (NSData *)getCacheDataForURL:(NSString *)url;
 - (void)cacheData:(NSData *)data forURL:(NSString *)url;
 - (NSString *)getCacheFilePathFromURL:(NSString *)url;
+- (void)downloadURL:(NSString *)url;
 @end

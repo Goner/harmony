@@ -10,6 +10,7 @@
 #import "interfaceudt_client.h"
 #import "ASINetworkQueue.h"
 #import "ASIHTTPRequest.h"
+#import "AssetsLibrary/ALAssetsLibrary.h"
 
 @implementation MediaResourceFetcher
 @synthesize networkQueue;
@@ -68,5 +69,12 @@
 - (void)cacheData:(NSData *)data forURL:(NSString *)url{
     NSString *cacheFile = [self getCacheFilePathFromURL:url];
     [data writeToFile:cacheFile atomically:YES];
+}
+
+- (void)downloadURL:(NSString *)url{
+    [self getDataFromURL:url completion:^(NSData *data){
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc]init];
+        [library writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:nil];
+    }];
 }
 @end

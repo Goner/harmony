@@ -31,6 +31,10 @@
 
 - (IBAction)onButtonCategoryPressed:(id)sender;
 
+- (IBAction)onButtonDownloadPressed:(id)sender;
+
+- (IBAction)onButtonTagFavorPressed:(id)sender;
+
 - (CGRect) rectWithBottomBar;
 - (CGRect) rectWithoutBottomBar;
 

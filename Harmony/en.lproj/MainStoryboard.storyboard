@@ -68,6 +68,9 @@
                                         <state key="highlighted" image="btn3a.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onButtonDownloadPressed:" destination="2" eventType="touchUpInside" id="u8e-9L-0Lv"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ch1-3E-ScC">
                                         <rect key="frame" x="207" y="15" width="34" height="34"/>
@@ -81,6 +84,9 @@
                                         <state key="highlighted" image="btn4a.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onButtonTagFavorPressed:" destination="2" eventType="touchUpInside" id="eAk-0p-BjM"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="IZ8-rH-4Ne">
                                         <rect key="frame" x="271" y="15" width="34" height="34"/>
@@ -328,6 +334,8 @@
                 <relationship kind="action" name="onBackButtonPressed:"/>
                 <relationship kind="action" name="onButtonActionMorePressed:"/>
                 <relationship kind="action" name="onButtonCategoryPressed:"/>
+                <relationship kind="action" name="onButtonDownloadPressed:"/>
+                <relationship kind="action" name="onButtonTagFavorPressed:"/>
                 <relationship kind="outlet" name="bottomBar" candidateClass="UIView"/>
                 <relationship kind="outlet" name="buttonBack" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="cateButton" candidateClass="UIButton"/>

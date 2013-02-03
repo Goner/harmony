@@ -164,6 +164,26 @@
     [self.rootController hideButtonBack:TRUE];
 }
 
+- (void) downloadSelectedItems{
+    for(GridCellView *cell in self.gridView.cells){
+        if(cell.selected) {
+            if(self.topGidView) {
+                NSArray * items= [NASMediaLibrary getMediaItems:[self.mediaObjects objectAtIndex:cell.contentIndex]];
+                for (MediaItem *item in items) {
+                    [self.fetcher downloadURL:[item getMediaURL]];
+                }
+                
+            } else {
+                MediaItem *item = [self.mediaObjects objectAtIndex:cell.contentIndex];
+                [self.fetcher downloadURL:[item getMediaURL]];
+            }
+        }
+    }
+}
+
+- (void) tagFavorSelectedItems{
+
+}
 @end
 
 

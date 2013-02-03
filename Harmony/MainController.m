@@ -172,6 +172,14 @@
     }
 }
 
+- (IBAction)onButtonDownloadPressed:(id)sender{
+    [self.gridController downloadSelectedItems];
+}
+
+- (IBAction)onButtonTagFavorPressed:(id)sender{
+    [self.gridController tagFavorSelectedItems];
+}
+
 - (void) logout
 {
     [SimpleKeychain delete:@"merry99"];
