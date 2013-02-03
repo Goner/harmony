@@ -43,6 +43,7 @@
 @property (retain) NSString* id;
 
 - (NSString *)description;
+- (id)getMediaItem;
 @end
 
 @interface MediaContainer : MediaObject {
@@ -59,7 +60,7 @@ typedef MediaContainer MediaCategory;
 @interface MediaItem : MediaObject {
     NSString* creator;
     NSString* date;
-    NSArray* resouces;
+    NSArray* resources;
 }
 
 @property (retain) NSString* creator;

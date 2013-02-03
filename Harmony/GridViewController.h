@@ -20,12 +20,10 @@
 @property (weak, nonatomic) IBOutlet ScrollGridView *gridView;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGes;
 @property (nonatomic) BOOL multiSelectionMode;
-
+@property (nonatomic) BOOL topGidView;
 @property (nonatomic, weak) MainController *rootController;
 
-//Stub Data
-@property (nonatomic, strong) NSArray *stubData;
-
+@property (nonatomic, strong) NSArray *mediaObjects;
 @property (nonatomic, strong) MediaResourceFetcher* fetcher;
 -(void)loadItems:(NSArray*)mediaItems;
 

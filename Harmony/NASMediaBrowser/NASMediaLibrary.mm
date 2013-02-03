@@ -42,6 +42,10 @@
 - (NSString *) description {
     return [NSString stringWithFormat: @"MediaObject: %@, %@", title, id];
 }
+
+- (id)getMediaItem {
+    return self;
+}
 @end
 
 @implementation MediaContainer
@@ -49,6 +53,10 @@
 
 - (NSString *)description {
     return [[NSString stringWithFormat:@"MediaContainer: %d, ", childrenCount] stringByAppendingString: [super description]];
+}
+- (id)getMediaItem {
+    NSArray *array = [NASMediaLibrary getMediaItems:self withMaxResults:1];
+    return [array objectAtIndex:0];
 }
 @end
 
@@ -63,15 +71,17 @@
 - (NSString *)description {
     return [[NSString stringWithFormat:@"PhotoItem: %@, %@, %@,", creator, date, resources] stringByAppendingString: [super description]];
 }
+#if FAKE_NASSERVER
+static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
+                          @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
+                          @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
+#endif
 
 - (NSString *)getURLForKey:(NSString *)key{
 #if FAKE_NASSERVER
-    static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
-        @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
-        @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
-        @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
-
-    return [fakeURLs objectForKey:key];
+    NSString *url = [fakeURLs objectForKey:key];
+    return url;
 #else
     for(Resource* resource in resouces) {
         NSRange rng = [resource.uri rangeOfString:type options:NSCaseInsensitiveSearch];
@@ -82,7 +92,11 @@
 #endif
 }
 - (NSString *)getThumbnailURL {
+#if FAKE_NASSERVER
+    return @"http://img26.nipic.com/20110808/7485157_075051018000_1.png";
+#elif
     return [self getURLForKey:@"Thumbnail"];
+#endif
 }
 
 - (NSString *)getResizedURL {

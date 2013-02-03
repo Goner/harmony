@@ -84,8 +84,6 @@
 {
     if (_categoryIndex != index) {
         _categoryIndex = index;
-//        NSString *str1 = [[self.categoryImages objectAtIndex: index] stringByAppendingString: @"b.png"];
-//        NSString *str2 = [[self.categoryImages objectAtIndex: index] stringByAppendingString: @"a.png"];
         NSString *title = [[self.mediaCategories objectAtIndex: index] title];
         NSString *str1 =  [title stringByAppendingString: @"b.png"];
         NSString *str2 = [title stringByAppendingString: @"a.png"];
@@ -95,8 +93,7 @@
         [self.cateButton setImage: img1 forState:UIControlStateNormal];
         [self.cateButton setImage: img2 forState:UIControlStateHighlighted];
         NSArray* categories = [NASMediaLibrary getCategories:[self.mediaCategories objectAtIndex:index]];
-        NSArray* items = [NASMediaLibrary getMediaItems:[categories objectAtIndex:0]];
-        [self.gridController loadItems:items];
+        [self.gridController loadItems:categories];
     }
     
 }

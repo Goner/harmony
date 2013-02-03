@@ -24,6 +24,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.topGidView = TRUE;
         self.fetcher = [[MediaResourceFetcher alloc] init ];
         [self.fetcher initWithNetworkMode:LOCAL_NETWORK];
     }
@@ -42,16 +43,18 @@
     self.gridView.hMargin = 7;
     self.gridView.vMargin = 12;
     self.gridView.numberOfColumns = 3;
-    
-    self.stubData = [[NSBundle mainBundle] pathsForResourcesOfType:@"jpg" inDirectory:@"pictures"];
     self.gridView.dataSource = self;
-
+    
+    if (self.mediaObjects == nil) {
+        ;
+        self.mediaObjects = [NASMediaLibrary getCategories:[[NASMediaLibrary getMediaCategories] objectAtIndex:0]];
+    }
+    
     [self.gridView reloadData];
     
     self.longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressed:)];
     self.multiSelectionMode = NO;
     [self.gridView addGestureRecognizer:self.longPressGes];
-
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -77,33 +80,23 @@
 
 - (int) numberOfCellsInView: (ScrollGridView *) gridView;
 {
-    return self.stubData.count;
+    return self.mediaObjects.count;
 }
 
 - (UIView *) viewAtIndex: (int) index
 {
     GridCellView *cell = [GridCellView cellViewFromNib];
-    //NSString *imgPath = [self.stubData objectAtIndex:index];
-    //UIImage *img = [UIImage imageWithContentsOfFile: imgPath];
+
     UIImage *img = [[UIImage alloc] init];
-    MediaItem *item = [self.stubData objectAtIndex:index];
+    MediaItem *item = [[self.mediaObjects objectAtIndex:index] getMediaItem];
     
-    NSString *url = [[item.resouces objectAtIndex:0] uri];
+    NSString *url = [item getThumbnailURL] ;
     [self.fetcher getDataFromURL:url completion:^(NSData *data){
         [cell setImage:[UIImage imageWithData:data]];
     }];
     [cell setContentIndex: index];
     [cell setImage: img];
     [cell setDelegate: self];
-    //    float w = img.size.width;
-    //    float h = img.size.height;
-    //    NSLog(@"!!!%f", w/h);
-    //
-    //
-    //    cell.picture.image = [UIImage imageWithContentsOfFile:[self.stubData objectAtIndex:index]];
-    
-    
-    
     return cell;
 }
 
@@ -120,17 +113,17 @@
 
 -(void) onTap: (UIView *) view
 {
-
+    GridCellView *cell = (GridCellView *)view;
     if (self.multiSelectionMode) {
-        GridCellView *cell = (GridCellView *)view;
         cell.selected = !cell.selected;
+    } else if(self.topGidView) {
+        GridViewController *subGridViewController = [[GridViewController alloc] initWithNibName:@"GridViewController" bundle:nil];
+        subGridViewController.topGidView = FALSE;
+        MediaCategory *catogery = [self.mediaObjects objectAtIndex:cell.contentIndex];
+        subGridViewController.mediaObjects = [NASMediaLibrary getMediaItems:catogery];
+        [self.navigationController pushViewController:subGridViewController animated:YES];
     } else {
-        GridCellView *cell = (GridCellView *)view;
         PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate:self];
-//        PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate: self rootController:self.rootController];
-
-//        PictureViewerController *browserController = [[PictureViewerController alloc] init initWithDelegate:self];
-//        browserController.displayActionButton = NO;
         browserController.rootController = self.rootController;
         [browserController setInitialPageIndex: cell.contentIndex];
 
@@ -142,28 +135,29 @@
 // ContentProvider
 -(id) getContentAtIndex: (int) index
 {
-    if (index < 0 && index >= self.stubData.count) {
+    if (index < 0 && index >= self.mediaObjects.count) {
         return nil;
     }
     
-    return [self.stubData objectAtIndex: index];
+    return [self.mediaObjects objectAtIndex: index];
 }
 
 // MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
 {
-    return self.stubData.count;
+    return self.mediaObjects.count;
 }
 
 - (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    MWPhoto *pic = [MWPhoto photoWithFilePath: [self.stubData objectAtIndex: index]];
+    NSString *urlString = [[self.mediaObjects objectAtIndex:index] getResizedURL];
+    MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;
 }
 
 -(void)loadItems:(NSArray *)mediaItems{
-    self.stubData = mediaItems;
+    self.mediaObjects = mediaItems;
     [self.gridView reloadData];
 }
 
