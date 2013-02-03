@@ -16,6 +16,7 @@
 
 - (void) initWithNetworkMode:(enum NETWORK_MODE)mode {
     networkMode = mode;
+    self.networkQueue = [[ASINetworkQueue alloc] init];
     [[self networkQueue] go];
 }
 
@@ -26,16 +27,16 @@
         processData(data);
     }
     if (LOCAL_NETWORK == networkMode) {
-        __block ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+        ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [request setCompletionBlock:^{
             NSData *responseData = [request responseData];
             dispatch_async(dispatch_get_main_queue(), ^{
                 processData(responseData);
             });
             [self cacheData:responseData forURL:url];
+            request = nil;
         }];
-        //[[self networkQueue] addOperation:request];
-        [request startAsynchronous];
+        [[self networkQueue] addOperation:request];
     } else {
         int offset = 0;
         int len = 1024 * 500;

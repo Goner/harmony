@@ -64,9 +64,12 @@ typedef MediaContainer MediaCategory;
 
 @property (retain) NSString* creator;
 @property (retain) NSString* date;
-@property (retain) NSArray* resouces;
+@property (retain) NSArray* resources;
 
 - (NSString *)description;
+- (NSString *)getThumbnailURL;
+- (NSString *)getResizedURL;
+- (NSString *)getMediaURL;
 @end
 
 @interface User : NSObject {
@@ -120,7 +123,9 @@ typedef MediaContainer MediaCategory;
 //media interface
 + (NSArray *) getMediaCategories;
 + (NSArray *) getCategories: (MediaCategory *) catogery;
++ (NSArray *) getFirstMediaItems:(NSArray *)catogeries;
 + (NSArray *) getMediaItems: (MediaCategory *) album;
++ (NSArray *) getMediaItems:(MediaCategory *)catogery withMaxResults:(int)maxResults;
 
  //social interface
 + (NSArray *) getFriendList;

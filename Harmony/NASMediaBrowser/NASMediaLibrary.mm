@@ -12,6 +12,9 @@
 #import "interfaceudt_client.h"
 #import "SBJson.h"
 
+#define INTERFACE_OK 1
+#define FAKE_NASSERVER 1
+
 @implementation ProtocolInfo
 @synthesize protocol;
 @synthesize contentType;
@@ -49,13 +52,45 @@
 }
 @end
 
+@interface MediaItem()
+- (NSString *)getURLForKey:(NSString *)key;
+@end
 @implementation MediaItem
 @synthesize creator;
 @synthesize date;
-@synthesize resouces;
+@synthesize resources;
 
 - (NSString *)description {
-    return [[NSString stringWithFormat:@"PhotoItem: %@, %@, %@,", creator, date, resouces] stringByAppendingString: [super description]];
+    return [[NSString stringWithFormat:@"PhotoItem: %@, %@, %@,", creator, date, resources] stringByAppendingString: [super description]];
+}
+
+- (NSString *)getURLForKey:(NSString *)key{
+#if FAKE_NASSERVER
+    static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
+        @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
+        @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
+        @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
+
+    return [fakeURLs objectForKey:key];
+#else
+    for(Resource* resource in resouces) {
+        NSRange rng = [resource.uri rangeOfString:type options:NSCaseInsensitiveSearch];
+        if(rng.location != NSNotFound)
+            return resource.uri;
+    }
+    return nil;
+#endif
+}
+- (NSString *)getThumbnailURL {
+    return [self getURLForKey:@"Thumbnail"];
+}
+
+- (NSString *)getResizedURL {
+    return [self getURLForKey:@"Resized"];
+}
+
+- (NSString *)getMediaURL {
+    return [self getURLForKey:@"MediaItems"];
 }
 @end
 
@@ -136,8 +171,6 @@ struct  CategoryDesc{
 
 typedef std::shared_ptr<NASMediaBrowser> NASMediaBrowserPtr;
 
-#define INTERFACE_OK 1
-
 @interface NASMediaLibrary()
 + (BOOL) checkResultWithJSON:(NSDictionary *)JSONDict;
 + (NSString *) callCTransactProcWithParam:(NSString *)param;
@@ -152,7 +185,9 @@ static bool bRemoteAccess;
     bRemoteAccess = FALSE;
     const char* userName = [user UTF8String];
     const char* password = [passwd UTF8String];
-    
+#if FAKE_NASSERVER
+    return true;
+#else
     std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
     if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
         nasMediaBrowserPtr  = localMediaBrowserPtr;
@@ -171,6 +206,7 @@ static bool bRemoteAccess;
             return TRUE;
     }
     return FALSE;
+#endif
 }
 
 + (NSArray*) getMediaCategories {
@@ -199,6 +235,18 @@ static bool bRemoteAccess;
 }
 
 + (NSArray*) getCategories:(MediaCategory *) mediaCatogery {
+#if FAKE_NASSERVER
+    NSMutableArray* array = [[NSMutableArray alloc] init];
+    for(int i = 0; i < 5; i++) {
+        MediaCategory* category = [[MediaCategory alloc] init];
+        category.title = [NSString  stringWithFormat:@"title%d",i ];
+        category.id = [NSString  stringWithFormat:@"id%d",i];
+        category.childrenCount = i+1;
+        
+        [array addObject:category];
+    }
+    return array;
+#else
     if (!nasMediaBrowserPtr) {
         return nil;
     }
@@ -221,16 +269,44 @@ static bool bRemoteAccess;
     }
     
     return array;
+#endif
+}
+
++ (NSArray *) getFirstMediaItems:(NSArray *)catogeries{
+    NSMutableArray *firstMediaItems = [[NSMutableArray alloc] init];
+    for(MediaCategory *category in catogeries) {
+        NSArray *mediaItems = [self getMediaItems:category withMaxResults:1];
+        if([mediaItems count] > 0) {
+            [firstMediaItems addObject:[mediaItems objectAtIndex:0]];
+        }
+    }
+    return firstMediaItems;
 }
 
 + (NSArray*) getMediaItems:(MediaCategory *)catogery {
+    return [self getMediaItems:catogery withMaxResults:0];
+}
+
++ (NSArray *)getMediaItems:(MediaCategory *)catogery withMaxResults:(int)maxResults{
+#if FAKE_NASSERVER
+    NSMutableArray* array = [[NSMutableArray alloc] init];
+    for(int i = 0; i < 6; i++) {
+        MediaItem* item = [[MediaItem alloc] init]; 
+        item.title = [NSString  stringWithFormat:@"item_title_%d", i];
+        item.id = [NSString  stringWithFormat:@"item_id_%d", i];
+        item.creator = [NSString  stringWithFormat:@"item_creator_%d", i];
+        item.date = [NSString  stringWithFormat:@"item_date_%d", i];
+        [array addObject:item];
+    }
+    return array;
+#else
     if (!nasMediaBrowserPtr) {
         return nil;
     }
     PLT_MediaObjectListReference  pltMediaList(new PLT_MediaObjectList);
     char objID[1025] = {0};
     [catogery.id getCString: objID maxLength: 1024 encoding:NSUTF8StringEncoding];
-    nasMediaBrowserPtr->Browser(objID, pltMediaList);
+    nasMediaBrowserPtr->Browser(objID, pltMediaList, 0, maxResults);
     
     NSMutableArray* array = [[NSMutableArray alloc] init];
     for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
@@ -261,9 +337,9 @@ static bool bRemoteAccess;
         
         [array addObject:item];
     }
-    
-    return array;
 
+    return array;
+#endif
 }
 
 + (NSString *) callCTransactProcWithParam:(NSString *)param{
