@@ -447,6 +447,8 @@
 		0E776BF116BCC36600FD3668 /* Merry99Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E776BEE16BCC36600FD3668 /* Merry99Launch.png */; };
 		0E776BF216BCC36600FD3668 /* Merry99Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E776BEF16BCC36600FD3668 /* Merry99Launch@2x.png */; };
 		0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E776BF516BCC86300FD3668 /* LoginViewController.m */; };
+		0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC05FBA16BEABCB00AF7E65 /* SimpleKeychain.m */; };
+		0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC05FBC16BEAC9100AF7E65 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1067,6 +1069,9 @@
 		0E776BEF16BCC36600FD3668 /* Merry99Launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Merry99Launch@2x.png"; sourceTree = "<group>"; };
 		0E776BF416BCC86300FD3668 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		0E776BF516BCC86300FD3668 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		0EC05FB916BEABCB00AF7E65 /* SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKeychain.h; sourceTree = "<group>"; };
+		0EC05FBA16BEABCB00AF7E65 /* SimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKeychain.m; sourceTree = "<group>"; };
+		0EC05FBC16BEAC9100AF7E65 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1074,6 +1079,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */,
 				0E776BEB16BCBD6B00FD3668 /* libz.dylib in Frameworks */,
 				0E776BE916BCBD3F00FD3668 /* MobileCoreServices.framework in Frameworks */,
 				0E776BE716BCBD2B00FD3668 /* SystemConfiguration.framework in Frameworks */,
@@ -1102,6 +1108,7 @@
 		0E77505716BC00C900FD3668 = {
 			isa = PBXGroup;
 			children = (
+				0EC05FBC16BEAC9100AF7E65 /* Security.framework */,
 				0E77506C16BC00C900FD3668 /* Harmony */,
 				0E77681016BC0A4E00FD3668 /* libs */,
 				0E7750B016BC04E900FD3668 /* pictures */,
@@ -2126,6 +2133,8 @@
 			children = (
 				0E776BF416BCC86300FD3668 /* LoginViewController.h */,
 				0E776BF516BCC86300FD3668 /* LoginViewController.m */,
+				0EC05FB916BEABCB00AF7E65 /* SimpleKeychain.h */,
+				0EC05FBA16BEABCB00AF7E65 /* SimpleKeychain.m */,
 			);
 			name = LoginView;
 			sourceTree = "<group>";
@@ -2662,6 +2671,7 @@
 				0E776BE216BCA43800FD3668 /* ASINetworkQueue.m in Sources */,
 				0E776BE316BCA43800FD3668 /* Reachability.m in Sources */,
 				0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */,
+				0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@
 #import "PopoverController.h"
 #import "CategoryController.h"
 #import "NASMediaLibrary.h"
+#import "SimpleKeychain.h"
 
 #define CONTENT_MARGIN 4
 
@@ -173,6 +174,7 @@
 
 - (void) logout
 {
+    [SimpleKeychain delete:@"merry99"];
     [self dismissViewControllerAnimated: YES completion:nil];
 }
 

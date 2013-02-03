@@ -56,9 +56,9 @@
 {
     _selected = selected;
     if (_selected) {
-        self.backgroundImage.image = [UIImage imageNamed:@"cella.png"];
-    } else {
         self.backgroundImage.image = [UIImage imageNamed:@"cellb.png"];
+    } else {
+        self.backgroundImage.image = [UIImage imageNamed:@"cella.png"];
     }
 }
 

@@ -71,20 +71,18 @@
 - (NSString *)description {
     return [[NSString stringWithFormat:@"PhotoItem: %@, %@, %@,", creator, date, resources] stringByAppendingString: [super description]];
 }
-#if FAKE_NASSERVER
-static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
-                          @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
-                          @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
-                          @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
-#endif
 
 - (NSString *)getURLForKey:(NSString *)key{
 #if FAKE_NASSERVER
+    static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
+                                     @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
+                                     @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
     NSString *url = [fakeURLs objectForKey:key];
     return url;
 #else
-    for(Resource* resource in resouces) {
-        NSRange rng = [resource.uri rangeOfString:type options:NSCaseInsensitiveSearch];
+    for(Resource* resource in resources) {
+        NSRange rng = [resource.uri rangeOfString:key options:NSCaseInsensitiveSearch];
         if(rng.location != NSNotFound)
             return resource.uri;
     }
@@ -94,7 +92,7 @@ static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
 - (NSString *)getThumbnailURL {
 #if FAKE_NASSERVER
     return @"http://img26.nipic.com/20110808/7485157_075051018000_1.png";
-#elif
+#else
     return [self getURLForKey:@"Thumbnail"];
 #endif
 }
@@ -347,7 +345,7 @@ static bool bRemoteAccess;
             resource.resolution = [NSString  stringWithCString:pltResourcde->m_Resolution encoding:NSUTF8StringEncoding];
             [resources addObject: resource];
         }
-        item.resouces = resources;
+        item.resources = resources;
         
         [array addObject:item];
     }

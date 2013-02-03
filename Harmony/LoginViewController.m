@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "NASMediaLibrary.h"
+#import "SimpleKeychain.h"
 
 @implementation LoginViewController
 @synthesize userName;
@@ -26,6 +27,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+
+}
+- (void) viewDidAppear:(BOOL)animated {
+    NSDictionary *data = [SimpleKeychain load:@"merry99"];
+    if(data == nil) {
+        return;
+    }
+    NSString *user = [data objectForKey:@"userName"];
+    NSString *passwd = [data objectForKey:@"password"];
+    if(![NASMediaLibrary initWithUser:user password:passwd]) {
+        return;
+    }
+    [self performSegueWithIdentifier:@"login" sender:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,6 +60,9 @@
         NSLog(@"Initialize failed.");
         return;
     }
+    [SimpleKeychain save:@"merry99" data:[NSDictionary dictionaryWithObjectsAndKeys:
+                                          userName.text, @"userName",
+                                          password.text, @"password", nil]];
     [self performSegueWithIdentifier:@"login" sender:self];
 }
 
