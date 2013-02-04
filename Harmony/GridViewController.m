@@ -146,20 +146,6 @@
     return [self.mediaObjects objectAtIndex: index];
 }
 
-// MWPhotoBrowserDelegate
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
-{
-    return self.mediaObjects.count;
-}
-
-- (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
-{
-    NSString *urlString = [[self.mediaObjects objectAtIndex:index] getResizedURL];
-    MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
-    return pic;
-}
-
 - (void)backToParentCatogery{
     MediaCategory *category = [self.catogeryStack lastObject];
     if (category == nil) {
@@ -223,6 +209,20 @@
     }];
     NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
     NSLog(@"%@", id);
+}
+
+// MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return self.mediaObjects.count;
+}
+
+- (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    NSString *urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem]getResizedURL];
+    MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
+    return pic;
 }
 @end
 
