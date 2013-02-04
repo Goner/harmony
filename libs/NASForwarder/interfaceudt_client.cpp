@@ -121,6 +121,7 @@ int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int con_type)
    while(i<4&&UDT::ERROR==udt_con)
    {
        udt_con=UDT::connect(*client, peer->ai_addr, peer->ai_addrlen);
+       cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
 	   i++;
 #ifdef WIN32
 	   Sleep(100);
@@ -129,7 +130,7 @@ int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int con_type)
 #endif
    }
 
-   if(i>4&&UDT::ERROR==udt_con)
+   if(i>=4&&UDT::ERROR==udt_con)
    {
 	  cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
       return INTERFACE_ERROR;
@@ -153,8 +154,8 @@ int local_access_auth(char *ip, char *account, char *password)
 	int ret=-1;
 	UDTSOCKET client;
 	char buf[MAX_CHAR_P]={0};
-	int auth_result=-1;
-	int result_len=0;
+	int auth_result = 0;
+
 	strcpy(box_ip,ip);
 	//char *auth_port;
 	ret=udt_connect(&client,ip,g_auth_port,CON_MSG);
@@ -165,19 +166,27 @@ int local_access_auth(char *ip, char *account, char *password)
 		return INTERFACE_ERROR;	
 	}
 	
-	sprintf(buf,"account:%s;password:%s",account,password);
+	sprintf(buf,"{\"METHOD\":\"SETCFG\",\"TYPE\":\"LOGIN\",\"ACCOUNT\":\"%s\",\"PASSWORD\":\"%s\"}",account,password);
 	ret=send_msg_common(&client,buf,strlen(buf)+1);
 	if(ret!=0)
 	{
 		cout<<"send_msg:account and password faild!!"<<endl;
 		return INTERFACE_ERROR;
 	}
-	ret=recv_msg_common(&client,(char *)&auth_result,&result_len);
-	if(ret!=0)
+    
+    char result[1024];
+    int result_len=1024;
+	ret=recv_msg_common(&client, result,&result_len);
+    if(ret!=0)
 	{
 		cout<<"recv_msg:account and password faild!!"<<endl;
 		return INTERFACE_ERROR;
 	}
+    
+    cJSON* json = cJSON_Parse(result);
+    auth_result = strcmp(json->child->valuestring, "SUCCESS");
+    cJSON_Delete(json);
+
 	UDT::close(client);
     UDT::cleanup();
 	/**/
@@ -196,7 +205,7 @@ int local_access_auth(char *ip, char *account, char *password)
 		}
 		init_sem();
 	}
-	return auth_result;	
+	return auth_result;
 
 }
 /*发送和接收json函数*/

@@ -2791,6 +2791,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Harmony/Harmony-Prefix.pch";
 				INFOPLIST_FILE = "Harmony/Harmony-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/libs/json-framework-master/DerivedData/SBJson/Build/Products/Debug-iphonesimulator\"",
@@ -2822,6 +2823,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Harmony/Harmony-Prefix.pch";
 				INFOPLIST_FILE = "Harmony/Harmony-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/libs/json-framework-master/DerivedData/SBJson/Build/Products/Debug-iphonesimulator\"",

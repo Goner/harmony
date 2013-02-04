@@ -24,7 +24,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.topGidView = TRUE;
         self.fetcher = [[MediaResourceFetcher alloc] init ];
         [self.fetcher initWithNetworkMode:LOCAL_NETWORK];
     }
@@ -46,8 +45,9 @@
     self.gridView.dataSource = self;
     
     if (self.mediaObjects == nil) {
-        ;
-        self.mediaObjects = [NASMediaLibrary getCategories:[[NASMediaLibrary getMediaCategories] objectAtIndex:0]];
+        NSArray *array = [NASMediaLibrary getMediaCategories];
+        MediaCategory *category = [array objectAtIndex:0];
+        self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
     }
     
     [self.gridView reloadData];
@@ -59,7 +59,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self.rootController hideButtonBack: self.topGidView];
+    [self.rootController hideButtonBack: self.catogeryStack.count == 0];
     [self.rootController hideBottomBar: NO];
     [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
 
@@ -80,6 +80,7 @@
 
 - (int) numberOfCellsInView: (ScrollGridView *) gridView;
 {
+    NSLog(@"objects coutn:%d", self.mediaObjects.count);
     return self.mediaObjects.count;
 }
 
@@ -116,18 +117,20 @@
     GridCellView *cell = (GridCellView *)view;
     if (self.multiSelectionMode) {
         cell.selected = !cell.selected;
-    } else if(self.topGidView) {
-        self.topGidView = FALSE;
-        MediaCategory *catogery = [self.mediaObjects objectAtIndex:cell.contentIndex];
-        self.mediaObjects = [NASMediaLibrary getMediaItems:catogery];
-        [self.gridView reloadData];
-        [[self rootController] hideButtonBack: FALSE];
     } else {
-        PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate:self];
-        browserController.rootController = self.rootController;
-        [browserController setInitialPageIndex: cell.contentIndex];
+        MediaObject *object = [self.mediaObjects objectAtIndex:cell.contentIndex];
+        if([object isKindOfClass:[MediaCategory class]]) {
+            self.mediaObjects = [NASMediaLibrary getMediaObjects:object.id];
+            [self.catogeryStack addObject:object.parentID];
+            [self.gridView reloadData];
+            [[self rootController] hideButtonBack: FALSE];
+        } else {
+            PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate:self];
+            browserController.rootController = self.rootController;
+            [browserController setInitialPageIndex: cell.contentIndex];
 
-        [self.navigationController pushViewController:browserController animated:YES];
+            [self.navigationController pushViewController:browserController animated:YES];
+        }
     }
     
 }
@@ -138,6 +141,7 @@
     if (index < 0 && index >= self.mediaObjects.count) {
         return nil;
     }
+    NSLog(@"getContentAtIndex%d", index);
     
     return [self.mediaObjects objectAtIndex: index];
 }
@@ -156,30 +160,36 @@
     return pic;
 }
 
-- (void)loadTopCatogery:(MediaCategory *)topCategory{
-    NSArray* categories = [NASMediaLibrary getCategories:topCategory];
-    self.mediaObjects = categories;
+- (void)backToParentCatogery{
+    MediaCategory *category = [self.catogeryStack lastObject];
+    if (category == nil) {
+        NSLog(@"GridViewController:Eorr on back to parent catogery.");
+    }
+    [self.catogeryStack removeLastObject];
+    [self.rootController hideButtonBack:self.catogeryStack.count == 0];
+    self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
     [self.gridView reloadData];
-    self.topGidView = TRUE;
+}
+
+
+- (void) backToTopCatogery:(MediaCategory *)category{
+    [self.catogeryStack removeAllObjects];
     [self.rootController hideButtonBack:TRUE];
+    self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
+    [self.gridView reloadData];
 }
 
 - (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block {
     for(GridCellView *cell in self.gridView.cells){
         if(cell.selected) {
-            if(self.topGidView) {
-                NSArray * items= [NASMediaLibrary getMediaItems:[self.mediaObjects objectAtIndex:cell.contentIndex]];
-                for (MediaItem *item in items) {
-                    block(item);
-                }
-                
-            } else {
-                MediaItem *item = [self.mediaObjects objectAtIndex:cell.contentIndex];
-                block(item);
+            MediaObject *object = [self.mediaObjects objectAtIndex:cell.contentIndex];
+            if([object isKindOfClass:[MediaItem class]]) {
+                block((MediaItem*)object);
             }
         }
     }
 }
+
 - (void) downloadSelectedItems{
     [self applyBlockForSelectedItems:^(MediaItem *item){
         [self.fetcher downloadURL:[item getMediaURL]];
@@ -187,8 +197,22 @@
 
 }
 
-- (void)tagFavorSelectedItems{
-
+- (void)tagFavorSelectedItems{    
+    for(GridCellView *cell in self.gridView.cells) {
+        if(cell.selected) {
+            MediaObject *obj = [self.mediaObjects objectAtIndex:cell.contentIndex];
+            BOOL favored = [obj.id rangeOfString:@"*"].location == NSNotFound;
+            if(favored) {
+                [NASMediaLibrary tagFavoriteObj:obj.id];
+                [cell tagFavor];
+                obj.id = [obj.id stringByAppendingString:@"*"];
+            } else {
+                [NASMediaLibrary untagFavoriteObj:obj.id];
+                [cell untagFavor];
+                obj.id = [obj.id stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"*"]];
+            }
+        }
+    }
 }
 
 - (void)shareAlbumSelectedItems{

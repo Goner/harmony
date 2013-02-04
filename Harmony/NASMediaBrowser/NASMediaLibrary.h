@@ -37,10 +37,12 @@
 @interface MediaObject : NSObject {
     NSString* title;
     NSString* id;
+    NSString* parentID;
 }
 
 @property (retain) NSString* title;
 @property (retain) NSString* id;
+@property (retain) NSString* parentID;
 
 - (NSString *)description;
 - (id)getMediaItem;
@@ -123,10 +125,8 @@ typedef MediaContainer MediaCategory;
 
 //media interface
 + (NSArray *) getMediaCategories;
-+ (NSArray *) getCategories: (MediaCategory *) catogery;
-+ (NSArray *) getFirstMediaItems:(NSArray *)catogeries;
-+ (NSArray *) getMediaItems: (MediaCategory *) album;
-+ (NSArray *) getMediaItems:(MediaCategory *)catogery withMaxResults:(int)maxResults;
++ (NSArray *) getMediaObjects:(NSString *)catogeryID;
++ (NSArray *) getMediaObjects:(NSString *)catogeryID withMaxResults:(int)maxResults;
 
  //social interface
 + (NSArray *) getFriendList;

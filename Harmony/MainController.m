@@ -103,7 +103,7 @@
         [self.cateButton setImage: img1 forState:UIControlStateNormal];
         [self.cateButton setImage: img2 forState:UIControlStateHighlighted];
 
-        [self.gridController loadTopCatogery:[self.mediaCategories objectAtIndex:index]];
+        [self.gridController backToTopCatogery:[self.mediaCategories objectAtIndex:index]];
     }
     
 }
@@ -168,7 +168,7 @@
     if([self.navigationController.viewControllers count] > 1) {
         [self.navigationController popViewControllerAnimated: YES];
     } else {
-        [self.gridController loadTopCatogery:[self.mediaCategories objectAtIndex:_categoryIndex]];
+        [self.gridController backToParentCatogery];
     }
 }
 

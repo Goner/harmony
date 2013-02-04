@@ -12,8 +12,8 @@
 #import "interfaceudt_client.h"
 #import "SBJson.h"
 
-#define FAKE_INTERFACE 1
-#define FAKE_NASSERVER 1
+#define FAKE_INTERFACE 0
+#define FAKE_NASSERVER 0
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -38,9 +38,10 @@
 @implementation MediaObject
 @synthesize title;
 @synthesize id;
+@synthesize parentID;
 
 - (NSString *) description {
-    return [NSString stringWithFormat: @"MediaObject: %@, %@", title, id];
+    return [NSString stringWithFormat: @"MediaObject: %@, %@, %@", title, id, parentID];
 }
 
 - (id)getMediaItem {
@@ -55,8 +56,16 @@
     return [[NSString stringWithFormat:@"MediaContainer: %d, ", childrenCount] stringByAppendingString: [super description]];
 }
 - (id)getMediaItem {
-    NSArray *array = [NASMediaLibrary getMediaItems:self withMaxResults:1];
-    return [array objectAtIndex:0];
+    MediaObject *obj = self;
+    do {
+        NSArray *array = [NASMediaLibrary getMediaObjects:obj.id withMaxResults:1];
+        if(array.count == 0) {
+            obj = nil;
+            break;
+        }
+        obj = [array objectAtIndex:0];
+    }while([obj isKindOfClass:[MediaCategory class]]);
+    return obj;
 }
 @end
 
@@ -180,8 +189,9 @@ struct  CategoryDesc{
 typedef std::shared_ptr<NASMediaBrowser> NASMediaBrowserPtr;
 
 @interface NASMediaLibrary()
++ (MediaObject *)convToMediaObjct:(PLT_MediaObject *)pltObject;
 + (BOOL) checkResultWithJSON:(NSDictionary *)JSONDict;
-+ (NSString *) callCTransactProcWithParam:(NSString *)param;
++ (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict;
 @end
 
 @implementation NASMediaLibrary
@@ -200,6 +210,7 @@ static bool bRemoteAccess;
     if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
         nasMediaBrowserPtr  = localMediaBrowserPtr;
         NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
+        
         if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
             return TRUE;
         } else {
@@ -215,6 +226,41 @@ static bool bRemoteAccess;
     }
     return FALSE;
 #endif
+}
+
++ (MediaObject *)convToMediaObjct:(PLT_MediaObject *)pltObject{
+    MediaObject *mediaObject = nil;
+    if(pltObject->IsContainer()) {
+        MediaCategory *category = [[MediaCategory alloc] init];
+        category.childrenCount = ((PLT_MediaContainer *)pltObject)->m_ChildrenCount;
+        mediaObject = category;
+    } else {
+        MediaItem *item = [[MediaItem alloc] init];
+        item.creator = [NSString  stringWithCString:pltObject->m_Creator encoding:NSUTF8StringEncoding];
+        item.date = [NSString  stringWithCString:pltObject->m_Date encoding:NSUTF8StringEncoding];
+        
+        NSMutableArray* resources = [[NSMutableArray alloc] init];
+        
+        for (int resourceIndex = 0;  resourceIndex < pltObject->m_Resources.GetItemCount(); resourceIndex++) {
+            PLT_MediaItemResource* pltResourcde = pltObject->m_Resources.GetItem(resourceIndex);
+            Resource* resource = [[Resource alloc] init];
+            resource.uri = [NSString  stringWithCString:pltResourcde->m_Uri encoding:NSUTF8StringEncoding];
+            ProtocolInfo* protocolInfo = [[ProtocolInfo alloc] init];
+            protocolInfo.protocol = [NSString  stringWithCString:pltResourcde->m_ProtocolInfo.GetProtocol() encoding:NSUTF8StringEncoding];
+            protocolInfo.contentType = [NSString  stringWithCString:pltResourcde->m_ProtocolInfo.GetContentType() encoding:NSUTF8StringEncoding];
+            resource.protocolInfo = protocolInfo;
+            resource.size = pltResourcde->m_Size;
+            resource.resolution = [NSString  stringWithCString:pltResourcde->m_Resolution encoding:NSUTF8StringEncoding];
+            [resources addObject: resource];
+        }
+        item.resources = resources;
+        mediaObject = item;
+    }
+    
+    mediaObject.title = [NSString  stringWithCString:pltObject->m_Title encoding:NSUTF8StringEncoding];
+    mediaObject.id = [NSString  stringWithCString:pltObject->m_ObjectID encoding:NSUTF8StringEncoding];
+    mediaObject.parentID = [NSString  stringWithCString:pltObject->m_ParentID encoding:NSUTF8StringEncoding];
+    return mediaObject;
 }
 
 + (NSArray*) getMediaCategories {
@@ -235,14 +281,18 @@ static bool bRemoteAccess;
  
         category.title = [NSString  stringWithCString:mediaCetegories[i].title encoding:NSUTF8StringEncoding];
         category.id = [NSString  stringWithCString:mediaCetegories[i].id encoding:NSUTF8StringEncoding];
-        
+        category.parentID = @"0";
         [array addObject:category];
     }
    
     return array;
 }
 
-+ (NSArray*) getCategories:(MediaCategory *) mediaCatogery {
++ (NSArray *) getMediaObjects:(NSString *)catogeryID{
+    [self getMediaObjects:catogeryID withMaxResults:0];
+}
+
++ (NSArray *) getMediaObjects:(NSString *)catogeryID withMaxResults:(int)maxResults{
 #if FAKE_NASSERVER
     NSMutableArray* array = [[NSMutableArray alloc] init];
     for(int i = 0; i < 5; i++) {
@@ -253,53 +303,8 @@ static bool bRemoteAccess;
         
         [array addObject:category];
     }
-    return array;
-#else
-    if (!nasMediaBrowserPtr) {
-        return nil;
-    }
-    PLT_MediaObjectListReference  pltMediaList(new PLT_MediaObjectList);
-    char objID[1025] = {0};
-    [mediaCatogery.id getCString: objID maxLength: 1024 encoding:NSUTF8StringEncoding];
-    nasMediaBrowserPtr->Browser(objID, pltMediaList);
-    
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
-        PLT_MediaContainer* container = (PLT_MediaContainer*)(*pltMediaList->GetItem(i));
-        
-        MediaCategory* category = [[MediaCategory alloc] init];
-        
-        category.title = [NSString  stringWithCString:container->m_Title encoding:NSUTF8StringEncoding];
-        category.id = [NSString  stringWithCString:container->m_ObjectID encoding:NSUTF8StringEncoding];
-        category.childrenCount = container->m_ChildrenCount;
-        
-        [array addObject:category];
-    }
-    
-    return array;
-#endif
-}
-
-+ (NSArray *) getFirstMediaItems:(NSArray *)catogeries{
-    NSMutableArray *firstMediaItems = [[NSMutableArray alloc] init];
-    for(MediaCategory *category in catogeries) {
-        NSArray *mediaItems = [self getMediaItems:category withMaxResults:1];
-        if([mediaItems count] > 0) {
-            [firstMediaItems addObject:[mediaItems objectAtIndex:0]];
-        }
-    }
-    return firstMediaItems;
-}
-
-+ (NSArray*) getMediaItems:(MediaCategory *)catogery {
-    return [self getMediaItems:catogery withMaxResults:0];
-}
-
-+ (NSArray *)getMediaItems:(MediaCategory *)catogery withMaxResults:(int)maxResults{
-#if FAKE_NASSERVER
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    for(int i = 0; i < 6; i++) {
-        MediaItem* item = [[MediaItem alloc] init]; 
+    for(int i = 5; i < 12; i++) {
+        MediaItem* item = [[MediaItem alloc] init];
         item.title = [NSString  stringWithFormat:@"item_title_%d", i];
         item.id = [NSString  stringWithFormat:@"item_id_%d", i];
         item.creator = [NSString  stringWithFormat:@"item_creator_%d", i];
@@ -312,54 +317,30 @@ static bool bRemoteAccess;
         return nil;
     }
     PLT_MediaObjectListReference  pltMediaList(new PLT_MediaObjectList);
-    char objID[1025] = {0};
-    [catogery.id getCString: objID maxLength: 1024 encoding:NSUTF8StringEncoding];
-    nasMediaBrowserPtr->Browser(objID, pltMediaList, 0, maxResults);
+    nasMediaBrowserPtr->Browser([catogeryID UTF8String], pltMediaList, 0, maxResults);
     
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-    for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
-        PLT_MediaItem* mediaItem = (PLT_MediaItem*)(*pltMediaList->GetItem(i));
-        
-        MediaItem* item = [[MediaItem alloc] init];
-        
-        item.title = [NSString  stringWithCString:mediaItem->m_Title encoding:NSUTF8StringEncoding];
-        item.id = [NSString  stringWithCString:mediaItem->m_ObjectID encoding:NSUTF8StringEncoding];
-        item.creator = [NSString  stringWithCString:mediaItem->m_Creator encoding:NSUTF8StringEncoding];
-        item.date = [NSString  stringWithCString:mediaItem->m_Date encoding:NSUTF8StringEncoding];
-        
-        NSMutableArray* resources = [[NSMutableArray alloc] init];
-        
-        for (int resourceIndex = 0;  resourceIndex < mediaItem->m_Resources.GetItemCount(); resourceIndex++) {
-            PLT_MediaItemResource* pltResourcde = mediaItem->m_Resources.GetItem(resourceIndex);
-            Resource* resource = [[Resource alloc] init];
-            resource.uri = [NSString  stringWithCString:pltResourcde->m_Uri encoding:NSUTF8StringEncoding];
-            ProtocolInfo* protocolInfo = [[ProtocolInfo alloc] init];
-            protocolInfo.protocol = [NSString  stringWithCString:pltResourcde->m_ProtocolInfo.GetProtocol() encoding:NSUTF8StringEncoding];
-            protocolInfo.contentType = [NSString  stringWithCString:pltResourcde->m_ProtocolInfo.GetContentType() encoding:NSUTF8StringEncoding];
-            resource.protocolInfo = protocolInfo;
-            resource.size = pltResourcde->m_Size;
-            resource.resolution = [NSString  stringWithCString:pltResourcde->m_Resolution encoding:NSUTF8StringEncoding];
-            [resources addObject: resource];
-        }
-        item.resources = resources;
-        
-        [array addObject:item];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    if(pltMediaList.IsNull()){
+        return array;
     }
 
+    for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
+        [array addObject:[self convToMediaObjct:*pltMediaList->GetItem(i)]];
+    }
     return array;
 #endif
 }
 
-+ (NSString *) callCTransactProcWithParam:(NSString *)param{
++ (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict{
+    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:paramDict];
     int len = 0;
-    char* inParameter = (char*)[param UTF8String];
+    char* inParameter = (char*)[parameter UTF8String];
     transact_proc_call(inParameter, NULL, &len);
     char* outParameter = (char*)malloc(++len);
     transact_proc_call(inParameter, outParameter, &len);
     NSString* result = [NSString stringWithCString:outParameter encoding:NSUTF8StringEncoding];
     free(outParameter);
-    
-    return result;
+    return [[[SBJsonParser alloc] init] objectWithString:result];
 }
 
 + (BOOL) checkResultWithJSON:(NSDictionary *)JSONDict{
@@ -367,19 +348,20 @@ static bool bRemoteAccess;
 }
 
 + (NSArray *) getFriendList {
-    NSString* parameter = @"{\"METHOD\":\"FRIEND\", \"TYPE\":\"GETFRIENDLIST\"}";
+    NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"FRIEND", @"METHOD",
+                               @"GETFRIENDLIST", @"TYP", nil];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam: parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
      NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN”:\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
+     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    SBJsonParser* parser = [[SBJsonParser alloc] init];
-    NSDictionary* dict = [parser objectWithString:out];
-    if([self checkResultWithJSON: dict])
+    if([self checkResultWithJSON: resultDict])
         return nil;
     
     NSArray* friends = [[NSMutableArray alloc] init];
-    NSArray* array = [dict objectForKey:@"LIST"];
+    NSArray* array = [resultDict objectForKey:@"LIST"];
     for(NSDictionary* obj in array) {
         Friend* f = [[Friend alloc] init];
         f.name = [obj objectForKey:@"NAME"];
@@ -397,45 +379,45 @@ static bool bRemoteAccess;
         [users addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                           user.name, @"NAME",user.sn,@"SN", nil]];
     }
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                   @"SHARE", @"METHOD",
                   @"ADD", @"TYPE",
                   folder, @"FOLDER",
                    users, @"FRIENDLIST", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
+     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+   
     return [self checkResultWithJSON: resultDict];
 }
 
 + (BOOL) unshareFolder:(NSString *)folder {
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"SHARE", @"METHOD",
                         @"REMOVE", @"TYPE",
                         folder, @"FOLDER", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
     return [self checkResultWithJSON: resultDict];
-    
 }
 
 + (NSArray *) getAllShareInfos {
-    NSString* parameter = @"{\"METHOD\":\"SHARE\", \"TYPE\":\"QUERY\"}";
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"SHARE", @"METHOD",
+                               @"QUERY", @"TYPE", nil];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam: parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\", \"FRIENDLIST\": [{\"NAME\":\"123\", \"SN”:\"22\"}, {\"NAME\":\"WWW\", \"SN”:\"33\"}]},{\"FOLDER\":\"FODLDER2\", \"FRIENDLIST\": [{\"NAME\":\"WW\", \"SN”:\"33\"}, {\"NAME\":\"ZZ\", \"SN”:\"BB\"}]}]}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
     if ([self checkResultWithJSON: resultDict])
         return nil;
     NSArray* array = [resultDict objectForKey:@"LIST"];
@@ -458,52 +440,46 @@ static bool bRemoteAccess;
 }
 
 + (int) getShareStateWithFriend:(NSString *)friendName andFolder:(NSString *)folder {
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"SHARE", @"METHOD",
                         @"GETSHARESTATE", @"TYPE",
                         friendName, @"FRIENDNAME",
                         folder, @"FOLDER", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-    
+#endif
     return [self checkResultWithJSON: resultDict] ? [[resultDict objectForKey:@"STATE"] intValue] : 0;
 }
 
 //management interface
 + (BOOL) tagFavoriteObj:(NSString *)objID {
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"FAVOR", @"METHOD",
                         @"ADD", @"TYPE",
                         objID, @"OBJECTID", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-    
+#endif
     return [self checkResultWithJSON: resultDict];
 }
 
 + (BOOL) untagFavoriteObj:(NSString *)objID {
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"FAVOR", @"METHOD",
                         @"DELETE", @"TYPE",
                         objID, @"OBJECTID", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-    
+#endif
     return [self checkResultWithJSON: resultDict];
 }
 
@@ -557,47 +533,35 @@ static bool bRemoteAccess;
 }
 
 + (NSString *)shareAlbumWithFiles:(NSArray *)files{
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                           @"ALBUMSHARE", @"METHOD",
                           @"ADD", @"TYPE",
                           files, @"FILELIST", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
     if(![self checkResultWithJSON:resultDict])
         return @"";
     return [resultDict objectForKey:@"ID"];
 }
 
 + (int)getAlbumShareState:(NSString *)albumShareID{
-    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                           @"ALBUMSHARE", @"METHOD",
                           @"GETSHARESTATE", @"TYPE",
                           albumShareID, @"OBJECTID", nil];
-    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
 #if !FAKE_INTERFACE
-    NSString* out = [self callCTransactProcWithParam:parameter];
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
-#endif
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
+
     if(![self checkResultWithJSON:resultDict])
         return -1;
     return [[resultDict objectForKey:@"STATE"] intValue];
 }
 @end
-
-
-//test
-//    {
-//        NSArray* categories = [PhotoLibrary GetPhotoCategories];
-//        NSLog(@"%@", categories);
-//        NSArray* albums = [PhotoLibrary GetPhotoAlbums: [categories objectAtIndex: 0]];
-//        NSLog(@"%@", albums);
-//        NSArray* photoItems = [PhotoLibrary GetPhotoItems: [albums objectAtIndex:0]];
-//        NSLog(@"%@", photoItems);
-//    }

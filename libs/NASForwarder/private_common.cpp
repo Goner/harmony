@@ -27,7 +27,7 @@ using std::endl;
 using namespace std;
 
 char g_msg_port[]="9900";
-char g_auth_port[]="9001";
+char g_auth_port[]="9900";
 char g_file_port[]="9901";
 char g_license_port[]="9003";
 char box_ip[MAX_IP]={0};

@@ -17,6 +17,7 @@
 @interface GridCellView : UIView
 @property (weak, nonatomic) IBOutlet UIImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (weak, nonatomic) IBOutlet UIImageView *favorImage;
 
 @property (nonatomic) int contentIndex;
 @property (nonatomic) BOOL selected;
@@ -25,8 +26,8 @@
 
 @property (nonatomic, weak) id<GridCellViewDelegate> delegate;
 
-
 + (GridCellView *) cellViewFromNib;
 - (void) setImage: (UIImage *) image;
-
+- (void) tagFavor;
+- (void) untagFavor;
 @end

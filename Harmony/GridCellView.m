@@ -45,7 +45,7 @@
 //    } else {
 //        self.pictureView.contentMode = UIViewContentModeScaleToFill;
 //    }
-    
+    self.favorImage.hidden = YES;
     self.pictureView.contentMode = UIViewContentModeScaleToFill;
 
     self.pictureView.image = image;
@@ -68,4 +68,10 @@
     [self.delegate onTap: self];
 }
 
+- (void) tagFavor{
+    self.favorImage.hidden = NO;
+}
+- (void) untagFavor{
+    self.favorImage.hidden = YES;
+}
 @end
