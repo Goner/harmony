@@ -35,6 +35,8 @@
 
 - (IBAction)onButtonTagFavorPressed:(id)sender;
 
+- (IBAction)onButtonAlbumSharePressed:(id)sender;
+
 - (CGRect) rectWithBottomBar;
 - (CGRect) rectWithoutBottomBar;
 

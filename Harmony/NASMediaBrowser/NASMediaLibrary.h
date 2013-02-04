@@ -138,4 +138,8 @@ typedef MediaContainer MediaCategory;
 + (BOOL) tagFavoriteObj:(NSString *)objID;
 + (BOOL) untagFavoriteObj:(NSString *)objID;
 + (FolderInfo *) getFolderStructure:(NSString *)folderPath;
+
+//Album share
++ (NSString *)shareAlbumWithFiles:(NSArray *)files;
++ (int)getAlbumShareState:(NSString *)albumShareID;
 @end

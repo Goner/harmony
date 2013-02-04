@@ -14,7 +14,7 @@
 
 
 @interface GridViewController ()
-
+- (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block;
 @end
 
 @implementation GridViewController
@@ -164,25 +164,41 @@
     [self.rootController hideButtonBack:TRUE];
 }
 
-- (void) downloadSelectedItems{
+- (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block {
     for(GridCellView *cell in self.gridView.cells){
         if(cell.selected) {
             if(self.topGidView) {
                 NSArray * items= [NASMediaLibrary getMediaItems:[self.mediaObjects objectAtIndex:cell.contentIndex]];
                 for (MediaItem *item in items) {
-                    [self.fetcher downloadURL:[item getMediaURL]];
+                    block(item);
                 }
                 
             } else {
                 MediaItem *item = [self.mediaObjects objectAtIndex:cell.contentIndex];
-                [self.fetcher downloadURL:[item getMediaURL]];
+                block(item);
             }
         }
     }
 }
+- (void) downloadSelectedItems{
+    [self applyBlockForSelectedItems:^(MediaItem *item){
+        [self.fetcher downloadURL:[item getMediaURL]];
+    }];
 
-- (void) tagFavorSelectedItems{
+}
 
+- (void)tagFavorSelectedItems{
+
+}
+
+- (void)shareAlbumSelectedItems{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    [self applyBlockForSelectedItems:^(MediaItem *item) {
+        NSString *file =[ self.fetcher getFileNameFromURL:[item getMediaURL]];
+        [array addObject:file];
+    }];
+    NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
+    NSLog(@"%@", id);
 }
 @end
 

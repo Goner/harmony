@@ -12,7 +12,7 @@
 #import "interfaceudt_client.h"
 #import "SBJson.h"
 
-#define INTERFACE_OK 1
+#define FAKE_INTERFACE 1
 #define FAKE_NASSERVER 1
 
 @implementation ProtocolInfo
@@ -75,7 +75,7 @@
 - (NSString *)getURLForKey:(NSString *)key{
 #if FAKE_NASSERVER
     static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"http://img26.nipic.com/20110808/7485157_075051018000_1.png",@"Thumbnail",
+                                     @"http://img3.cache.netease.com/photo/0008/2012-03-27/t_7TK32ME629A50008.jpg",@"Thumbnail",
                                      @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
                                      @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
     NSString *url = [fakeURLs objectForKey:key];
@@ -90,11 +90,7 @@
 #endif
 }
 - (NSString *)getThumbnailURL {
-#if FAKE_NASSERVER
-    return @"http://img26.nipic.com/20110808/7485157_075051018000_1.png";
-#else
     return [self getURLForKey:@"Thumbnail"];
-#endif
 }
 
 - (NSString *)getResizedURL {
@@ -372,7 +368,7 @@ static bool bRemoteAccess;
 
 + (NSArray *) getFriendList {
     NSString* parameter = @"{\"METHOD\":\"FRIEND\", \"TYPE\":\"GETFRIENDLIST\"}";
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam: parameter];
 #else
      NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN”:\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
@@ -407,7 +403,7 @@ static bool bRemoteAccess;
                   folder, @"FOLDER",
                    users, @"FRIENDLIST", nil];
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam:parameter];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
@@ -422,7 +418,7 @@ static bool bRemoteAccess;
                         @"REMOVE", @"TYPE",
                         folder, @"FOLDER", nil];
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam:parameter];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
@@ -434,7 +430,7 @@ static bool bRemoteAccess;
 
 + (NSArray *) getAllShareInfos {
     NSString* parameter = @"{\"METHOD\":\"SHARE\", \"TYPE\":\"QUERY\"}";
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam: parameter];
 #else
     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\", \"FRIENDLIST\": [{\"NAME\":\"123\", \"SN”:\"22\"}, {\"NAME\":\"WWW\", \"SN”:\"33\"}]},{\"FOLDER\":\"FODLDER2\", \"FRIENDLIST\": [{\"NAME\":\"WW\", \"SN”:\"33\"}, {\"NAME\":\"ZZ\", \"SN”:\"BB\"}]}]}";
@@ -468,7 +464,7 @@ static bool bRemoteAccess;
                         friendName, @"FRIENDNAME",
                         folder, @"FOLDER", nil];
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam:parameter];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
@@ -485,7 +481,7 @@ static bool bRemoteAccess;
                         @"ADD", @"TYPE",
                         objID, @"OBJECTID", nil];
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam:parameter];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
@@ -501,7 +497,7 @@ static bool bRemoteAccess;
                         @"DELETE", @"TYPE",
                         objID, @"OBJECTID", nil];
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
-#if INTERFACE_OK
+#if !FAKE_INTERFACE
     NSString* out = [self callCTransactProcWithParam:parameter];
 #else
     NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
@@ -558,6 +554,40 @@ static bool bRemoteAccess;
     }
     
     return rootFolderInfo;
+}
+
++ (NSString *)shareAlbumWithFiles:(NSArray *)files{
+    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"ALBUMSHARE", @"METHOD",
+                          @"ADD", @"TYPE",
+                          files, @"FILELIST", nil];
+    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
+#if !FAKE_INTERFACE
+    NSString* out = [self callCTransactProcWithParam:parameter];
+#else
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
+#endif
+    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+    if(![self checkResultWithJSON:resultDict])
+        return @"";
+    return [resultDict objectForKey:@"ID"];
+}
+
++ (int)getAlbumShareState:(NSString *)albumShareID{
+    NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"ALBUMSHARE", @"METHOD",
+                          @"GETSHARESTATE", @"TYPE",
+                          albumShareID, @"OBJECTID", nil];
+    NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:dict];
+#if !FAKE_INTERFACE
+    NSString* out = [self callCTransactProcWithParam:parameter];
+#else
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
+#endif
+    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+    if(![self checkResultWithJSON:resultDict])
+        return -1;
+    return [[resultDict objectForKey:@"STATE"] intValue];
 }
 @end
 

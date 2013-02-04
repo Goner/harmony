@@ -30,4 +30,5 @@
 - (void)loadTopCatogery:(MediaCategory *)topCategory;
 - (void) downloadSelectedItems;
 - (void) tagFavorSelectedItems;
+- (void) shareAlbumSelectedItems;
 @end

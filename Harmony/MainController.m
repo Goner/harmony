@@ -180,6 +180,10 @@
     [self.gridController tagFavorSelectedItems];
 }
 
+- (IBAction)onButtonAlbumSharePressed:(id)sender{
+    [self.gridController shareAlbumSelectedItems];
+}
+
 - (void) logout
 {
     [SimpleKeychain delete:@"merry99"];

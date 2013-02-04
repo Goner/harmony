@@ -71,7 +71,7 @@
     [data writeToFile:cacheFile atomically:YES];
 }
 
-- (void)downloadURL:(NSString *)url{
+- (void)downloadURL :(NSString *)url{
     [self getDataFromURL:url completion:^(NSData *data){
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc]init];
         [library writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:nil];

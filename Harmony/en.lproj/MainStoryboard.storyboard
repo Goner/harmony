@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cee-Pw-etT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cee-Pw-etT">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Main Controller-->
@@ -41,6 +41,9 @@
                                         <state key="highlighted" image="btn1a.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onButtonAlbumSharePressed:" destination="2" eventType="touchUpInside" id="840-9R-ZFi"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GLx-Gr-w3x">
                                         <rect key="frame" x="79" y="15" width="34" height="34"/>
@@ -333,6 +336,7 @@
             <relationships>
                 <relationship kind="action" name="onBackButtonPressed:"/>
                 <relationship kind="action" name="onButtonActionMorePressed:"/>
+                <relationship kind="action" name="onButtonAlbumSharePressed:"/>
                 <relationship kind="action" name="onButtonCategoryPressed:"/>
                 <relationship kind="action" name="onButtonDownloadPressed:"/>
                 <relationship kind="action" name="onButtonTagFavorPressed:"/>
