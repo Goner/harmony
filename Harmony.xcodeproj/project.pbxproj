@@ -450,6 +450,7 @@
 		0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC05FBA16BEABCB00AF7E65 /* SimpleKeychain.m */; };
 		0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC05FBC16BEAC9100AF7E65 /* Security.framework */; };
 		0ECF314916BF2D0E00237533 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */; };
+		0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE43E2A16C0325700C55240 /* AppIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1074,6 +1075,7 @@
 		0EC05FBA16BEABCB00AF7E65 /* SimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKeychain.m; sourceTree = "<group>"; };
 		0EC05FBC16BEAC9100AF7E65 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		0EE43E2A16C0325700C55240 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1243,6 +1245,7 @@
 		0E7750CC16BC04E900FD3668 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0EE43E2916C0325700C55240 /* AppIcon */,
 				0E7750CD16BC04E900FD3668 /* Bottom */,
 				0E7750E216BC04E900FD3668 /* Category */,
 				0E7750F916BC04E900FD3668 /* Cell */,
@@ -2143,6 +2146,14 @@
 			name = LoginView;
 			sourceTree = "<group>";
 		};
+		0EE43E2916C0325700C55240 /* AppIcon */ = {
+			isa = PBXGroup;
+			children = (
+				0EE43E2A16C0325700C55240 /* AppIcon.png */,
+			);
+			path = AppIcon;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2330,6 +2341,7 @@
 				0E776BF216BCC36600FD3668 /* Merry99Launch@2x.png in Resources */,
 				0E1D343016BD25FC00729C51 /* 日期b.png in Resources */,
 				0E1D343216BD261100729C51 /* 视频b.png in Resources */,
+				0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
