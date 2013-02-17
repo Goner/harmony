@@ -47,7 +47,7 @@
     if (self.mediaObjects == nil) {
         NSArray *array = [NASMediaLibrary getMediaCategories];
         MediaCategory *category = [array objectAtIndex:0];
-        self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
+        self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
     }
     
     [self.gridView reloadData];
@@ -59,7 +59,7 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [self.rootController hideButtonBack: self.catogeryStack.count == 0];
+    [self.rootController hideButtonBack: self.currentCategory.parentCategory == nil];
     [self.rootController hideBottomBar: NO];
     [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
 
@@ -120,8 +120,8 @@
     } else {
         MediaObject *object = [self.mediaObjects objectAtIndex:cell.contentIndex];
         if([object isKindOfClass:[MediaCategory class]]) {
-            self.mediaObjects = [NASMediaLibrary getMediaObjects:object.id];
-            [self.catogeryStack addObject:object.parentID];
+            self.currentCategory = (MediaCategory *)object;
+            self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
             [self.gridView reloadData];
             [[self rootController] hideButtonBack: FALSE];
         } else {
@@ -147,21 +147,20 @@
 }
 
 - (void)backToParentCatogery{
-    MediaCategory *category = [self.catogeryStack lastObject];
-    if (category == nil) {
+    self.currentCategory = self.currentCategory.parentCategory;
+    if (self.currentCategory == nil) {
         NSLog(@"GridViewController:Eorr on back to parent catogery.");
     }
-    [self.catogeryStack removeLastObject];
-    [self.rootController hideButtonBack:self.catogeryStack.count == 0];
-    self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
+
+    [self.rootController hideButtonBack:self.currentCategory.parentCategory == nil];
+    self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
     [self.gridView reloadData];
 }
 
 
 - (void) backToTopCatogery:(MediaCategory *)category{
-    [self.catogeryStack removeAllObjects];
     [self.rootController hideButtonBack:TRUE];
-    self.mediaObjects = [NASMediaLibrary getMediaObjects:category.id];
+    self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
     [self.gridView reloadData];
 }
 

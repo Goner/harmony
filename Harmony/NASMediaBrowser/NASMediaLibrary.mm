@@ -38,10 +38,10 @@
 @implementation MediaObject
 @synthesize title;
 @synthesize id;
-@synthesize parentID;
+@synthesize parentCategory;
 
 - (NSString *) description {
-    return [NSString stringWithFormat: @"MediaObject: %@, %@, %@", title, id, parentID];
+    return [NSString stringWithFormat: @"MediaObject: %@, %@, %@", title, id, parentCategory];
 }
 
 - (id)getMediaItem {
@@ -49,7 +49,7 @@
 }
 @end
 
-@implementation MediaContainer
+@implementation MediaCategory
 @synthesize childrenCount;
 
 - (NSString *)description {
@@ -58,7 +58,7 @@
 - (id)getMediaItem {
     MediaObject *obj = self;
     do {
-        NSArray *array = [NASMediaLibrary getMediaObjects:obj.id withMaxResults:1];
+        NSArray *array = [NASMediaLibrary getMediaObjects:(MediaCategory *)obj withMaxResults:1];
         if(array.count == 0) {
             obj = nil;
             break;
@@ -259,7 +259,6 @@ static bool bRemoteAccess;
     
     mediaObject.title = [NSString  stringWithCString:pltObject->m_Title encoding:NSUTF8StringEncoding];
     mediaObject.id = [NSString  stringWithCString:pltObject->m_ObjectID encoding:NSUTF8StringEncoding];
-    mediaObject.parentID = [NSString  stringWithCString:pltObject->m_ParentID encoding:NSUTF8StringEncoding];
     return mediaObject;
 }
 
@@ -281,26 +280,26 @@ static bool bRemoteAccess;
  
         category.title = [NSString  stringWithCString:mediaCetegories[i].title encoding:NSUTF8StringEncoding];
         category.id = [NSString  stringWithCString:mediaCetegories[i].id encoding:NSUTF8StringEncoding];
-        category.parentID = @"0";
+        category.parentCategory = nil;
         [array addObject:category];
     }
    
     return array;
 }
 
-+ (NSArray *) getMediaObjects:(NSString *)catogeryID{
-    [self getMediaObjects:catogeryID withMaxResults:0];
++ (NSArray *) getMediaObjects:(MediaCategory *)catogery{
+    return [self getMediaObjects:catogery withMaxResults:0];
 }
 
-+ (NSArray *) getMediaObjects:(NSString *)catogeryID withMaxResults:(int)maxResults{
++ (NSArray *) getMediaObjects:(MediaCategory *)catogery withMaxResults:(int)maxResults{
 #if FAKE_NASSERVER
     NSMutableArray* array = [[NSMutableArray alloc] init];
     for(int i = 0; i < 5; i++) {
-        MediaCategory* category = [[MediaCategory alloc] init];
-        category.title = [NSString  stringWithFormat:@"title%d",i ];
-        category.id = [NSString  stringWithFormat:@"id%d",i];
-        category.childrenCount = i+1;
-        
+        MediaCategory* categoryChild = [[MediaCategory alloc] init];
+        categoryChild.title = [NSString  stringWithFormat:@"title%d",i ];
+        categoryChild.id = [NSString  stringWithFormat:@"id%d",i];
+        categoryChild.childrenCount = i+1;
+        categoryChild.parentCategory = category;
         [array addObject:category];
     }
     for(int i = 5; i < 12; i++) {
@@ -309,6 +308,7 @@ static bool bRemoteAccess;
         item.id = [NSString  stringWithFormat:@"item_id_%d", i];
         item.creator = [NSString  stringWithFormat:@"item_creator_%d", i];
         item.date = [NSString  stringWithFormat:@"item_date_%d", i];
+        item.parentCategory = category;
         [array addObject:item];
     }
     return array;
@@ -317,7 +317,7 @@ static bool bRemoteAccess;
         return nil;
     }
     PLT_MediaObjectListReference  pltMediaList(new PLT_MediaObjectList);
-    nasMediaBrowserPtr->Browser([catogeryID UTF8String], pltMediaList, 0, maxResults);
+    nasMediaBrowserPtr->Browser([catogery.id UTF8String], pltMediaList, 0, maxResults);
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     if(pltMediaList.IsNull()){
@@ -325,7 +325,9 @@ static bool bRemoteAccess;
     }
 
     for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
-        [array addObject:[self convToMediaObjct:*pltMediaList->GetItem(i)]];
+        MediaObject *object = [self convToMediaObjct:*pltMediaList->GetItem(i)];
+        object.parentCategory = catogery;
+        [array addObject: object];
     }
     return array;
 #endif

@@ -23,7 +23,8 @@
 @property (nonatomic) BOOL multiSelectionMode;
 @property (nonatomic, weak) MainController *rootController;
 
-@property (nonatomic) NSMutableArray *catogeryStack;
+//@property (nonatomic) NSMutableArray *catogeryStack;
+@property (nonatomic) MediaCategory *currentCategory;
 @property (nonatomic, strong) NSArray *mediaObjects;
 @property (nonatomic, strong) MediaResourceFetcher* fetcher;
 

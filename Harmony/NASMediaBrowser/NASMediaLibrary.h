@@ -34,21 +34,22 @@
 - (NSString *)description;
 @end
 
+@class MediaCategory;
 @interface MediaObject : NSObject {
     NSString* title;
     NSString* id;
-    NSString* parentID;
+    MediaCategory *parentCategory;
 }
 
 @property (retain) NSString* title;
 @property (retain) NSString* id;
-@property (retain) NSString* parentID;
+@property (retain) MediaCategory *parentCategory;
 
 - (NSString *)description;
 - (id)getMediaItem;
 @end
 
-@interface MediaContainer : MediaObject {
+@interface MediaCategory : MediaObject {
     NSInteger   childrenCount;
 }
 
@@ -56,8 +57,6 @@
 
 - (NSString *)description;
 @end
-
-typedef MediaContainer MediaCategory;
 
 @interface MediaItem : MediaObject {
     NSString* creator;
@@ -125,8 +124,8 @@ typedef MediaContainer MediaCategory;
 
 //media interface
 + (NSArray *) getMediaCategories;
-+ (NSArray *) getMediaObjects:(NSString *)catogeryID;
-+ (NSArray *) getMediaObjects:(NSString *)catogeryID withMaxResults:(int)maxResults;
++ (NSArray *) getMediaObjects:(MediaCategory *)catogery;
++ (NSArray *) getMediaObjects:(MediaCategory *)catogery withMaxResults:(int)maxResults;
 
  //social interface
 + (NSArray *) getFriendList;
