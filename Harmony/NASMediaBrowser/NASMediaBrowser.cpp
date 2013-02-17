@@ -112,7 +112,9 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
         char* resultStr = (char*)malloc(++len);
         transact_proc_call(requestStr, resultStr, &len);
         cJSON_Delete(requestJSONObj);
-        
+        if(*resultStr == '\0') {
+            return NPT_FAILURE;
+        }
         cJSON* resultJSONObj = cJSON_Parse(resultStr);
         if(strcmp(resultJSONObj->child->valuestring, "SUCCESS")) {
             return NPT_FAILURE;

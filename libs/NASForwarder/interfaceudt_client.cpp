@@ -58,8 +58,7 @@ int remote_access_auth (char *account, char *password, char *license, int len)
 {
 	char remote_ip[MAX_IP]="10.1.8.132";
 	char remote_msg_port[MAX_PORT]="8200";
-	udt_connect(&g_msg_client,remote_ip,remote_msg_port,CON_MSG);
-	return SUCCESS;
+	return udt_connect(&g_msg_client,remote_ip,remote_msg_port,CON_MSG);
 }
 
 /*此接口和void transact_proc_call (std::string &in_param, std::string &out_param, int &len);相同合并为一个接口*/

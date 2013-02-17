@@ -204,7 +204,7 @@ static bool bRemoteAccess;
     const char* userName = [user UTF8String];
     const char* password = [passwd UTF8String];
 #if FAKE_NASSERVER
-    return true;
+    return TRUE;
 #else
     std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
     if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){

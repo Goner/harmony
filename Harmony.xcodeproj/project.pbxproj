@@ -15,9 +15,6 @@
 		0E77507116BC00C900FD3668 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E77506F16BC00C900FD3668 /* InfoPlist.strings */; };
 		0E77507316BC00C900FD3668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E77507216BC00C900FD3668 /* main.m */; };
 		0E77507716BC00C900FD3668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E77507616BC00C900FD3668 /* AppDelegate.m */; };
-		0E77507916BC00C900FD3668 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E77507816BC00C900FD3668 /* Default.png */; };
-		0E77507B16BC00C900FD3668 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E77507A16BC00C900FD3668 /* Default@2x.png */; };
-		0E77507D16BC00C900FD3668 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E77507C16BC00C900FD3668 /* Default-568h@2x.png */; };
 		0E77508516BC00CA00FD3668 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77508416BC00CA00FD3668 /* SenTestingKit.framework */; };
 		0E77508616BC00CA00FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
 		0E77508716BC00CA00FD3668 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506816BC00C900FD3668 /* Foundation.framework */; };
@@ -476,9 +473,6 @@
 		0E77507416BC00C900FD3668 /* Harmony-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Harmony-Prefix.pch"; sourceTree = "<group>"; };
 		0E77507516BC00C900FD3668 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0E77507616BC00C900FD3668 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0E77507816BC00C900FD3668 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		0E77507A16BC00C900FD3668 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		0E77507C16BC00C900FD3668 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		0E77508316BC00CA00FD3668 /* HarmonyTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarmonyTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E77508416BC00CA00FD3668 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		0E77508C16BC00CA00FD3668 /* HarmonyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HarmonyTests-Info.plist"; sourceTree = "<group>"; };
@@ -1182,9 +1176,6 @@
 				0E77506E16BC00C900FD3668 /* Harmony-Info.plist */,
 				0E77506F16BC00C900FD3668 /* InfoPlist.strings */,
 				0E77507416BC00C900FD3668 /* Harmony-Prefix.pch */,
-				0E77507816BC00C900FD3668 /* Default.png */,
-				0E77507A16BC00C900FD3668 /* Default@2x.png */,
-				0E77507C16BC00C900FD3668 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2227,9 +2218,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E77507116BC00C900FD3668 /* InfoPlist.strings in Resources */,
-				0E77507916BC00C900FD3668 /* Default.png in Resources */,
-				0E77507B16BC00C900FD3668 /* Default@2x.png in Resources */,
-				0E77507D16BC00C900FD3668 /* Default-568h@2x.png in Resources */,
 				0E7750AF16BC049F00FD3668 /* MainStoryboard.storyboard in Resources */,
 				0E77510D16BC04E900FD3668 /* 1.jpg in Resources */,
 				0E77510E16BC04E900FD3668 /* 10.jpg in Resources */,
