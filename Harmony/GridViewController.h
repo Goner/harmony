@@ -29,7 +29,7 @@
 @property (nonatomic, strong) MediaResourceFetcher* fetcher;
 
 - (void) backToParentCatogery;
-- (void) backToTopCatogery:(MediaCategory *)category;
+- (void) gotoTopCatogery:(MediaCategory *)category;
 
 - (void) downloadSelectedItems;
 - (void) tagFavorSelectedItems;

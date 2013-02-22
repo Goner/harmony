@@ -25,15 +25,6 @@
 
 @implementation MainController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -62,6 +53,7 @@
 //    self.categoryImages = [NSArray arrayWithObjects: @"recent", @"favor", @"people", @"date", @"video", nil];
     self.mediaCategories = [NASMediaLibrary getMediaCategories];
     
+    _categoryIndex = -1;
     [self setCategoryIndex: 0];
 }
 
@@ -88,7 +80,7 @@
     }
     
     if([self.navigationController.viewControllers count] > 1) {
-        [self.navigationController popViewControllerAnimated: YES];
+        [self.navigationController popToRootViewControllerAnimated: YES];
         _categoryIndex = -1;
     }
     
@@ -103,7 +95,7 @@
         [self.cateButton setImage: img1 forState:UIControlStateNormal];
         [self.cateButton setImage: img2 forState:UIControlStateHighlighted];
 
-        [self.gridController backToTopCatogery:[self.mediaCategories objectAtIndex:index]];
+        [self.gridController gotoTopCatogery:[self.mediaCategories objectAtIndex:index]];
     }
     
 }

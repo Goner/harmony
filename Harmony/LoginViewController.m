@@ -33,7 +33,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view
 
-
 }
 - (void) viewDidAppear:(BOOL)animated {
     NSDictionary *data = [SimpleKeychain load:@"merry99"];
@@ -67,7 +66,7 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        BOOL bRet = [NASMediaLibrary initWithUser:userName.text password:password.text];
+        BOOL bRet = [NASMediaLibrary initWithUser:user password:pass];
         if(!bRet) {
             [SimpleKeychain delete:@"merry99"];
         } else if(update) {

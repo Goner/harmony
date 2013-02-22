@@ -65,7 +65,7 @@ NASLocalMediaBrowser::Browser(const char*  obj_id,
                                          NPT_Int32                     start /*= 0*/,
                                          NPT_Cardinal                  max_results /*= 0*/)
 {
-    return mediaBrowser.BrowseSync(mediaBrowser.GetNASDevice(), obj_id, list, start, max_results);
+    return mediaBrowser.BrowseSync(mediaBrowser.GetNASDevice(), obj_id, list, false, start, max_results);
 }
 
 NPT_String

@@ -44,14 +44,6 @@
     self.gridView.numberOfColumns = 3;
     self.gridView.dataSource = self;
     
-    if (self.mediaObjects == nil) {
-        NSArray *array = [NASMediaLibrary getMediaCategories];
-        MediaCategory *category = [array objectAtIndex:0];
-        self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
-    }
-    
-    [self.gridView reloadData];
-    
     self.longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressed:)];
     self.multiSelectionMode = NO;
     [self.gridView addGestureRecognizer:self.longPressGes];
@@ -158,8 +150,9 @@
 }
 
 
-- (void) backToTopCatogery:(MediaCategory *)category{
+- (void) gotoTopCatogery:(MediaCategory *)category{
     [self.rootController hideButtonBack:TRUE];
+    self.currentCategory = category;
     self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
     [self.gridView reloadData];
 }
