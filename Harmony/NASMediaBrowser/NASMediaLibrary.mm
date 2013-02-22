@@ -120,7 +120,7 @@
 }
 @end
 
-@implementation Friend
+@implementation Friend : User
 @synthesize isOnline;
 @synthesize isShield;
 
@@ -129,24 +129,6 @@
 }
 @end
 
-@implementation FolderShareInfo
-@synthesize folder;
-@synthesize friends;
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"Folder: %@, Share: %@", folder, friends];
-}
-@end
-
-@implementation FolderInfo
-@synthesize folderPath;
-@synthesize subFolders;
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"FolderPath: %@, SubFolders: %@", folderPath, subFolders];
-}
-
-@end
 
 const char* RootCotainerID = "0";
 const char* PhotoLibraryName = "Photos"; //or "Pictures";
@@ -396,11 +378,17 @@ static bool bRemoteAccess;
     return [self checkResultWithJSON: resultDict];
 }
 
-+ (BOOL) unshareFolder:(NSString *)folder {
++ (BOOL) unshareFolder:(NSString *)folder withFriends:(NSArray *)friends{
+    NSMutableArray* users = [[NSMutableArray alloc] init];
+    for (User* user in friends) {
+        [users addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                          user.name, @"NAME",user.sn,@"SN", nil]];
+    }
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"SHARE", @"METHOD",
                         @"REMOVE", @"TYPE",
-                        folder, @"FOLDER", nil];
+                        folder, @"FOLDER",
+                        users, @"FRIENDLIST", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
@@ -410,50 +398,74 @@ static bool bRemoteAccess;
     return [self checkResultWithJSON: resultDict];
 }
 
-+ (NSArray *) getAllShareInfos {
++ (NSArray *) getAllShareFolders {
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"SHARE", @"METHOD",
-                               @"QUERY", @"TYPE", nil];
+                               @"QUERYFOLDER", @"TYPE", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\", \"FRIENDLIST\": [{\"NAME\":\"123\", \"SN”:\"22\"}, {\"NAME\":\"WWW\", \"SN”:\"33\"}]},{\"FOLDER\":\"FODLDER2\", \"FRIENDLIST\": [{\"NAME\":\"WW\", \"SN”:\"33\"}, {\"NAME\":\"ZZ\", \"SN”:\"BB\"}]}]}";
+    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\"},{\"FOLDER\":\"FODLDER2\"}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     if ([self checkResultWithJSON: resultDict])
         return nil;
     NSArray* array = [resultDict objectForKey:@"LIST"];
-    NSMutableArray* infos = [[NSMutableArray alloc] init];
+    NSMutableArray* folders = [[NSMutableArray alloc] init];
     for(NSDictionary* obj in array) {
-        FolderShareInfo* info = [[FolderShareInfo alloc] init];
-        info.folder = [obj objectForKey:@"FOLDER"];
-        NSArray* friendList = [obj objectForKey:@"FRIEND"];
-        NSMutableArray* sharedUsers = [[NSMutableArray alloc] init];
-        for (NSDictionary* friendObj in friendList) {
-            User* user = [[User alloc] init];
-            user.name = [friendObj objectForKey:@"NAME"];
-            user.sn = [friendObj objectForKey:@"SN"];
-            [sharedUsers addObject: user];
-        }
-        info.friends = sharedUsers;
-        [infos addObject:info];
+        NSString *folder = [obj objectForKey:@"FOLDER"];
+        [folders addObject:folder];
     }
-    return infos;
+    return folders;
 }
 
-+ (int) getShareStateWithFriend:(NSString *)friendName andFolder:(NSString *)folder {
++ (NSArray *)getFriendsSharedWithFolder:(NSString *)folder {
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                        @"SHARE", @"METHOD",
-                        @"GETSHARESTATE", @"TYPE",
-                        friendName, @"FRIENDNAME",
-                        folder, @"FOLDER", nil];
+                               @"SHARE", @"METHOD",
+                               @"QUERY", @"TYPE",
+                               folder, "FOLDER",nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
+    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN”:\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    return [self checkResultWithJSON: resultDict] ? [[resultDict objectForKey:@"STATE"] intValue] : 0;
+    if([self checkResultWithJSON: resultDict])
+        return nil;
+    
+    NSArray* friends = [[NSMutableArray alloc] init];
+    NSArray* array = [resultDict objectForKey:@"LIST"];
+    for(NSDictionary* obj in array) {
+        Friend* f = [[Friend alloc] init];
+        f.name = [obj objectForKey:@"NAME"];
+        f.sn = [obj objectForKey:@"SN"];
+        f.isOnline = [[obj objectForKey:@"ONLINE"] boolValue];
+        f.isShield = [[obj objectForKey:@"SHIELD"] boolValue];
+    }
+    
+    return friends;
+}
+
++ (NSArray *) getSubFolders:(NSString *)folder {
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"SHARE", @"METHOD",
+                               @"GETFOLDER", @"TYPE",
+                               folder, "FOLDER",nil];
+#if !FAKE_INTERFACE
+    NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
+#else
+    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"FOLDERLIST\":[{\"FOLDERNAME\":\"FOLDERNAME\"},{\"FOLDER\":\"FODLDER2\"}";
+    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
+    if ([self checkResultWithJSON: resultDict])
+        return nil;
+    NSArray* array = [resultDict objectForKey:@"FOLDERLIST"];
+    NSMutableArray* folders = [[NSMutableArray alloc] init];
+    for(NSDictionary* obj in array) {
+        NSString *folder = [obj objectForKey:@"FOLDERNAME"];
+        [folders addObject:folder];
+    }
+    return folders;
 }
 
 //management interface
@@ -485,54 +497,6 @@ static bool bRemoteAccess;
     return [self checkResultWithJSON: resultDict];
 }
 
-+ (FolderInfo *) getFolderStructure:(NSString *)folderPath {
-    int len = 0;
-    char* path = (char*)[folderPath UTF8String];
-    if(get_folder_meta(path, NULL, &len/*, true, false*/) < 0) {
-        return nil;
-    }
-    char* meta = (char*)malloc(++len);
-    if(get_folder_meta(path, meta, &len/*, true, false*/) < 0) {
-        return nil;
-    }
-    NSString* metJSON = [NSString stringWithCString:meta encoding:NSUTF8StringEncoding];
-    free(meta);
-    NSDictionary* dict = [[[SBJsonParser alloc] init] objectWithString:metJSON];
-    
-    NSArray* array = [dict objectForKey:@"meta"];
-    NSMutableDictionary* folders = [[NSMutableDictionary alloc] init];
-    
-    FolderInfo* rootFolderInfo = nil;
-    for (NSDictionary* folderObj in array){
-        if([[folderObj objectForKey:@"STATE"] isEqualToString:@"0"])
-            continue;
-        NSString* cid = [folderObj objectForKey:@"CID"];
-        NSString* pid = [folderObj objectForKey:@"PID"];
-        FolderInfo* parent = [folders objectForKey:pid];
-        
-        if(nil == parent && ![pid isEqualToString:@"0"])
-            continue;
-        
-        FolderInfo* info = [[FolderInfo alloc] init];
-        info.subFolders = nil;
-        [folders setObject:info forKey:cid];
-        
-        if ([pid isEqualToString:@"0"]) {
-            info.folderPath = [folderObj objectForKey:@"NAME"];
-            rootFolderInfo = info;
-            continue;
-        }
-        info.folderPath = [parent.folderPath stringByAppendingFormat:@"/%@",
-                           [[folderObj objectForKey:@"NAME"] stringByTrimmingCharactersInSet:
-                                [NSCharacterSet characterSetWithCharactersInString:@"/"]]];
-        if(nil == parent.subFolders) {
-            parent.subFolders = [[NSMutableArray alloc] init];
-        }
-        [parent.subFolders addObject:info];
-    }
-    
-    return rootFolderInfo;
-}
 
 + (NSString *)shareAlbumWithFiles:(NSArray *)files{
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:

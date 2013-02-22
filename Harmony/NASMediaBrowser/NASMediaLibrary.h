@@ -96,28 +96,6 @@
 - (NSString *)description;
 @end
 
-@interface FolderShareInfo : NSObject {
-    NSString*   folder;
-    NSArray*    friends;
-}
-
-@property (retain) NSString* folder;
-@property (retain) NSArray* friends;
-
-- (NSString *)description;
-@end
-
-@interface FolderInfo : NSObject {
-    NSString* folderPath;
-    NSMutableArray*  subFolders;
-}
-
-@property (retain) NSString* folderPath;
-@property (retain) NSMutableArray* subFolders;
-
-- (NSString *)description;
-@end
-
 
 @interface NASMediaLibrary : NSObject
 + (BOOL)     initWithUser:(NSString*) user password:(NSString*) passwd;
@@ -130,13 +108,14 @@
  //social interface
 + (NSArray *) getFriendList;
 + (BOOL) shareFolder:(NSString *)folder withFriends:(NSArray *)friends;
-+ (BOOL) unshareFolder:(NSString *)folder;
-+ (NSArray *) getAllShareInfos;
-+ (int) getShareStateWithFriend:(NSString *)friendName andFolder:(NSString *)folder;
++ (BOOL) unshareFolder:(NSString *)folder withFriends:(NSArray *)friends;
++ (NSArray *) getAllShareFolders;
++ (NSArray *) getFriendsSharedWithFolder:(NSString *)folder;
++ (NSArray *) getSubFolders:(NSString *)folder;
+
 //management interface
 + (BOOL) tagFavoriteObj:(NSString *)objID;
 + (BOOL) untagFavoriteObj:(NSString *)objID;
-+ (FolderInfo *) getFolderStructure:(NSString *)folderPath;
 
 //Album share
 + (NSString *)shareAlbumWithFiles:(NSArray *)files;
