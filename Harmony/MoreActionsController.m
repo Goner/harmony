@@ -19,7 +19,12 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.actions = [NSArray arrayWithObjects: @"好友共享", @"备份 恢复", @"好友管理", @"系统消息", @"上传下载任务", @"帮助与反馈", @"关于久久相悦管家", nil];
+        NSArray *array1 = [NSArray arrayWithObjects: @"好友共享", @"备份, 恢复", nil];
+        NSArray *array2 = [NSArray arrayWithObjects: @"好友管理", @"系统消息", nil];
+        NSArray *array3 = [NSArray arrayWithObjects: @"关于久久相悦管家", nil];
+
+
+        self.actions = [NSArray arrayWithObjects: array1, array2, array3, nil];
     }
     return self;
 }
@@ -55,12 +60,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.actions.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.actions.count;
+    NSArray *array = [self.actions objectAtIndex: section];
+    return array.count;
 }
 
 
@@ -71,8 +77,30 @@
         cell = [MoreActionCell cellFromNib];
     }
     
-    cell.title.text = [self.actions objectAtIndex: indexPath.row];
+    NSArray *array = [self.actions objectAtIndex: indexPath.section];
+    cell.title.text = [array objectAtIndex: indexPath.row];
     return cell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MoreActionCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+//    NSLog(@"Cell selected: %@", cell.title.text);
+    
+    NSString *function = cell.title.text;
+    
+    if ([function isEqualToString: @"好友共享"]) {
+    } else if ([function isEqualToString: @"备份, 恢复"]) {
+
+    } else if ([function isEqualToString: @"好友管理"]) {
+
+    } else if ([function isEqualToString: @"系统消息"]) {
+
+    } else if ([function isEqualToString: @"关于久久相悦管家"]) {
+    }
+    
+
     
 }
 
@@ -82,3 +110,6 @@
 }
 
 @end
+
+
+

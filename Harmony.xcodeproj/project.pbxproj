@@ -448,6 +448,8 @@
 		0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC05FBC16BEAC9100AF7E65 /* Security.framework */; };
 		0ECF314916BF2D0E00237533 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */; };
 		0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE43E2A16C0325700C55240 /* AppIcon.png */; };
+		9F83A0D416D4C80000D19273 /* SharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F83A0D216D4C80000D19273 /* SharingController.m */; };
+		9F83A0D516D4C80000D19273 /* SharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F83A0D316D4C80000D19273 /* SharingController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1070,6 +1072,9 @@
 		0EC05FBC16BEAC9100AF7E65 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		0EE43E2A16C0325700C55240 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
+		9F83A0D116D4C80000D19273 /* SharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingController.h; sourceTree = "<group>"; };
+		9F83A0D216D4C80000D19273 /* SharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingController.m; sourceTree = "<group>"; };
+		9F83A0D316D4C80000D19273 /* SharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1153,6 +1158,7 @@
 				0E776BBA16BC2AA100FD3668 /* NASMediaBrowser */,
 				0E77681516BC0B3500FD3668 /* MyPopover */,
 				0E77681616BC0B5900FD3668 /* MoreActionsView */,
+				9F83A0CF16D4C7A900D19273 /* SharingToFriends */,
 				0E77681716BC0B6900FD3668 /* GridView */,
 				0E77681816BC0B7500FD3668 /* PictureViewer */,
 				0E77516316BC055600FD3668 /* FPPopover */,
@@ -2145,6 +2151,16 @@
 			path = AppIcon;
 			sourceTree = "<group>";
 		};
+		9F83A0CF16D4C7A900D19273 /* SharingToFriends */ = {
+			isa = PBXGroup;
+			children = (
+				9F83A0D116D4C80000D19273 /* SharingController.h */,
+				9F83A0D216D4C80000D19273 /* SharingController.m */,
+				9F83A0D316D4C80000D19273 /* SharingController.xib */,
+			);
+			name = SharingToFriends;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2330,6 +2346,7 @@
 				0E1D343016BD25FC00729C51 /* 日期b.png in Resources */,
 				0E1D343216BD261100729C51 /* 视频b.png in Resources */,
 				0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */,
+				9F83A0D516D4C80000D19273 /* SharingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2676,6 +2693,7 @@
 				0E776BE316BCA43800FD3668 /* Reachability.m in Sources */,
 				0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */,
 				0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */,
+				9F83A0D416D4C80000D19273 /* SharingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
