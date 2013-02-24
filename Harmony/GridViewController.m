@@ -82,16 +82,13 @@
 
     UIImage *img = [[UIImage alloc] init];
     MediaItem *item = [[self.mediaObjects objectAtIndex:index] getMediaItem];
-
+    
     NSString *url = [item getThumbnailURL] ;
     [self.fetcher getDataFromURL:url completion:^(NSData *data){
         [cell setImage:[UIImage imageWithData:data]];
     }];
     [cell setContentIndex: index];
     [cell setImage: img];
-    if ([item.id rangeOfString:@"*"].location != NSNotFound) {
-        [cell tagFavor];
-    }
     [cell setDelegate: self];
     return cell;
 }
@@ -215,10 +212,7 @@
 
 - (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    NSString *urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getResizedURL];
-    if(!urlString) {
-        urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getMediaURL];
-    }
+    NSString *urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem]getResizedURL];
     MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;
 }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0E1D343016BD25FC00729C51 /* 日期b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D342F16BD25FB00729C51 /* 日期b.png */; };
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
-		0E1D9E1F16DA080B0037E3E2 /* interfaceudt_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E1D9E1E16DA080B0037E3E2 /* interfaceudt_client.cpp */; };
 		0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
 		0E77506916BC00C900FD3668 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506816BC00C900FD3668 /* Foundation.framework */; };
 		0E77506B16BC00C900FD3668 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506A16BC00C900FD3668 /* CoreGraphics.framework */; };
@@ -167,6 +166,7 @@
 		0E7768C616BC13BA00FD3668 /* queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768B516BC13B900FD3668 /* queue.cpp */; };
 		0E7768C716BC13BA00FD3668 /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768B816BC13B900FD3668 /* window.cpp */; };
 		0E7768E416BC1AC100FD3668 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768DC16BC1AC100FD3668 /* cJSON.c */; };
+		0E7768E516BC1AC100FD3668 /* interfaceudt_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768DE16BC1AC100FD3668 /* interfaceudt_client.cpp */; };
 		0E7768E716BC1AC100FD3668 /* private_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768E216BC1AC100FD3668 /* private_common.cpp */; };
 		0E77695016BC1E3C00FD3668 /* PltAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768F716BC1E3C00FD3668 /* PltAction.cpp */; };
 		0E77695116BC1E3C00FD3668 /* PltArgument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E7768F916BC1E3C00FD3668 /* PltArgument.cpp */; };
@@ -465,7 +465,6 @@
 /* Begin PBXFileReference section */
 		0E1D342F16BD25FB00729C51 /* 日期b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "日期b.png"; sourceTree = "<group>"; };
 		0E1D343116BD261000729C51 /* 视频b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频b.png"; sourceTree = "<group>"; };
-		0E1D9E1E16DA080B0037E3E2 /* interfaceudt_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interfaceudt_client.cpp; path = libs/NASForwarder/interfaceudt_client.cpp; sourceTree = "<group>"; };
 		0E77506216BC00C900FD3668 /* Harmony.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmony.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E77506616BC00C900FD3668 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0E77506816BC00C900FD3668 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -686,6 +685,7 @@
 		0E7768DB16BC1AC100FD3668 /* cc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cc.h; path = libs/NASForwarder/cc.h; sourceTree = "<group>"; };
 		0E7768DC16BC1AC100FD3668 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cJSON.c; path = libs/NASForwarder/cJSON.c; sourceTree = "<group>"; };
 		0E7768DD16BC1AC100FD3668 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cJSON.h; path = libs/NASForwarder/cJSON.h; sourceTree = "<group>"; };
+		0E7768DE16BC1AC100FD3668 /* interfaceudt_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interfaceudt_client.cpp; path = libs/NASForwarder/interfaceudt_client.cpp; sourceTree = "<group>"; };
 		0E7768DF16BC1AC100FD3668 /* interfaceudt_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = interfaceudt_client.h; path = libs/NASForwarder/interfaceudt_client.h; sourceTree = "<group>"; };
 		0E7768E216BC1AC100FD3668 /* private_common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = private_common.cpp; path = libs/NASForwarder/private_common.cpp; sourceTree = "<group>"; };
 		0E7768E316BC1AC100FD3668 /* private_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = private_common.h; path = libs/NASForwarder/private_common.h; sourceTree = "<group>"; };
@@ -1441,7 +1441,7 @@
 				0E7768DB16BC1AC100FD3668 /* cc.h */,
 				0E7768DC16BC1AC100FD3668 /* cJSON.c */,
 				0E7768DD16BC1AC100FD3668 /* cJSON.h */,
-				0E1D9E1E16DA080B0037E3E2 /* interfaceudt_client.cpp */,
+				0E7768DE16BC1AC100FD3668 /* interfaceudt_client.cpp */,
 				0E7768DF16BC1AC100FD3668 /* interfaceudt_client.h */,
 				0E7768E216BC1AC100FD3668 /* private_common.cpp */,
 				0E7768E316BC1AC100FD3668 /* private_common.h */,
@@ -2433,6 +2433,7 @@
 				0E7768C616BC13BA00FD3668 /* queue.cpp in Sources */,
 				0E7768C716BC13BA00FD3668 /* window.cpp in Sources */,
 				0E7768E416BC1AC100FD3668 /* cJSON.c in Sources */,
+				0E7768E516BC1AC100FD3668 /* interfaceudt_client.cpp in Sources */,
 				0E7768E716BC1AC100FD3668 /* private_common.cpp in Sources */,
 				0E77695016BC1E3C00FD3668 /* PltAction.cpp in Sources */,
 				0E77695116BC1E3C00FD3668 /* PltArgument.cpp in Sources */,
@@ -2692,11 +2693,7 @@
 				0E776BE316BCA43800FD3668 /* Reachability.m in Sources */,
 				0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */,
 				0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */,
-<<<<<<< HEAD
 				9F83A0D416D4C80000D19273 /* SharingController.m in Sources */,
-=======
-				0E1D9E1F16DA080B0037E3E2 /* interfaceudt_client.cpp in Sources */,
->>>>>>> update nas interface wrap
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

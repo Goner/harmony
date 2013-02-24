@@ -40,9 +40,10 @@
         [[self networkQueue] addOperation:request];
     } else {
         int offset = 0;
-        NSString *tmpFile = @"tmpfile";
-        //getphoto_to_file(imageName, tmpFile);
-        NSData *data = [NSData dataWithContentsOfFile:tmpFile];
+        int len = 1024 * 500;
+        char buf[1024*500];
+        get_data(buf, offset, len, (char*)[url UTF8String]);
+        NSData *data = [NSData dataWithBytes:buf length:len];
         processData(data);
     }
 }
