@@ -96,6 +96,16 @@
 - (NSString *)description;
 @end
 
+@interface NASMessage : NSObject{
+    NSString *taskType;
+    NSString *startTime;
+    int status;
+}
+
+@property (retain) NSString *taskType;
+@property (retain) NSString *startTime;
+@property (assign) int status;
+@end
 
 @interface NASMediaLibrary : NSObject
 + (BOOL)     initWithUser:(NSString*) user password:(NSString*) passwd;
@@ -116,8 +126,12 @@
 //management interface
 + (BOOL) tagFavoriteObj:(NSString *)objID;
 + (BOOL) untagFavoriteObj:(NSString *)objID;
-
-//Album share
 + (NSString *)shareAlbumWithFiles:(NSArray *)files;
-+ (int)getAlbumShareState:(NSString *)albumShareID;
++ (BOOL) commitPrinttaskForFiles:(NSArray *)files;
++ (NSArray *) getNASMessages;
+
+//file data exchange interface
++ (NSData *) getVCardData;
++ (BOOL) backupVCardData:(NSData *)vCardData;
++ (BOOL) backupPhotoData:(NSData *)photoData;
 @end

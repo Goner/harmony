@@ -120,13 +120,19 @@
 }
 @end
 
-@implementation Friend : User
+@implementation Friend
 @synthesize isOnline;
 @synthesize isShield;
 
 - (NSString *)description {
     return [[super description] stringByAppendingFormat:@"online: %d, shield: %d", isOnline, isShield];
 }
+@end
+
+@implementation NASMessage
+@synthesize taskType;
+@synthesize startTime;
+@synthesize status;
 @end
 
 
@@ -338,7 +344,7 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN”:\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
+     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
      NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     if([self checkResultWithJSON: resultDict])
@@ -427,7 +433,7 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN”:\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
+    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     if([self checkResultWithJSON: resultDict])
@@ -497,7 +503,6 @@ static bool bRemoteAccess;
     return [self checkResultWithJSON: resultDict];
 }
 
-
 + (NSString *)shareAlbumWithFiles:(NSArray *)files{
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                           @"ALBUMSHARE", @"METHOD",
@@ -514,20 +519,65 @@ static bool bRemoteAccess;
     return [resultDict objectForKey:@"ID"];
 }
 
-+ (int)getAlbumShareState:(NSString *)albumShareID{
++ (BOOL) commitPrinttaskForFiles:(NSArray *)files{
+    NSMutableArray *printTask = [[NSMutableArray alloc] init];
+    for (NSString *file in files) {
+        NSDictionary *printItem = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   file, @"FILEPATH",
+                                   @"A4", @"PAPER",
+                                   @"16", @"SIZE",
+                                    1, @"COUNT", nil];
+       [printTask addObject:printItem];
+    }
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                          @"ALBUMSHARE", @"METHOD",
-                          @"GETSHARESTATE", @"TYPE",
-                          albumShareID, @"OBJECTID", nil];
+                               @"SERVICE", @"METHOD",
+                               @"COMMITPRINT", @"TYPE",
+                               printTask, @"PRINTLIST", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
+    return [self checkResultWithJSON: resultDict];
+}
 
-    if(![self checkResultWithJSON:resultDict])
-        return -1;
-    return [[resultDict objectForKey:@"STATE"] intValue];
++ (NSArray *) getNASMessages{
+    NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"SERVICE", @"METHOD",
+                               @"GETSERVICESTATUS", @"TYPE", nil];
+#if !FAKE_INTERFACE
+    NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
+#else
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\“TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"}]}}";
+    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
+#endif
+    NSMutableArray *messages = [[NSMutableArray alloc] init];
+    if(![self checkResultWithJSON: resultDict]) {
+        return messages;
+    }
+    
+    NSArray *logs = [resultDict objectForKey:@"SERVICELOGLIST"];
+    for (NSDictionary *log in logs) {
+        NASMessage *message = [[NASMessage alloc] init];
+        message.taskType = [log objectForKey:@"TP"];
+        message.startTime = [log objectForKey:@"STIME"];
+        message.status = [[log objectForKey:@"STATUS"] intValue];
+        [messages addObject:message];
+    }
+    return messages;
+}
+
+//file data exchange interface
++ (NSData *) getVCardData{
+    
+}
+
++ (BOOL) backupVCardData:(NSData *)vCardData{
+    
+}
+
++ (BOOL) backupPhotoData:(NSData *)photoData{
+    
 }
 @end
