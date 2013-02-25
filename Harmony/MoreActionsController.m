@@ -8,6 +8,7 @@
 
 #import "MoreActionsController.h"
 #import "MoreActionCell.h"
+#import "SharingController.h"
 
 @interface MoreActionsController ()
 
@@ -91,6 +92,7 @@
     NSString *function = cell.title.text;
     
     if ([function isEqualToString: @"好友共享"]) {
+        [self showSharingView];
     } else if ([function isEqualToString: @"备份, 恢复"]) {
 
     } else if ([function isEqualToString: @"好友管理"]) {
@@ -104,6 +106,13 @@
     
 }
 
+- (void) showSharingView
+{
+    SharingController *sharingController = [[SharingController alloc] initWithNibName: @"SharingController" bundle:nil];
+    
+    [self.navigationController pushViewController:sharingController animated:YES];
+
+}
 
 - (IBAction)onLogoutPressed:(id)sender {
     [self.rootController logout];

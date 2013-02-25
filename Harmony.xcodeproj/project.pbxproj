@@ -448,8 +448,12 @@
 		0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC05FBC16BEAC9100AF7E65 /* Security.framework */; };
 		0ECF314916BF2D0E00237533 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */; };
 		0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE43E2A16C0325700C55240 /* AppIcon.png */; };
-		9F83A0D416D4C80000D19273 /* SharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F83A0D216D4C80000D19273 /* SharingController.m */; };
-		9F83A0D516D4C80000D19273 /* SharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F83A0D316D4C80000D19273 /* SharingController.xib */; };
+		9F6EF08716DA593700A3E43E /* SharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6EF08516DA593700A3E43E /* SharingController.m */; };
+		9F6EF08816DA593700A3E43E /* SharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08616DA593700A3E43E /* SharingController.xib */; };
+		9F6EF08C16DA613500A3E43E /* button_common_1a.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08A16DA613500A3E43E /* button_common_1a.png */; };
+		9F6EF08D16DA613500A3E43E /* button_common_1b.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08B16DA613500A3E43E /* button_common_1b.png */; };
+		9F6EF09116DA624400A3E43E /* SharingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6EF09016DA624400A3E43E /* SharingCell.m */; };
+		9F6EF09316DA626D00A3E43E /* SharingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF09216DA626D00A3E43E /* SharingCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1072,9 +1076,14 @@
 		0EC05FBC16BEAC9100AF7E65 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		0EE43E2A16C0325700C55240 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
-		9F83A0D116D4C80000D19273 /* SharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingController.h; sourceTree = "<group>"; };
-		9F83A0D216D4C80000D19273 /* SharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingController.m; sourceTree = "<group>"; };
-		9F83A0D316D4C80000D19273 /* SharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingController.xib; sourceTree = "<group>"; };
+		9F6EF08416DA593700A3E43E /* SharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingController.h; sourceTree = "<group>"; };
+		9F6EF08516DA593700A3E43E /* SharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingController.m; sourceTree = "<group>"; };
+		9F6EF08616DA593700A3E43E /* SharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingController.xib; sourceTree = "<group>"; };
+		9F6EF08A16DA613500A3E43E /* button_common_1a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_common_1a.png; sourceTree = "<group>"; };
+		9F6EF08B16DA613500A3E43E /* button_common_1b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_common_1b.png; sourceTree = "<group>"; };
+		9F6EF08F16DA624400A3E43E /* SharingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingCell.h; sourceTree = "<group>"; };
+		9F6EF09016DA624400A3E43E /* SharingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingCell.m; sourceTree = "<group>"; };
+		9F6EF09216DA626D00A3E43E /* SharingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1242,11 +1251,13 @@
 		0E7750CC16BC04E900FD3668 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9F6EF08E16DA614500A3E43E /* common */,
 				0EE43E2916C0325700C55240 /* AppIcon */,
 				0E7750CD16BC04E900FD3668 /* Bottom */,
 				0E7750E216BC04E900FD3668 /* Category */,
 				0E7750F916BC04E900FD3668 /* Cell */,
 				0E77510216BC04E900FD3668 /* login */,
+				9F6EF08916DA605D00A3E43E /* Sharing */,
 				0E77510616BC04E900FD3668 /* Main */,
 			);
 			path = Resources;
@@ -2151,12 +2162,31 @@
 			path = AppIcon;
 			sourceTree = "<group>";
 		};
+		9F6EF08916DA605D00A3E43E /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Sharing;
+			sourceTree = "<group>";
+		};
+		9F6EF08E16DA614500A3E43E /* common */ = {
+			isa = PBXGroup;
+			children = (
+				9F6EF08A16DA613500A3E43E /* button_common_1a.png */,
+				9F6EF08B16DA613500A3E43E /* button_common_1b.png */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
 		9F83A0CF16D4C7A900D19273 /* SharingToFriends */ = {
 			isa = PBXGroup;
 			children = (
-				9F83A0D116D4C80000D19273 /* SharingController.h */,
-				9F83A0D216D4C80000D19273 /* SharingController.m */,
-				9F83A0D316D4C80000D19273 /* SharingController.xib */,
+				9F6EF08416DA593700A3E43E /* SharingController.h */,
+				9F6EF08516DA593700A3E43E /* SharingController.m */,
+				9F6EF08616DA593700A3E43E /* SharingController.xib */,
+				9F6EF08F16DA624400A3E43E /* SharingCell.h */,
+				9F6EF09016DA624400A3E43E /* SharingCell.m */,
+				9F6EF09216DA626D00A3E43E /* SharingCell.xib */,
 			);
 			name = SharingToFriends;
 			sourceTree = "<group>";
@@ -2346,7 +2376,10 @@
 				0E1D343016BD25FC00729C51 /* 日期b.png in Resources */,
 				0E1D343216BD261100729C51 /* 视频b.png in Resources */,
 				0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */,
-				9F83A0D516D4C80000D19273 /* SharingController.xib in Resources */,
+				9F6EF08816DA593700A3E43E /* SharingController.xib in Resources */,
+				9F6EF08C16DA613500A3E43E /* button_common_1a.png in Resources */,
+				9F6EF08D16DA613500A3E43E /* button_common_1b.png in Resources */,
+				9F6EF09316DA626D00A3E43E /* SharingCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2693,7 +2726,8 @@
 				0E776BE316BCA43800FD3668 /* Reachability.m in Sources */,
 				0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */,
 				0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */,
-				9F83A0D416D4C80000D19273 /* SharingController.m in Sources */,
+				9F6EF08716DA593700A3E43E /* SharingController.m in Sources */,
+				9F6EF09116DA624400A3E43E /* SharingCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
