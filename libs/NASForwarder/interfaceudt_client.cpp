@@ -203,7 +203,7 @@ int local_access_auth(char *ip, char *account, char *password)
 
 
 
-void transact_proc_call (char *in_param, char *out_param, int *len)
+void transact_proc_call (const char *in_param, char *out_param, int *len)
 {
 	char *temp_buf=out_param;
 	char buf[MAX_CHAR_P]={0};
@@ -240,7 +240,7 @@ void transact_proc_call (char *in_param, char *out_param, int *len)
    if(NULL==temp_buf)
    {
 	  cout << " transact_proc_call:malloc faild!" << endl;
-	  *len=TRANSACT_FAILD;
+	  *len=temp_len;
 	  release_critical(g_msgSemaphore);
 	  return ;
    }
@@ -262,210 +262,171 @@ void transact_proc_call (char *in_param, char *out_param, int *len)
 }
 
 
-int get_vcard_to_file(const char *file_path, const char *device_id)
+int get_vcard_data(const char *device_id, char **pvcard_data)
 {
-	FILE *local_fp;
-	cJSON *root;
-	char *myjson;
-	int ret=-1;
-	int len=0;
-	int64_t size=-1;
+    cJSON *root;
+    char *myjson;
+    int ret=-1;
+    int len=0;
+    int64_t size=-1;
     int data_size = 0;
-	int recv_size=0;
+    int recv_size=0;
     char buf[MAX_CHAR_P] = {};
-	enter_critical(g_fileSemaphore);
+    enter_critical(g_fileSemaphore);
 
-	root=cJSON_CreateObject();
-	cJSON_AddStringToObject(root,"METHOD","GETCARD");
-	cJSON_AddStringToObject(root,"TYPE","GETCARD");
-	cJSON_AddStringToObject(root,"DEVICEID",device_id);
-	myjson=cJSON_Print(root);
-	if(myjson==NULL)
-	{
-		cout<<"myjson : NULL!!"<<endl;
-		return GET_FILE_FAILD;
-	}
-	if( (local_fp=fopen(file_path,"w"))==NULL )
-	{
-		cout<<"get_file : open local faild!!"<<endl;
-		return GET_FILE_FAILD;
-	}
-	len=strlen(myjson)+1;
-	printf("json success:%s\n",myjson);
+    root=cJSON_CreateObject();
+    cJSON_AddStringToObject(root,"METHOD","GETCARD");
+    cJSON_AddStringToObject(root,"TYPE","GETCARD");
+    cJSON_AddStringToObject(root,"DEVICEID",device_id);
+    myjson=cJSON_Print(root);
+    if(myjson==NULL)
+    {
+        cout<<"myjson : NULL!!"<<endl;
+        return -1;
+    }
 
-   if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
-   {
+    len=strlen(myjson)+1;
+    printf("json success:%s\n",myjson);
+
+    if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
+    {
 		free(myjson);
 		myjson=NULL;
 		cJSON_Delete (root);
-	  cout << "get_file: send:json len " << UDT::getlasterror().getErrorMessage() << endl;
-      return GET_FILE_FAILD;
-   }
-   printf("send len success\n");
-   if (UDT::ERROR == UDT::send(g_file_client, myjson, len, 0))
-   {
-		free(myjson);
-		myjson=NULL;
-		cJSON_Delete (root);
-	  cout <<  "get_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
-      return GET_FILE_FAILD;
-   }
-   free(myjson);
-   myjson=NULL;
-   cJSON_Delete (root);
-   printf("send json success\n");
-      
+        cout << "get_file: send:json len " << UDT::getlasterror().getErrorMessage() << endl;
+        return -1;
+    }
+    printf("send len success\n");
+    if (UDT::ERROR == UDT::send(g_file_client, myjson, len, 0))
+    {
+        free(myjson);
+        myjson=NULL;
+        cJSON_Delete (root);
+        cout <<  "get_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
+        return -1;
+    }
+    free(myjson);
+    myjson=NULL;
+    cJSON_Delete (root);
+    printf("send json success\n");
+    
 
-   if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
-   {
-      cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
-      return GET_FILE_FAILD;
-   }
+    if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
+    {
+        cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
+        return -1;
+    }
 
-   if (size < 0)
-   {
-      cout << "cann not get vcard file on the server\n";
-      return GET_FILE_FAILD;
-   }
-   printf("file size=%lld\n",size);
+    if (size < 0)
+    {
+        cout << "cann not get vcard file on the server\n";
+        return -1;
+    }
+    printf("vcard data size=%lld\n",size);
 
-
-   while(size-data_size>0)
-   {
-	   memset( buf,0,MAX_CHAR_P);
-	   recv_size=UDT::recv(g_file_client, buf, MAX_CHAR_P, 0);
-	   printf("received package size==%d\n",recv_size);
-	   if (UDT::ERROR == recv_size)
-	   {
-		  cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
-		  return GET_FILE_FAILD;
-	   }
-
+    char *vcard_data = (char *)malloc(size);
+    while(size-data_size>0)
+    {
+        memset( buf,0,MAX_CHAR_P);
+        recv_size=UDT::recv(g_file_client, buf, MAX_CHAR_P, 0);
+        printf("received package size==%d\n",recv_size);
+        if (UDT::ERROR == recv_size){
+            cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
+            free(vcard_data);
+            return -1;
+        }
+       memcpy(vcard_data + data_size, buf, recv_size);
 	   data_size += recv_size;
 	   printf("received data size == %d\n", data_size);
-	   if(1!=fwrite(buf,recv_size,1,local_fp))
-	   {
-		  cout << "get_file: fwrite faild!!"<< endl;
-		  return GET_FILE_FAILD;
-	   }
-   }
-   printf("get vcard file\n");
+    }
+    printf("get vcard file\n");
 
-   release_critical(g_fileSemaphore);
-   fclose(local_fp);
-   return SUCCESS;
+    release_critical(g_fileSemaphore);
+    *pvcard_data = vcard_data;
+    return size;
 }
 
 
-int transfer_file_for_cmd(const char *file_path, const char *json_cmd)
+int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
 {
 	char buf[MAX_CHAR_P]={0};
-	int i=0;
-	FILE *local_fp;
-	int len=0;
+	int send_size = 0;
+    int data_pos = 0;
+    int len = 0;
 	int64_t size;
-
 
 	enter_critical(g_fileSemaphore);
 
-	if( (local_fp=fopen(file_path,"rb"))==NULL )
-	{
-		cout<<"transfer_file : open local faild!!"<<endl;
-		return GET_FILE_FAILD;
-	}
-
-
-
 	len=strlen(json_cmd)+1;
-   if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
-   {
+    if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
+    {
       cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
-   }
+    }
 
-   if (UDT::ERROR == UDT::send(g_file_client, json_cmd, len, 0))
-   {
+    if (UDT::ERROR == UDT::send(g_file_client, json_cmd, len, 0))
+    {
       cout <<  "transfer_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
-   }
+    }
 
-
-
-   if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
-   {
+    if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
+    {
       cout << "transfer_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
+    }
+
+    printf("size==%lld\n",size);
+
+    while(data_pos < data_size) {
+        memset(buf,0,MAX_CHAR_P);
+        send_size = (MAX_CHAR_P < data_size - data_pos) ? MAX_CHAR_P : data_size - data_pos;
+        memcpy(buf, data + data_pos, send_size);
+
+        if (UDT::ERROR == UDT::send(g_file_client, buf, send_size, 0)) {
+            cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
+            return GET_FILE_FAILD;
+        }
+        data_pos += send_size;
    }
-
-   printf("size==%lld\n",size);
-   fseek(local_fp,size,0); 
-   while(!feof(local_fp)) 
-   {
-		memset(buf,0,MAX_CHAR_P);
-		
-		len=fread((void*)buf,MAX_CHAR_P,1,local_fp);
-
-
-		if (UDT::ERROR == UDT::send(g_file_client, buf, MAX_CHAR_P, 0))
-		{
-			cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
-			fclose(local_fp);
-			return GET_FILE_FAILD;
-		}
-		i+=1;
-   }
-   printf("i==%d\n",i);
+   printf("send data %d\n", data_size);
 
    release_critical(g_fileSemaphore);
-   fclose(local_fp);
    return SUCCESS;
-
 }
 
-int transfer_vcard(const char *file_path, const char* device_id)
+int transfer_vcard(const char *data, int data_size, const char* device_id)
 {
-    char file_size[16]={0};
-    struct stat stat_buffer;
     int ret = 0;
     cJSON *root;
     char *myjson=NULL;
     
-    memset(&stat_buffer,0,sizeof(struct stat));
-	ret= stat((const char *)file_path,&stat_buffer);
-	printf("stat_buffer.st_size==%lld\n",stat_buffer.st_size);
-	sprintf(file_size,"%lld",stat_buffer.st_size);
 	root=cJSON_CreateObject();
 	cJSON_AddStringToObject(root,"METHOD","TRANSFERCARD");
 	cJSON_AddStringToObject(root,"TYPE","TRANSFERCARD");
 	cJSON_AddStringToObject(root,"DEVICEID",device_id);
-	cJSON_AddStringToObject(root,"FILESIZE",file_size);
+    cJSON_AddNumberToObject(root, "FILESIZE", data_size);
 	myjson=cJSON_Print(root);
-    ret = transfer_file_for_cmd(file_path, myjson);
+    ret = transfer_data_for_cmd(data, data_size, myjson);
     free(myjson);
     cJSON_Delete (root);
     return ret;
     
 }
-int transfer_photo(const char *file_path, const char* file_name,const char* device_id)
+int transfer_photo(const char *data, int data_size, const char* filename,const char* device_id)
 {
-    char file_size[16]={0};
-    struct stat stat_buffer;
     int ret = 0;
     cJSON *root;
     char *myjson=NULL;
     
-    memset(&stat_buffer,0,sizeof(struct stat));
-	ret= stat((const char *)file_path,&stat_buffer);
-	printf("stat_buffer.st_size==%lld\n",stat_buffer.st_size);
-	sprintf(file_size,"%lld",stat_buffer.st_size);
 	root=cJSON_CreateObject();
 	cJSON_AddStringToObject(root,"METHOD","TRANSFERPHOTO");
 	cJSON_AddStringToObject(root,"TYPE","TRANSFERPHOTO");
 	cJSON_AddStringToObject(root,"DEVICEID",device_id);
-    cJSON_AddStringToObject(root,"FILENAME",file_name);
-	cJSON_AddStringToObject(root,"FILESIZE",file_size);
+    cJSON_AddStringToObject(root,"FILENAME",filename);
+    cJSON_AddNumberToObject(root, "FILESIZE", data_size);
 	myjson=cJSON_Print(root);
-    ret = transfer_file_for_cmd(file_path, myjson);
+    ret = transfer_data_for_cmd(data, data_size, myjson);
     free(myjson);
     cJSON_Delete (root);
     return ret;

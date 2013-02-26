@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		0E1D343016BD25FC00729C51 /* 日期b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D342F16BD25FB00729C51 /* 日期b.png */; };
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
+		0E5C209C16DD02A7009BF9C0 /* DataSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C209B16DD02A7009BF9C0 /* DataSynchronizer.m */; };
+		0E5C20A316DD09B3009BF9C0 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C20A016DD09B3009BF9C0 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0E5C20A416DD09B3009BF9C0 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C20A216DD09B3009BF9C0 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0E5C20A616DD1D62009BF9C0 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5C20A516DD1D62009BF9C0 /* AddressBook.framework */; };
 		0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
 		0E77506916BC00C900FD3668 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506816BC00C900FD3668 /* Foundation.framework */; };
 		0E77506B16BC00C900FD3668 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506A16BC00C900FD3668 /* CoreGraphics.framework */; };
@@ -465,6 +469,13 @@
 /* Begin PBXFileReference section */
 		0E1D342F16BD25FB00729C51 /* 日期b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "日期b.png"; sourceTree = "<group>"; };
 		0E1D343116BD261000729C51 /* 视频b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频b.png"; sourceTree = "<group>"; };
+		0E5C209A16DD02A7009BF9C0 /* DataSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataSynchronizer.h; path = Harmony/DataSynchronizer.h; sourceTree = SOURCE_ROOT; };
+		0E5C209B16DD02A7009BF9C0 /* DataSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataSynchronizer.m; path = Harmony/DataSynchronizer.m; sourceTree = SOURCE_ROOT; };
+		0E5C209F16DD09B3009BF9C0 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
+		0E5C20A016DD09B3009BF9C0 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
+		0E5C20A116DD09B3009BF9C0 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
+		0E5C20A216DD09B3009BF9C0 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
+		0E5C20A516DD1D62009BF9C0 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		0E77506216BC00C900FD3668 /* Harmony.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmony.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E77506616BC00C900FD3668 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0E77506816BC00C900FD3668 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1082,6 +1093,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E5C20A616DD1D62009BF9C0 /* AddressBook.framework in Frameworks */,
 				0ECF314916BF2D0E00237533 /* AssetsLibrary.framework in Frameworks */,
 				0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */,
 				0E776BEB16BCBD6B00FD3668 /* libz.dylib in Frameworks */,
@@ -1109,9 +1121,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E5C209D16DD02CD009BF9C0 /* DataSync */ = {
+			isa = PBXGroup;
+			children = (
+				0E5C209B16DD02A7009BF9C0 /* DataSynchronizer.m */,
+				0E5C209A16DD02A7009BF9C0 /* DataSynchronizer.h */,
+			);
+			name = DataSync;
+			sourceTree = "<group>";
+		};
+		0E5C209E16DD09B3009BF9C0 /* UIDevice-with-UniqueIdentifier-for-iOS-5 */ = {
+			isa = PBXGroup;
+			children = (
+				0E5C209F16DD09B3009BF9C0 /* NSString+MD5Addition.h */,
+				0E5C20A016DD09B3009BF9C0 /* NSString+MD5Addition.m */,
+				0E5C20A116DD09B3009BF9C0 /* UIDevice+IdentifierAddition.h */,
+				0E5C20A216DD09B3009BF9C0 /* UIDevice+IdentifierAddition.m */,
+			);
+			name = "UIDevice-with-UniqueIdentifier-for-iOS-5";
+			path = "libs/UIDevice-with-UniqueIdentifier-for-iOS-5";
+			sourceTree = "<group>";
+		};
 		0E77505716BC00C900FD3668 = {
 			isa = PBXGroup;
 			children = (
+				0E5C20A516DD1D62009BF9C0 /* AddressBook.framework */,
 				0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */,
 				0E77506C16BC00C900FD3668 /* Harmony */,
 				0E77681016BC0A4E00FD3668 /* libs */,
@@ -1153,6 +1187,7 @@
 		0E77506C16BC00C900FD3668 /* Harmony */ = {
 			isa = PBXGroup;
 			children = (
+				0E5C209D16DD02CD009BF9C0 /* DataSync */,
 				0E776BF316BCC7FF00FD3668 /* LoginView */,
 				0E776BEC16BCBEDF00FD3668 /* NASFileDownload */,
 				0E776BBA16BC2AA100FD3668 /* NASMediaBrowser */,
@@ -1362,6 +1397,7 @@
 		0E77681016BC0A4E00FD3668 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				0E5C209E16DD09B3009BF9C0 /* UIDevice-with-UniqueIdentifier-for-iOS-5 */,
 				0E776BC416BCA43800FD3668 /* ASIHTTPRequest */,
 				0E77683C16BC0E6B00FD3668 /* MWPhotoBrowser */,
 				0E77698416BC1E4600FD3668 /* Neptune */,
@@ -2694,6 +2730,9 @@
 				0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */,
 				0EC05FBB16BEABCB00AF7E65 /* SimpleKeychain.m in Sources */,
 				9F83A0D416D4C80000D19273 /* SharingController.m in Sources */,
+				0E5C209C16DD02A7009BF9C0 /* DataSynchronizer.m in Sources */,
+				0E5C20A316DD09B3009BF9C0 /* NSString+MD5Addition.m in Sources */,
+				0E5C20A416DD09B3009BF9C0 /* UIDevice+IdentifierAddition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

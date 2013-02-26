@@ -11,6 +11,7 @@
 #import "NptCommon.h"
 #import "interfaceudt_client.h"
 #import "SBJson.h"
+#import "UIDevice+IdentifierAddition.h"
 
 #define FAKE_INTERFACE 0
 #define FAKE_NASSERVER 0
@@ -324,7 +325,7 @@ static bool bRemoteAccess;
 + (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict{
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:paramDict];
     int len = 0;
-    char* inParameter = (char*)[parameter UTF8String];
+    const char* inParameter = [parameter UTF8String];
     transact_proc_call(inParameter, NULL, &len);
     char* outParameter = (char*)malloc(++len);
     transact_proc_call(inParameter, outParameter, &len);
@@ -569,15 +570,23 @@ static bool bRemoteAccess;
 }
 
 //file data exchange interface
+static NSString *uniqueID = [[UIDevice currentDevice] uniqueDeviceIdentifier];;
 + (NSData *) getVCardData{
-    
+    char *vcardData = NULL;
+    int len = get_vcard_data([uniqueID UTF8String], &vcardData);
+    if(len < 0) {
+        return nil;
+    }
+    return [NSData dataWithBytesNoCopy:vcardData length:len freeWhenDone:YES];
 }
 
 + (BOOL) backupVCardData:(NSData *)vCardData{
-    
+    int ret =transfer_vcard((const char*)[vCardData bytes], [vCardData length], [uniqueID UTF8String]);
+    return ret == 0;
 }
 
-+ (BOOL) backupPhotoData:(NSData *)photoData{
-    
++ (BOOL) backupPhotoData:(NSData *)photoData withName:(NSString *)name{
+    int ret =transfer_photo((const char*)[photoData bytes], [photoData length], [name UTF8String], [uniqueID UTF8String]);
+    return ret == 0;
 }
 @end

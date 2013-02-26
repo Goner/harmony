@@ -133,5 +133,5 @@
 //file data exchange interface
 + (NSData *) getVCardData;
 + (BOOL) backupVCardData:(NSData *)vCardData;
-+ (BOOL) backupPhotoData:(NSData *)photoData;
++ (BOOL) backupPhotoData:(NSData *)photoData withName:(NSString *)name;
 @end
