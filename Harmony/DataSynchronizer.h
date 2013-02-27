@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "AddressBook/AddressBook.h"
+;
 
 @interface DataSynchronizer : NSObject {
     
 }
-+ (void) restoreContacts;
-+ (void) backupContacts;
-+  (BOOL)isABAddressBookCreateWithOptionsAvailable;
-+ (void)accessContactsWithBlock:(void(^)(ABAddressBookRef))addressOperationBlock ;
++ (void) startBackupPhoto;
++ (void) startAutoBackupPhoto;
++ (void) stopAutoBackupPhoto;
++ (void) startBackupContacts;
++ (void) startRestoreContacts;
++ (NSString *) getLastSyncContactsTime;
++ (NSInteger) getLastSyncContactsCount;
++ (NSInteger) getCurrentContactsCount;
 @end

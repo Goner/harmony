@@ -21,7 +21,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         NSArray *array1 = [NSArray arrayWithObjects: @"好友共享", @"备份, 恢复", nil];
-        NSArray *array2 = [NSArray arrayWithObjects: @"好友管理", @"系统消息", nil];
+        NSArray *array2 = [NSArray arrayWithObjects: @"系统消息", nil];
         NSArray *array3 = [NSArray arrayWithObjects: @"关于久久相悦管家", nil];
 
 
@@ -95,13 +95,10 @@
         [self showSharingView];
     } else if ([function isEqualToString: @"备份, 恢复"]) {
 
-    } else if ([function isEqualToString: @"好友管理"]) {
-
     } else if ([function isEqualToString: @"系统消息"]) {
 
     } else if ([function isEqualToString: @"关于久久相悦管家"]) {
     }
-    
 
     
 }

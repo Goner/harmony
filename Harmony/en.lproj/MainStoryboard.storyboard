@@ -296,30 +296,30 @@
         </scene>
     </scenes>
     <resources>
-        <image name="backa.png" width="16" height="16"/>
-        <image name="bar_bottom.png" width="16" height="16"/>
-        <image name="bar_top.png" width="16" height="16"/>
-        <image name="bkg_main.png" width="16" height="16"/>
-        <image name="btn1a.png" width="16" height="16"/>
-        <image name="btn1b.png" width="16" height="16"/>
-        <image name="btn1d.png" width="16" height="16"/>
-        <image name="btn2a.png" width="16" height="16"/>
-        <image name="btn2b.png" width="16" height="16"/>
-        <image name="btn2d.png" width="16" height="16"/>
-        <image name="btn3a.png" width="16" height="16"/>
-        <image name="btn3b.png" width="16" height="16"/>
-        <image name="btn3d.png" width="16" height="16"/>
-        <image name="btn4a.png" width="16" height="16"/>
-        <image name="btn4b.png" width="16" height="16"/>
-        <image name="btn4d.png" width="16" height="16"/>
-        <image name="btn5a.png" width="16" height="16"/>
-        <image name="btn5b.png" width="16" height="16"/>
-        <image name="btn5d.png" width="16" height="16"/>
-        <image name="logina.png" width="16" height="16"/>
-        <image name="loginb.png" width="16" height="16"/>
-        <image name="triangle.png" width="16" height="16"/>
-        <image name="最新a.png" width="16" height="16"/>
-        <image name="最新b.png" width="16" height="16"/>
+        <image name="backa.png" width="114" height="114"/>
+        <image name="bar_bottom.png" width="640" height="21"/>
+        <image name="bar_top.png" width="640" height="96"/>
+        <image name="bkg_main.png" width="640" height="960"/>
+        <image name="btn1a.png" width="68" height="68"/>
+        <image name="btn1b.png" width="68" height="68"/>
+        <image name="btn1d.png" width="68" height="68"/>
+        <image name="btn2a.png" width="68" height="68"/>
+        <image name="btn2b.png" width="68" height="68"/>
+        <image name="btn2d.png" width="68" height="68"/>
+        <image name="btn3a.png" width="68" height="68"/>
+        <image name="btn3b.png" width="68" height="68"/>
+        <image name="btn3d.png" width="68" height="68"/>
+        <image name="btn4a.png" width="68" height="68"/>
+        <image name="btn4b.png" width="68" height="68"/>
+        <image name="btn4d.png" width="68" height="68"/>
+        <image name="btn5a.png" width="68" height="68"/>
+        <image name="btn5b.png" width="68" height="68"/>
+        <image name="btn5d.png" width="68" height="68"/>
+        <image name="logina.png" width="173" height="70"/>
+        <image name="loginb.png" width="173" height="70"/>
+        <image name="triangle.png" width="9" height="9"/>
+        <image name="最新a.png" width="55" height="55"/>
+        <image name="最新b.png" width="55" height="55"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
