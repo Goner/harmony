@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F49EB16DE2BAC004472B6 /* logo.png */; };
+		0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F49EE16DE2BF0004472B6 /* AboutViewController.m */; };
+		0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */; };
 		0E1D343016BD25FC00729C51 /* 日期b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D342F16BD25FB00729C51 /* 日期b.png */; };
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
+		0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */; };
+		0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */; };
 		0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
 		0E77506916BC00C900FD3668 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506816BC00C900FD3668 /* Foundation.framework */; };
 		0E77506B16BC00C900FD3668 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506A16BC00C900FD3668 /* CoreGraphics.framework */; };
@@ -471,8 +476,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E0F49EB16DE2BAC004472B6 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = About/logo.png; sourceTree = "<group>"; };
+		0E0F49ED16DE2BF0004472B6 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		0E0F49EE16DE2BF0004472B6 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		0E1D342F16BD25FB00729C51 /* 日期b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "日期b.png"; sourceTree = "<group>"; };
 		0E1D343116BD261000729C51 /* 视频b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频b.png"; sourceTree = "<group>"; };
+		0E72C42A16DDE41500F1BAEF /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
+		0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
+		0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesViewController.xib; sourceTree = "<group>"; };
 		0E77506216BC00C900FD3668 /* Harmony.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmony.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E77506616BC00C900FD3668 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0E77506816BC00C900FD3668 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1130,6 +1142,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E0F49EA16DE2B35004472B6 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F49EB16DE2BAC004472B6 /* logo.png */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		0E0F49F216DE2BF6004472B6 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F49ED16DE2BF0004472B6 /* AboutViewController.h */,
+				0E0F49EE16DE2BF0004472B6 /* AboutViewController.m */,
+				0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		0E72C42916DDE11A00F1BAEF /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				0E72C42A16DDE41500F1BAEF /* MessagesViewController.h */,
+				0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */,
+				0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */,
+			);
+			name = Message;
+			sourceTree = "<group>";
+		};
 		0E77505716BC00C900FD3668 = {
 			isa = PBXGroup;
 			children = (
@@ -1175,6 +1215,8 @@
 		0E77506C16BC00C900FD3668 /* Harmony */ = {
 			isa = PBXGroup;
 			children = (
+				0E0F49F216DE2BF6004472B6 /* About */,
+				0E72C42916DDE11A00F1BAEF /* Message */,
 				0EA887A116DD284500763698 /* DataSync */,
 				0E776BF316BCC7FF00FD3668 /* LoginView */,
 				0E776BEC16BCBEDF00FD3668 /* NASFileDownload */,
@@ -1265,6 +1307,7 @@
 		0E7750CC16BC04E900FD3668 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0E0F49EA16DE2B35004472B6 /* About */,
 				9F6EF08E16DA614500A3E43E /* common */,
 				0EE43E2916C0325700C55240 /* AppIcon */,
 				0E7750CD16BC04E900FD3668 /* Bottom */,
@@ -2416,6 +2459,9 @@
 				9F6EF08C16DA613500A3E43E /* button_common_1a.png in Resources */,
 				9F6EF08D16DA613500A3E43E /* button_common_1b.png in Resources */,
 				9F6EF09316DA626D00A3E43E /* SharingCell.xib in Resources */,
+				0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */,
+				0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */,
+				0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2767,6 +2813,8 @@
 				0EA8879C16DD280800763698 /* NSString+MD5Addition.m in Sources */,
 				0EA8879D16DD280800763698 /* UIDevice+IdentifierAddition.m in Sources */,
 				0EA887A016DD283B00763698 /* DataSynchronizer.m in Sources */,
+				0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */,
+				0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

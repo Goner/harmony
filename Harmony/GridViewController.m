@@ -175,7 +175,6 @@
     [self applyBlockForSelectedItems:^(MediaItem *item){
         [self.fetcher downloadURL:[item getMediaURL]];
     }];
-
 }
 
 - (void)tagFavorSelectedItems{    
@@ -194,6 +193,14 @@
             }
         }
     }
+}
+
+- (void)commitPrintSelectedItems{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    [self applyBlockForSelectedItems:^(MediaItem *item){
+        [array addObject:[self.fetcher getFileNameFromURL:[item getThumbnailURL]]];
+    }];
+    [NASMediaLibrary commitPrinttaskForFiles:array];
 }
 
 - (void)shareAlbumSelectedItems{

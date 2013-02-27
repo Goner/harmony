@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 0
-#define FAKE_NASSERVER 0
+#define FAKE_INTERFACE 1
+#define FAKE_NASSERVER 1
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -64,9 +64,13 @@
             obj = nil;
             break;
         }
-        obj = [array objectAtIndex:0];
-    }while([obj isKindOfClass:[MediaCategory class]]);
-    return obj;
+        for (MediaObject *obj in array){
+            if([obj isKindOfClass:[MediaItem class]]){
+                return obj;
+            }
+        }
+    }while(1);
+    return nil;
 }
 @end
 
@@ -79,7 +83,7 @@
 @synthesize resources;
 
 - (NSString *)description {
-    return [[NSString stringWithFormat:@"PhotoItem: %@, %@, %@,", creator, date, resources] stringByAppendingString: [super description]];
+    return [[NSString stringWithFormat:@"MediaItem: %@, %@, %@,", creator, date, resources] stringByAppendingString: [super description]];
 }
 
 - (NSString *)getURLForKey:(NSString *)key{
@@ -134,6 +138,10 @@
 @synthesize taskType;
 @synthesize startTime;
 @synthesize status;
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"Task Type:%@, start at:%@, status:%d", taskType, startTime, status];
+}
 @end
 
 
@@ -280,7 +288,7 @@ static bool bRemoteAccess;
     return [self getMediaObjects:catogery withMaxResults:0];
 }
 
-+ (NSArray *) getMediaObjects:(MediaCategory *)catogery withMaxResults:(int)maxResults{
++ (NSArray *) getMediaObjects:(MediaCategory *)category withMaxResults:(int)maxResults{
 #if FAKE_NASSERVER
     NSMutableArray* array = [[NSMutableArray alloc] init];
     for(int i = 0; i < 5; i++) {
@@ -306,7 +314,7 @@ static bool bRemoteAccess;
         return nil;
     }
     PLT_MediaObjectListReference  pltMediaList(new PLT_MediaObjectList);
-    nasMediaBrowserPtr->Browser([catogery.id UTF8String], pltMediaList, 0, maxResults);
+    nasMediaBrowserPtr->Browser([category.id UTF8String], pltMediaList, 0, maxResults);
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     if(pltMediaList.IsNull()){
@@ -315,7 +323,7 @@ static bool bRemoteAccess;
 
     for (int i = 0; i < pltMediaList->GetItemCount(); i++) {
         MediaObject *object = [self convToMediaObjct:*pltMediaList->GetItem(i)];
-        object.parentCategory = catogery;
+        object.parentCategory = category;
         [array addObject: object];
     }
     return array;
@@ -345,7 +353,7 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
+     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
      NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     if([self checkResultWithJSON: resultDict])
@@ -550,7 +558,7 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\“TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"}]}}";
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     NSMutableArray *messages = [[NSMutableArray alloc] init];

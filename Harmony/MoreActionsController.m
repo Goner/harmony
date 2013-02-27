@@ -9,6 +9,8 @@
 #import "MoreActionsController.h"
 #import "MoreActionCell.h"
 #import "SharingController.h"
+#import "MessagesViewController.h"
+#import "AboutViewController.h"
 
 @interface MoreActionsController ()
 
@@ -96,8 +98,9 @@
     } else if ([function isEqualToString: @"备份, 恢复"]) {
 
     } else if ([function isEqualToString: @"系统消息"]) {
-
+        [self showMessagesView];
     } else if ([function isEqualToString: @"关于久久相悦管家"]) {
+        [self showAboutView];
     }
 
     
@@ -108,7 +111,16 @@
     SharingController *sharingController = [[SharingController alloc] initWithNibName: @"SharingController" bundle:nil];
     
     [self.navigationController pushViewController:sharingController animated:YES];
+}
 
+- (void) showMessagesView {
+    MessagesViewController *messagesViewController = [[MessagesViewController alloc] init];
+    [self.navigationController pushViewController:messagesViewController animated:YES];
+}
+
+- (void) showAboutView {
+    AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+    [self.navigationController pushViewController:aboutViewController animated:YES];
 }
 
 - (IBAction)onLogoutPressed:(id)sender {

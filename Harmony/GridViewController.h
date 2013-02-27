@@ -34,4 +34,5 @@
 - (void) downloadSelectedItems;
 - (void) tagFavorSelectedItems;
 - (void) shareAlbumSelectedItems;
+- (void) commitPrintSelectedItems;
 @end

@@ -28,14 +28,11 @@
 - (void) hideBottomBar: (BOOL) hiden;
 
 - (IBAction)onButtonActionMorePressed:(id)sender;
-
 - (IBAction)onButtonCategoryPressed:(id)sender;
-
 - (IBAction)onButtonDownloadPressed:(id)sender;
-
 - (IBAction)onButtonTagFavorPressed:(id)sender;
-
 - (IBAction)onButtonAlbumSharePressed:(id)sender;
+- (IBAction)onButtonPhotoPrintPressed:(id)sender;
 
 - (CGRect) rectWithBottomBar;
 - (CGRect) rectWithoutBottomBar;

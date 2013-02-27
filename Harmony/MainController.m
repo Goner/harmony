@@ -176,6 +176,10 @@
     [self.gridController shareAlbumSelectedItems];
 }
 
+- (IBAction)onButtonPhotoPrintPressed:(id)sender{
+    [self.gridController commitPrintSelectedItems];
+}
+
 - (void) logout
 {
     [SimpleKeychain delete:@"merry99"];

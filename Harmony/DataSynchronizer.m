@@ -72,13 +72,7 @@
     }];
     return count;
 }
-//- void makePhoneCall{
-//    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://99999"]];
-//    UIWebView*callWebview =[[UIWebView alloc] init];
-//    NSURL *telURL =[NSURL URLWithString:@"tel://10086"];// 貌似tel:// 或者 tel: 都行
-//    [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
-//    [self.veiw addSubview:callWebview];
-//}
+
 static  dispatch_queue_t sync_queue = nil;
 static  Reachability *reachability;
 
