@@ -8,6 +8,7 @@
 
 #import "SharingController.h"
 #import "SharingCell.h"
+#import "AddSharingController.h"
 
 @interface SharingController ()
 
@@ -71,5 +72,11 @@
     return  cell;
 }
 
+- (IBAction)onAddSharing:(id)sender
+{
+    AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
+    
+    [self.navigationController pushViewController:addSharingController animated:YES];
+}
 
 @end

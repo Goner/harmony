@@ -463,6 +463,10 @@
 		9F6EF08D16DA613500A3E43E /* button_common_1b.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08B16DA613500A3E43E /* button_common_1b.png */; };
 		9F6EF09116DA624400A3E43E /* SharingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6EF09016DA624400A3E43E /* SharingCell.m */; };
 		9F6EF09316DA626D00A3E43E /* SharingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF09216DA626D00A3E43E /* SharingCell.xib */; };
+		9FACC6CD16DE52F4006E2B08 /* AddSharingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FACC6CC16DE52F4006E2B08 /* AddSharingCell.m */; };
+		9FACC6D216DE536E006E2B08 /* AddSharingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FACC6D116DE536E006E2B08 /* AddSharingCell.xib */; };
+		9FACC6D416DE5404006E2B08 /* AddSharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FACC6D316DE5404006E2B08 /* AddSharingController.xib */; };
+		9FACC6D716DE5429006E2B08 /* AddSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FACC6D616DE5429006E2B08 /* AddSharingController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1107,6 +1111,12 @@
 		9F6EF08F16DA624400A3E43E /* SharingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingCell.h; sourceTree = "<group>"; };
 		9F6EF09016DA624400A3E43E /* SharingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingCell.m; sourceTree = "<group>"; };
 		9F6EF09216DA626D00A3E43E /* SharingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingCell.xib; sourceTree = "<group>"; };
+		9FACC6CB16DE52F4006E2B08 /* AddSharingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSharingCell.h; sourceTree = "<group>"; };
+		9FACC6CC16DE52F4006E2B08 /* AddSharingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSharingCell.m; sourceTree = "<group>"; };
+		9FACC6D116DE536E006E2B08 /* AddSharingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSharingCell.xib; sourceTree = "<group>"; };
+		9FACC6D316DE5404006E2B08 /* AddSharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSharingController.xib; sourceTree = "<group>"; };
+		9FACC6D516DE5429006E2B08 /* AddSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSharingController.h; sourceTree = "<group>"; };
+		9FACC6D616DE5429006E2B08 /* AddSharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSharingController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2266,6 +2276,12 @@
 				9F6EF08F16DA624400A3E43E /* SharingCell.h */,
 				9F6EF09016DA624400A3E43E /* SharingCell.m */,
 				9F6EF09216DA626D00A3E43E /* SharingCell.xib */,
+				9FACC6D516DE5429006E2B08 /* AddSharingController.h */,
+				9FACC6D616DE5429006E2B08 /* AddSharingController.m */,
+				9FACC6D316DE5404006E2B08 /* AddSharingController.xib */,
+				9FACC6CB16DE52F4006E2B08 /* AddSharingCell.h */,
+				9FACC6CC16DE52F4006E2B08 /* AddSharingCell.m */,
+				9FACC6D116DE536E006E2B08 /* AddSharingCell.xib */,
 			);
 			name = SharingToFriends;
 			sourceTree = "<group>";
@@ -2462,6 +2478,8 @@
 				0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */,
 				0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */,
 				0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */,
+				9FACC6D216DE536E006E2B08 /* AddSharingCell.xib in Resources */,
+				9FACC6D416DE5404006E2B08 /* AddSharingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2815,6 +2833,8 @@
 				0EA887A016DD283B00763698 /* DataSynchronizer.m in Sources */,
 				0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */,
 				0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */,
+				9FACC6CD16DE52F4006E2B08 /* AddSharingCell.m in Sources */,
+				9FACC6D716DE5429006E2B08 /* AddSharingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
