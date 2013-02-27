@@ -26,4 +26,23 @@
     // Configure the view for the selected state
 }
 
+- (void) setIsShared:(BOOL)isShared
+{
+    _isShared = isShared;
+    if (_isShared) {
+        [self.shareButton setTitle: @"取消共享" forState:UIControlStateNormal];
+    } else {
+        [self.shareButton setTitle: @"添加共享" forState:UIControlStateNormal];
+
+    }
+    
+}
+
+
+
+- (IBAction)toggleSharing:(id)sender
+{
+    [self.cellDelegate toggleSharing: self.row];
+}
+
 @end
