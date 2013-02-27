@@ -12,6 +12,8 @@
 		0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */; };
 		0E1D343016BD25FC00729C51 /* 日期b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D342F16BD25FB00729C51 /* 日期b.png */; };
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
+		0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88AD16DE51280027187D /* DataSyncViewController.m */; };
+		0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F88AE16DE51280027187D /* DataSyncViewController.xib */; };
 		0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */; };
 		0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */; };
 		0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
@@ -482,6 +484,9 @@
 		0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		0E1D342F16BD25FB00729C51 /* 日期b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "日期b.png"; sourceTree = "<group>"; };
 		0E1D343116BD261000729C51 /* 视频b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频b.png"; sourceTree = "<group>"; };
+		0E1F88AC16DE51280027187D /* DataSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSyncViewController.h; sourceTree = "<group>"; };
+		0E1F88AD16DE51280027187D /* DataSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSyncViewController.m; sourceTree = "<group>"; };
+		0E1F88AE16DE51280027187D /* DataSyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataSyncViewController.xib; sourceTree = "<group>"; };
 		0E72C42A16DDE41500F1BAEF /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
 		0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
 		0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesViewController.xib; sourceTree = "<group>"; };
@@ -1160,6 +1165,16 @@
 			name = About;
 			sourceTree = "<group>";
 		};
+		0E1F88AB16DE50740027187D /* DataSync */ = {
+			isa = PBXGroup;
+			children = (
+				0E1F88AC16DE51280027187D /* DataSyncViewController.h */,
+				0E1F88AD16DE51280027187D /* DataSyncViewController.m */,
+				0E1F88AE16DE51280027187D /* DataSyncViewController.xib */,
+			);
+			name = DataSync;
+			sourceTree = "<group>";
+		};
 		0E72C42916DDE11A00F1BAEF /* Message */ = {
 			isa = PBXGroup;
 			children = (
@@ -1215,6 +1230,7 @@
 		0E77506C16BC00C900FD3668 /* Harmony */ = {
 			isa = PBXGroup;
 			children = (
+				0E1F88AB16DE50740027187D /* DataSync */,
 				0E0F49F216DE2BF6004472B6 /* About */,
 				0E72C42916DDE11A00F1BAEF /* Message */,
 				0EA887A116DD284500763698 /* DataSync */,
@@ -2462,6 +2478,7 @@
 				0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */,
 				0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */,
 				0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */,
+				0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2815,6 +2832,7 @@
 				0EA887A016DD283B00763698 /* DataSynchronizer.m in Sources */,
 				0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */,
 				0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */,
+				0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

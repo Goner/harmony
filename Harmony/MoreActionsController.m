@@ -11,6 +11,7 @@
 #import "SharingController.h"
 #import "MessagesViewController.h"
 #import "AboutViewController.h"
+#import "DataSyncViewController.h"
 
 @interface MoreActionsController ()
 
@@ -96,7 +97,7 @@
     if ([function isEqualToString: @"好友共享"]) {
         [self showSharingView];
     } else if ([function isEqualToString: @"备份, 恢复"]) {
-
+        [self showDataSyncView];
     } else if ([function isEqualToString: @"系统消息"]) {
         [self showMessagesView];
     } else if ([function isEqualToString: @"关于久久相悦管家"]) {
@@ -111,6 +112,11 @@
     SharingController *sharingController = [[SharingController alloc] initWithNibName: @"SharingController" bundle:nil];
     
     [self.navigationController pushViewController:sharingController animated:YES];
+}
+
+- (void) showDataSyncView{
+    DataSyncViewController *dataSyncViewController = [[DataSyncViewController alloc] initWithNibName:@"DataSyncViewController" bundle:nil];
+    [self.navigationController pushViewController:dataSyncViewController animated:YES];
 }
 
 - (void) showMessagesView {

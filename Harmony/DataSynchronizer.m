@@ -99,8 +99,10 @@ static  Reachability *reachability;
 }
 
 + (NSString *)getCurrentTime{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy.mm.dd"];
     NSDate *now = [[NSDate alloc] init];
-    return [now description];
+    return [dateFormat stringFromDate:now];
 }
 
 + (void) saveSyncContactsTimeAndCount:(NSInteger *)count {
