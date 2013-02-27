@@ -339,6 +339,7 @@
                 <relationship kind="action" name="onButtonAlbumSharePressed:"/>
                 <relationship kind="action" name="onButtonCategoryPressed:"/>
                 <relationship kind="action" name="onButtonDownloadPressed:"/>
+                <relationship kind="action" name="onButtonPhotoPrintPressed:"/>
                 <relationship kind="action" name="onButtonTagFavorPressed:"/>
                 <relationship kind="outlet" name="bottomBar" candidateClass="UIView"/>
                 <relationship kind="outlet" name="buttonBack" candidateClass="UIButton"/>
