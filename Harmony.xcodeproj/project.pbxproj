@@ -14,6 +14,10 @@
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
 		0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88AD16DE51280027187D /* DataSyncViewController.m */; };
 		0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F88AE16DE51280027187D /* DataSyncViewController.xib */; };
+		0E1F88B816DE77FC0027187D /* AddSharingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88B316DE77FC0027187D /* AddSharingCell.m */; };
+		0E1F88B916DE77FC0027187D /* AddSharingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F88B416DE77FC0027187D /* AddSharingCell.xib */; };
+		0E1F88BA16DE77FC0027187D /* AddSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88B616DE77FC0027187D /* AddSharingController.m */; };
+		0E1F88BB16DE77FC0027187D /* AddSharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F88B716DE77FC0027187D /* AddSharingController.xib */; };
 		0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */; };
 		0E72C42E16DDE41500F1BAEF /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */; };
 		0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E77506616BC00C900FD3668 /* UIKit.framework */; };
@@ -487,6 +491,12 @@
 		0E1F88AC16DE51280027187D /* DataSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSyncViewController.h; sourceTree = "<group>"; };
 		0E1F88AD16DE51280027187D /* DataSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSyncViewController.m; sourceTree = "<group>"; };
 		0E1F88AE16DE51280027187D /* DataSyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataSyncViewController.xib; sourceTree = "<group>"; };
+		0E1F88B216DE77FC0027187D /* AddSharingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSharingCell.h; sourceTree = "<group>"; };
+		0E1F88B316DE77FC0027187D /* AddSharingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSharingCell.m; sourceTree = "<group>"; };
+		0E1F88B416DE77FC0027187D /* AddSharingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSharingCell.xib; sourceTree = "<group>"; };
+		0E1F88B516DE77FC0027187D /* AddSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSharingController.h; sourceTree = "<group>"; };
+		0E1F88B616DE77FC0027187D /* AddSharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSharingController.m; sourceTree = "<group>"; };
+		0E1F88B716DE77FC0027187D /* AddSharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddSharingController.xib; sourceTree = "<group>"; };
 		0E72C42A16DDE41500F1BAEF /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
 		0E72C42B16DDE41500F1BAEF /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
 		0E72C42C16DDE41500F1BAEF /* MessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesViewController.xib; sourceTree = "<group>"; };
@@ -2276,6 +2286,12 @@
 		9F83A0CF16D4C7A900D19273 /* SharingToFriends */ = {
 			isa = PBXGroup;
 			children = (
+				0E1F88B216DE77FC0027187D /* AddSharingCell.h */,
+				0E1F88B316DE77FC0027187D /* AddSharingCell.m */,
+				0E1F88B416DE77FC0027187D /* AddSharingCell.xib */,
+				0E1F88B516DE77FC0027187D /* AddSharingController.h */,
+				0E1F88B616DE77FC0027187D /* AddSharingController.m */,
+				0E1F88B716DE77FC0027187D /* AddSharingController.xib */,
 				9F6EF08416DA593700A3E43E /* SharingController.h */,
 				9F6EF08516DA593700A3E43E /* SharingController.m */,
 				9F6EF08616DA593700A3E43E /* SharingController.xib */,
@@ -2479,6 +2495,8 @@
 				0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */,
 				0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */,
 				0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */,
+				0E1F88B916DE77FC0027187D /* AddSharingCell.xib in Resources */,
+				0E1F88BB16DE77FC0027187D /* AddSharingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2833,6 +2851,8 @@
 				0E72C42D16DDE41500F1BAEF /* MessagesViewController.m in Sources */,
 				0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */,
 				0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */,
+				0E1F88B816DE77FC0027187D /* AddSharingCell.m in Sources */,
+				0E1F88BA16DE77FC0027187D /* AddSharingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
