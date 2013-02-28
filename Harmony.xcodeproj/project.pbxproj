@@ -1175,14 +1175,14 @@
 			name = About;
 			sourceTree = "<group>";
 		};
-		0E1F88AB16DE50740027187D /* DataSync */ = {
+		0E1F88AB16DE50740027187D /* DataSyncView */ = {
 			isa = PBXGroup;
 			children = (
 				0E1F88AC16DE51280027187D /* DataSyncViewController.h */,
 				0E1F88AD16DE51280027187D /* DataSyncViewController.m */,
 				0E1F88AE16DE51280027187D /* DataSyncViewController.xib */,
 			);
-			name = DataSync;
+			name = DataSyncView;
 			sourceTree = "<group>";
 		};
 		0E72C42916DDE11A00F1BAEF /* Message */ = {
@@ -1240,10 +1240,10 @@
 		0E77506C16BC00C900FD3668 /* Harmony */ = {
 			isa = PBXGroup;
 			children = (
-				0E1F88AB16DE50740027187D /* DataSync */,
 				0E0F49F216DE2BF6004472B6 /* About */,
-				0E72C42916DDE11A00F1BAEF /* Message */,
 				0EA887A116DD284500763698 /* DataSync */,
+				0E1F88AB16DE50740027187D /* DataSyncView */,
+				0E72C42916DDE11A00F1BAEF /* Message */,
 				0E776BF316BCC7FF00FD3668 /* LoginView */,
 				0E776BEC16BCBEDF00FD3668 /* NASFileDownload */,
 				0E776BBA16BC2AA100FD3668 /* NASMediaBrowser */,

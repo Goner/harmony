@@ -43,11 +43,11 @@
 {
     [self.rootController hideButtonBack: NO];
     [self.rootController hideBottomBar: YES];
+    [self.rootController hideCategoryDroplist:YES];
+    [MainController setTopBarTitle:@"更多"];
     [self.navigationController.view setFrame: [self.rootController rectWithoutBottomBar]];
     [self.view setFrame: [self.rootController rectWithoutBottomBar]];
 
-    
-    //        [[UIApplication sharedApplication]setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)didReceiveMemoryWarning

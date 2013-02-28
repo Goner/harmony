@@ -11,9 +11,10 @@
 
 @interface MainController : UIViewController
 
++ (void) setTopBarTitle:(NSString *)title;
+
 @property (nonatomic, strong) CategoryController *categoryController;
 @property (nonatomic, assign) int categoryIndex;
-//@property (nonatomic, strong) NSArray *categoryImages;
 @property (nonatomic, strong) NSArray *mediaCategories;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
@@ -23,9 +24,11 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomBar;
 @property (weak, nonatomic) IBOutlet UIView *topBar;
 @property (weak, nonatomic) IBOutlet UIButton *cateButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLable;
 
 - (void) hideButtonBack: (BOOL) hiden;
 - (void) hideBottomBar: (BOOL) hiden;
+- (void) hideCategoryDroplist: (BOOL) hiden;
 
 - (IBAction)onButtonActionMorePressed:(id)sender;
 - (IBAction)onButtonCategoryPressed:(id)sender;

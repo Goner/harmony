@@ -8,6 +8,7 @@
 
 #import "MessagesViewController.h"
 #import "NASMediaLibrary.h"
+#import "MainController.h"
 
 @interface MessagesViewController ()
 
@@ -29,6 +30,10 @@
 {
     [super viewDidLoad];
     messages = [NASMediaLibrary getNASMessages];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [MainController setTopBarTitle:@"系统消息"];
 }
 
 - (void)didReceiveMemoryWarning

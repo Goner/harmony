@@ -20,10 +20,10 @@
 @property (nonatomic, strong) GridViewController *gridController;
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (strong, nonatomic) MoreActionsController *actionMoreController;
-
 @end
 
 @implementation MainController
+static MainController *currentMainController;
 
 - (void)viewDidLoad
 {
@@ -50,11 +50,12 @@
     [self.contentView addSubview: self.navigationController.view];
     [self.navigationController didMoveToParentViewController: self];
 
-//    self.categoryImages = [NSArray arrayWithObjects: @"recent", @"favor", @"people", @"date", @"video", nil];
     self.mediaCategories = [NASMediaLibrary getMediaCategories];
     
     _categoryIndex = -1;
     [self setCategoryIndex: 0];
+    
+    currentMainController = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,6 +66,7 @@
 
 
 - (void)viewDidUnload {
+    currentMainController = nil;
     [self setContentView:nil];
     [self setButtonBack:nil];
     [self setBottomBar:nil];
@@ -114,19 +116,27 @@
     return ret;
 }
 
-- (void) hideButtonBack: (BOOL) hiden
+- (void) hideButtonBack: (BOOL) hidden
 {
-    [self.buttonBack setHidden: hiden];
+    [self.buttonBack setHidden: hidden];
     
 }
 
-- (void) hideBottomBar: (BOOL) hiden
+- (void) hideBottomBar: (BOOL) hidden
 {
-    if (hiden != self.bottomBar.isHidden) {
-        [self.bottomBar setHidden: hiden];
-
+    if (hidden != self.bottomBar.isHidden) {
+        [self.bottomBar setHidden: hidden];
     }
+}
 
+- (void) hideCategoryDroplist: (BOOL) hidden {
+    [self.cateButton.superview setHidden:hidden];
+}
+
++ (void) setTopBarTitle:(NSString *)title {
+    if(currentMainController){
+        currentMainController.titleLable.text = title;
+    }
 }
 
 - (IBAction)onButtonActionMorePressed:(id)sender {

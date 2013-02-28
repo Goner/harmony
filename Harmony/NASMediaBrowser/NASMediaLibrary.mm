@@ -297,7 +297,7 @@ static bool bRemoteAccess;
         categoryChild.id = [NSString  stringWithFormat:@"id%d",i];
         categoryChild.childrenCount = i+1;
         categoryChild.parentCategory = category;
-        [array addObject:category];
+        [array addObject:categoryChild];
     }
     for(int i = 5; i < 12; i++) {
         MediaItem* item = [[MediaItem alloc] init];

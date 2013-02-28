@@ -53,6 +53,8 @@
 {
     [self.rootController hideButtonBack: self.currentCategory.parentCategory == nil];
     [self.rootController hideBottomBar: NO];
+    [self.rootController hideCategoryDroplist:NO];
+    [MainController setTopBarTitle:@""];
     [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
 
     [self.view setFrame: [self.rootController rectWithoutBottomBar]];
@@ -145,6 +147,12 @@
     self.currentCategory = self.currentCategory.parentCategory;
     if (self.currentCategory == nil) {
         NSLog(@"GridViewController:Eorr on back to parent catogery.");
+        if(_rootController.mediaCategories.count > 0){
+            _rootController.categoryIndex = -1;
+            [_rootController hideButtonBack:YES];
+            [_rootController setCategoryIndex:0];
+        }
+        return;
     }
 
     [self.rootController hideButtonBack:self.currentCategory.parentCategory == nil];

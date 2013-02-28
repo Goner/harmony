@@ -7,6 +7,7 @@
 //
 
 #import "AboutViewController.h"
+#import "MainController.h"
 
 @interface AboutViewController ()
 
@@ -27,6 +28,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+
+    [MainController setTopBarTitle:@"关于久久管家"];
 }
 
 - (void)didReceiveMemoryWarning

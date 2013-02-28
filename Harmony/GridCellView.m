@@ -32,19 +32,6 @@
 
 - (void) setImage: (UIImage *) image
 {
-//    float w = image.size.width;
-//    float h = image.size.height;
-//    
-//    float width = self.pictureView.bounds.size.width;
-//    float height = self.pictureView.bounds.size.height;
-//    float rate1 = w/h;
-//    float rate2 = width/height;
-//    float transformThredhold = 1.2;
-//    if ((rate1/rate2) > transformThredhold || (rate1/rate2) < 1/transformThredhold) {
-//        self.pictureView.contentMode = UIViewContentModeScaleAspectFit;
-//    } else {
-//        self.pictureView.contentMode = UIViewContentModeScaleToFill;
-//    }
     self.favorImage.hidden = YES;
     self.pictureView.contentMode = UIViewContentModeScaleToFill;
 

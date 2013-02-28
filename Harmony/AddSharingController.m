@@ -7,7 +7,7 @@
 //
 
 #import "AddSharingController.h"
-
+#import "MainController.h"
 @interface AddSharingController ()
 
 @end
@@ -29,6 +29,10 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [MainController setTopBarTitle:@"好友共享"];
 }
 
 - (void)didReceiveMemoryWarning

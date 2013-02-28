@@ -8,6 +8,7 @@
 
 #import "DataSyncViewController.h"
 #import "DataSynchronizer.h"
+#import "MainController.h"
 
 @interface DataSyncViewController ()
 
@@ -32,6 +33,10 @@
     _currentContactsCount.text = [NSString stringWithFormat:@"%d条",[DataSynchronizer getCurrentContactsCount]];
     _lastBackupedContactsCount.text = [NSString stringWithFormat:@"%d条", [DataSynchronizer getLastSyncContactsCount]];
     _lastBAckupedTime.text = [DataSynchronizer getLastSyncContactsTime];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [MainController setTopBarTitle:@"备份 恢复"];
 }
 
 - (void)didReceiveMemoryWarning
