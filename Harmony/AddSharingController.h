@@ -12,5 +12,6 @@
 @interface AddSharingController : UIViewController<UITableViewDataSource, UITableViewDelegate, AddSharingCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property (retain) NSString *folderPath;
+@property (weak, nonatomic) NSMutableArray *shareFolders;
 @end

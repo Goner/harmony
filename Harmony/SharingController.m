@@ -9,10 +9,12 @@
 #import "SharingController.h"
 #import "SharingCell.h"
 #import "AddSharingController.h"
+#import "FriendsListController.h"
 #import "MainController.h"
+#import "NASMediaLibrary.h"
 
 @interface SharingController ()
-
+@property (retain) NSMutableArray *shareFolders;
 @end
 
 @implementation SharingController
@@ -32,10 +34,13 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     // Do any additional setup after loading the view from its nib.
+    _shareFolders = [NSMutableArray arrayWithArray:[NASMediaLibrary getAllShareFolders]];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [MainController setTopBarTitle:@"好友共享"];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,8 +56,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // TODO: modify here
-    return  5;
+    return  [_shareFolders count];
 }
 
 
@@ -70,17 +74,25 @@
     
     SharingCell *sCell = (SharingCell *)cell;
     
-    // TODO: modify here
-    sCell.title.text = @"Title of the folder";
-    sCell.pictureView.image = [UIImage imageNamed: @"1.jpg"];
-    
+    sCell.title.text = [_shareFolders objectAtIndex:indexPath.row];
     return  cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FriendsListController *friendsListController = [[FriendsListController alloc] initWithNibName:@"FriendsListController" bundle:nil];
+    
+    friendsListController.sharedFolders = _shareFolders;
+    friendsListController.curFolderPath = [_shareFolders objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:friendsListController animated:YES];
 }
 
 - (IBAction)onAddSharing:(id)sender
 {
     AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
     
+    addSharingController.shareFolders = _shareFolders;
+    addSharingController.folderPath = @"/home/merry99";
     [self.navigationController pushViewController:addSharingController animated:YES];
 }
 

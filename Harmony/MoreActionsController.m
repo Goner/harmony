@@ -89,7 +89,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MoreActionCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+    MoreActionCell *cell = (MoreActionCell *)[tableView cellForRowAtIndexPath: indexPath];
 //    NSLog(@"Cell selected: %@", cell.title.text);
     
     NSString *function = cell.title.text;

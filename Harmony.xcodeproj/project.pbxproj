@@ -455,6 +455,13 @@
 		0E776BF116BCC36600FD3668 /* Merry99Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E776BEE16BCC36600FD3668 /* Merry99Launch.png */; };
 		0E776BF216BCC36600FD3668 /* Merry99Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E776BEF16BCC36600FD3668 /* Merry99Launch@2x.png */; };
 		0E776BF616BCC86300FD3668 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E776BF516BCC86300FD3668 /* LoginViewController.m */; };
+		0E96003B16DF46D40002BA9F /* FriendsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96003916DF46D40002BA9F /* FriendsListController.m */; };
+		0E96003C16DF46D40002BA9F /* FriendsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E96003A16DF46D40002BA9F /* FriendsListController.xib */; };
+		0E96004216DF4A170002BA9F /* FriendShareItempng.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E96004116DF4A170002BA9F /* FriendShareItempng.png */; };
+		0E96004516DF59C60002BA9F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96004416DF59C50002BA9F /* FriendCell.m */; };
+		0E96004716DF5A3D0002BA9F /* FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E96004616DF5A3D0002BA9F /* FriendCell.xib */; };
+		0E96004916DF5C410002BA9F /* DefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E96004816DF5C410002BA9F /* DefaultUserIcon.png */; };
+		0E96004B16DF5EE60002BA9F /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E96004A16DF5EE60002BA9F /* check.png */; };
 		0EA8879C16DD280800763698 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8879916DD280800763698 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EA8879D16DD280800763698 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8879B16DD280800763698 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EA887A016DD283B00763698 /* DataSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8879F16DD283B00763698 /* DataSynchronizer.m */; };
@@ -1102,6 +1109,15 @@
 		0E776BEF16BCC36600FD3668 /* Merry99Launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Merry99Launch@2x.png"; sourceTree = "<group>"; };
 		0E776BF416BCC86300FD3668 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		0E776BF516BCC86300FD3668 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		0E96003816DF46D40002BA9F /* FriendsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListController.h; sourceTree = "<group>"; };
+		0E96003916DF46D40002BA9F /* FriendsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListController.m; sourceTree = "<group>"; };
+		0E96003A16DF46D40002BA9F /* FriendsListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsListController.xib; sourceTree = "<group>"; };
+		0E96004116DF4A170002BA9F /* FriendShareItempng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FriendShareItempng.png; path = Sharing/FriendShareItempng.png; sourceTree = "<group>"; };
+		0E96004316DF59C50002BA9F /* FriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
+		0E96004416DF59C50002BA9F /* FriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
+		0E96004616DF5A3D0002BA9F /* FriendCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendCell.xib; sourceTree = "<group>"; };
+		0E96004816DF5C410002BA9F /* DefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DefaultUserIcon.png; path = Sharing/DefaultUserIcon.png; sourceTree = "<group>"; };
+		0E96004A16DF5EE60002BA9F /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Sharing/check.png; sourceTree = "<group>"; };
 		0EA8879816DD280800763698 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
 		0EA8879916DD280800763698 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
 		0EA8879A16DD280800763698 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
@@ -2270,6 +2286,9 @@
 		9F6EF08916DA605D00A3E43E /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
+				0E96004A16DF5EE60002BA9F /* check.png */,
+				0E96004816DF5C410002BA9F /* DefaultUserIcon.png */,
+				0E96004116DF4A170002BA9F /* FriendShareItempng.png */,
 			);
 			name = Sharing;
 			sourceTree = "<group>";
@@ -2298,6 +2317,12 @@
 				9F6EF08F16DA624400A3E43E /* SharingCell.h */,
 				9F6EF09016DA624400A3E43E /* SharingCell.m */,
 				9F6EF09216DA626D00A3E43E /* SharingCell.xib */,
+				0E96004316DF59C50002BA9F /* FriendCell.h */,
+				0E96004416DF59C50002BA9F /* FriendCell.m */,
+				0E96004616DF5A3D0002BA9F /* FriendCell.xib */,
+				0E96003816DF46D40002BA9F /* FriendsListController.h */,
+				0E96003916DF46D40002BA9F /* FriendsListController.m */,
+				0E96003A16DF46D40002BA9F /* FriendsListController.xib */,
 			);
 			name = SharingToFriends;
 			sourceTree = "<group>";
@@ -2497,6 +2522,11 @@
 				0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */,
 				0E1F88B916DE77FC0027187D /* AddSharingCell.xib in Resources */,
 				0E1F88BB16DE77FC0027187D /* AddSharingController.xib in Resources */,
+				0E96003C16DF46D40002BA9F /* FriendsListController.xib in Resources */,
+				0E96004216DF4A170002BA9F /* FriendShareItempng.png in Resources */,
+				0E96004716DF5A3D0002BA9F /* FriendCell.xib in Resources */,
+				0E96004916DF5C410002BA9F /* DefaultUserIcon.png in Resources */,
+				0E96004B16DF5EE60002BA9F /* check.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2853,6 +2883,8 @@
 				0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */,
 				0E1F88B816DE77FC0027187D /* AddSharingCell.m in Sources */,
 				0E1F88BA16DE77FC0027187D /* AddSharingController.m in Sources */,
+				0E96003B16DF46D40002BA9F /* FriendsListController.m in Sources */,
+				0E96004516DF59C60002BA9F /* FriendCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

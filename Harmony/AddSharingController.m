@@ -8,8 +8,10 @@
 
 #import "AddSharingController.h"
 #import "MainController.h"
-@interface AddSharingController ()
+#import "NASMediaLibrary.h"
 
+@interface AddSharingController ()
+@property NSArray *subFolders;
 @end
 
 @implementation AddSharingController
@@ -29,10 +31,11 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 	// Do any additional setup after loading the view.
+    _subFolders = [NASMediaLibrary getSubFolders:_folderPath];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [MainController setTopBarTitle:@"好友共享"];
+- (void)viewWillAppear:(BOOL)animated{
+    [MainController setTopBarTitle:@"添加共享"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,8 +46,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // TODO: modify here
-    return  4;
+    return  [_subFolders count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -61,38 +63,29 @@
     AddSharingCell *aCell = (AddSharingCell *)cell;
     
     // TODO: modify here
-    aCell.title.text = @"Title of the folder";
-    aCell.pictureView.image = [UIImage imageNamed: @"2.jpg"];
-    [aCell setIsShared: NO];
+    aCell.title.text = [_subFolders objectAtIndex:indexPath.row];
+    [aCell setIsShared: [_shareFolders containsObject:[_folderPath stringByAppendingPathComponent:aCell.title.text]]];
     aCell.row = indexPath.row;
     aCell.cellDelegate = self;
     
     return  cell;
 }
 
-- (IBAction)onAddSharing:(id)sender
-{
-    AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
-    
-    [self.navigationController pushViewController:addSharingController animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //TODO: 选中，进入下一层
     AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
-    
+    addSharingController.folderPath = [_folderPath stringByAppendingPathComponent:[_subFolders objectAtIndex:indexPath.row]];
     [self.navigationController pushViewController:addSharingController animated:YES];
-    
 }
 
 - (void) toggleSharing: (int)row;
 {
-    //TODO: 切换选中/去选中
-
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow: row inSection:0];
     AddSharingCell *aCell = (AddSharingCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-    [aCell setIsShared: !aCell.isShared];
+    if(!aCell.isShared){
+        [aCell setIsShared: YES];
+        [_shareFolders addObject:[_folderPath stringByAppendingPathComponent:[_subFolders objectAtIndex:row]]];
+    }
     
 }
 

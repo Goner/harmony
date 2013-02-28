@@ -420,10 +420,10 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\"},{\"FOLDER\":\"FODLDER2\"}";
+    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\"},{\"FOLDER\":\"FODLDER2\"}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    if ([self checkResultWithJSON: resultDict])
+    if (![self checkResultWithJSON: resultDict])
         return nil;
     NSArray* array = [resultDict objectForKey:@"LIST"];
     NSMutableArray* folders = [[NSMutableArray alloc] init];

@@ -188,40 +188,50 @@ static  Reachability *reachability;
 }
 
 + (void) backupPhotos{
+    NSMutableArray *backupedPhotos = [[NSMutableArray alloc] initWithArray:
+                                        [[NSUserDefaults standardUserDefaults] objectForKey:@"Merry99BackupedPhotos"]];
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                           usingBlock:^(ALAssetsGroup *group, BOOL *stop){
-                               [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
-                                   if (asset){
-                                       if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
-                                           ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
-                                           NSUInteger size = [assetRepresentation size];
-                                           uint8_t * buff =malloc(size);
-                                           NSError * err = nil;
-                                           NSUInteger gotByteCount = [assetRepresentation getBytes:buff fromOffset:0 length:size error:&err];
-                                           if (gotByteCount)
-                                           {
-                                               if (err)
-                                               {
-                                                   NSLog(@"UploadFail error:ALAssetTypePhoto, Error reading asset:%@",[err localizedDescription]);
-                                                   free(buff);
-                                               }
-                                               else
-                                               {
-                                                   NSData * photoData= [NSData dataWithBytesNoCopy:buff length:size freeWhenDone:YES];
-                                                   [NASMediaLibrary backupPhotoData:photoData withName:[assetRepresentation filename]];
-                                               }
-                                           }
-                                           
-                                       }
+           usingBlock:^(ALAssetsGroup *group, BOOL *stop){
+               [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
+                   if (asset){
+                       if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
+                           ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
+                           NSUInteger size = [assetRepresentation size];
+                           uint8_t * buff =malloc(size);
+                           NSError * err = nil;
+                           NSUInteger gotByteCount = [assetRepresentation getBytes:buff fromOffset:0 length:size error:&err];
+                           if (gotByteCount)
+                           {
+                               if (err)
+                               {
+                                   NSLog(@"UploadFail error:ALAssetTypePhoto, Error reading asset:%@",[err localizedDescription]);
+                                   free(buff);
+                               }
+                               else
+                               {
+                                   NSString *fileName = [assetRepresentation filename];
+                                   if(![backupedPhotos containsObject:fileName]){
+                                       NSData * photoData= [NSData dataWithBytesNoCopy:buff length:size freeWhenDone:YES];
+                                       [NASMediaLibrary backupPhotoData:photoData withName:fileName];
+                                       [backupedPhotos addObject:fileName];
+                                       [[NSUserDefaults standardUserDefaults] setObject:backupedPhotos forKey:@"Merry99BackupedPhotos"];
                                    }
-                                   //stop = [self isStopBackup];
-                               }];
-                               //stop = [self isStopBackup];
-                            }
-                         failureBlock:^(NSError *error){
-                                                       // User did not allow access to library
-                         }];
+                                   
+                               }
+                           }
+                           
+                       }
+                   }
+                   //stop = [self isStopBackup];
+               }];
+               //stop = [self isStopBackup];
+            }
+         failureBlock:^(NSError *error){
+                                       // User did not allow access to library
+         }];
+    
+ 
 }
 
 @end

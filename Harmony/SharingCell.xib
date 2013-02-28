@@ -59,14 +59,17 @@
 									<object class="IBUIImageView" id="875109788">
 										<reference key="NSNextResponder" ref="860618026"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{10, 3}, {65, 48}}</string>
+										<string key="NSFrame">{{11, 1}, {55, 55}}</string>
 										<reference key="NSSuperview" ref="860618026"/>
 										<reference key="NSNextKeyView" ref="530217048"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
-										<int key="IBUIContentMode">2</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<object class="NSCustomResource" key="IBUIImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">FriendShareItempng.png</string>
+										</object>
 									</object>
 									<object class="IBUILabel" id="530217048">
 										<reference key="NSNextResponder" ref="860618026"/>
@@ -106,7 +109,6 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{237, 25}, {73, 27}}</string>
 										<reference key="NSSuperview" ref="860618026"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -155,7 +157,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 54}</string>
+						<string key="NSFrameSize">{320, 55}</string>
 						<reference key="NSSuperview" ref="587250910"/>
 						<reference key="NSNextKeyView" ref="860618026"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
@@ -170,7 +172,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 55}</string>
+				<string key="NSFrameSize">{320, 56}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="867588939"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -178,6 +180,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="867588939"/>
 				<string key="IBUIReuseIdentifier">SharingCell</string>
+				<real value="56" key="IBUIRowHeight"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -300,6 +303,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="FriendShareItempng.png">{120, 131}</string>
 			<string key="button_common_1a.png">{120, 48}</string>
 			<string key="button_common_1b.png">{120, 48}</string>
 		</dictionary>

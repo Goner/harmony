@@ -30,7 +30,7 @@
 {
     _isShared = isShared;
     if (_isShared) {
-        [self.shareButton setTitle: @"取消共享" forState:UIControlStateNormal];
+        [self.shareButton setTitle: @"已共享" forState:UIControlStateNormal];
     } else {
         [self.shareButton setTitle: @"添加共享" forState:UIControlStateNormal];
 
