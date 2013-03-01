@@ -6,7 +6,7 @@
 #define TEMP_TEST_MOD
 
 int remote_access_auth (char *account, char *password, char *license, int len);
-void transact_proc_call(const char *in_param, char *out_param, int *len);
+const char* transact_proc_call(const char *in_param);
 
 int local_access_auth(char *ip, char *account, char *password);
 int send_msg(char *buf, int len);

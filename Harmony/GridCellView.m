@@ -32,7 +32,6 @@
 
 - (void) setImage: (UIImage *) image
 {
-    self.favorImage.hidden = YES;
     self.pictureView.contentMode = UIViewContentModeScaleToFill;
 
     self.pictureView.image = image;

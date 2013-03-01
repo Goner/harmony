@@ -108,7 +108,7 @@ string Char2String(char *dest)
 }
 
 /*公共调用发送函数*/
-int send_msg_common(LPVOID usocket,char *buf,int len)
+int send_msg_common(LPVOID usocket, const char *buf,int len)
 {
    UDTSOCKET usk = *(UDTSOCKET*)usocket;
    int ilen=strlen(buf)+1;

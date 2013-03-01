@@ -124,8 +124,8 @@
 + (NSArray *) getSubFolders:(NSString *)folder;
 
 //management interface
-+ (BOOL) tagFavoriteObj:(NSString *)objID;
-+ (BOOL) untagFavoriteObj:(NSString *)objID;
++ (BOOL) tagFavoriteObjects:(NSArray *)favors;
++ (BOOL) untagFavoriteObjects:(NSArray *)unFavors;
 + (NSString *)shareAlbumWithFiles:(NSArray *)files;
 + (BOOL) commitPrinttaskForFiles:(NSArray *)files;
 + (NSArray *) getNASMessages;

@@ -92,7 +92,7 @@
     AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
     
     addSharingController.shareFolders = _shareFolders;
-    addSharingController.folderPath = @"/home/merry99";
+    addSharingController.folderPath = @"/merry/storage";
     [self.navigationController pushViewController:addSharingController animated:YES];
 }
 

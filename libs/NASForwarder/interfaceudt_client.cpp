@@ -190,7 +190,7 @@ int local_access_auth(char *ip, char *account, char *password)
 			return AUTH_S_CON_F;
 		}
 
-		ret=udt_connect(&g_file_client,ip,g_file_port,CON_MSG);
+		ret=udt_connect(&g_file_client,ip,g_file_port,CON_FILE);
 		if(SUCCESS!=ret)
 		{
 			return AUTH_S_CON_F;
@@ -203,9 +203,9 @@ int local_access_auth(char *ip, char *account, char *password)
 
 
 
-void transact_proc_call (const char *in_param, char *out_param, int *len)
+const char* transact_proc_call (const char *in_param)
 {
-	char *temp_buf=out_param;
+	char *temp_buf=NULL;
 	char buf[MAX_CHAR_P]={0};
 	printf("in_param=%s\n",in_param);
 	strncpy(buf,in_param,MAX_CHAR_P);
@@ -215,50 +215,42 @@ void transact_proc_call (const char *in_param, char *out_param, int *len)
 	printf("buf==%s\n",buf);
 	enter_critical(g_msgSemaphore);
 
-	ret=send_msg_common(&g_msg_client,buf,*len);
+	ret=send_msg_common(&g_msg_client,in_param,strlen(in_param));
 	if(SUCCESS!=ret)
 	{
 		cout<<" transact_proc_call:send_msg_common faild!!"<<endl;
-		*len=TRANSACT_FAILD;
 		release_critical(g_msgSemaphore); 
-		return ;
+		return NULL;
 	}
-
-
 
    temp_len=0;
    printf("recv json\n");
    if (UDT::ERROR == UDT::recvmsg(g_msg_client, (char*)&temp_len, sizeof(int)))
    {
       cout << " transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
-	  *len=TRANSACT_FAILD;
 	  release_critical(g_msgSemaphore); 
-      return ;
+      return NULL;
    }
-  // temp_buf=(char *)malloc(temp_len+1);
-   printf("temp_len==%d\n",temp_len);
+    temp_buf=(char *)malloc(temp_len+1);
    if(NULL==temp_buf)
    {
 	  cout << " transact_proc_call:malloc faild!" << endl;
-	  *len=temp_len;
 	  release_critical(g_msgSemaphore);
-	  return ;
+	  return NULL;
    }
+    memset(temp_buf, 0, temp_len + 1);
+    printf("temp_len==%d\n",temp_len);
+    
    if (UDT::ERROR == UDT::recvmsg(g_msg_client, temp_buf, temp_len))
    {
       cout << "transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
-	  *len=TRANSACT_FAILD;
 	  release_critical(g_msgSemaphore);
-      return;
+      return NULL;
    }
-   //out_param=temp_buf;
-   #ifdef _DEBUG
-   //cout<<"debug:resvmsg:"<<out_param<<endl;
-   #endif
-   printf("out_param==%s\n",out_param);
-   *len=temp_len;
+    
+   printf("out_param==%s\n",temp_buf);
    release_critical(g_msgSemaphore);
-   return;
+   return temp_buf;
 }
 
 
@@ -349,7 +341,8 @@ int get_vcard_data(const char *device_id, char **pvcard_data)
 
 int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
 {
-	char buf[MAX_CHAR_P]={0};
+    const int package_max_size = 1024;
+	char buf[package_max_size]={0};
 	int send_size = 0;
     int data_pos = 0;
     int len = 0;
@@ -380,7 +373,12 @@ int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
 
     while(data_pos < data_size) {
         memset(buf,0,MAX_CHAR_P);
-        send_size = (MAX_CHAR_P < data_size - data_pos) ? MAX_CHAR_P : data_size - data_pos;
+        //send_size = (package_max_size < data_size - data_pos) ? package_max_size : data_size - data_pos;
+        if(package_max_size < data_size - data_pos) {
+            send_size = package_max_size;
+        }else {
+            send_size = data_size - data_pos;
+        }
         memcpy(buf, data + data_pos, send_size);
 
         if (UDT::ERROR == UDT::send(g_file_client, buf, send_size, 0)) {
@@ -389,7 +387,7 @@ int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
         }
         data_pos += send_size;
    }
-   printf("send data %d\n", data_size);
+   printf("send data %d\n", data_pos);
 
    release_critical(g_fileSemaphore);
    return SUCCESS;
@@ -400,12 +398,14 @@ int transfer_vcard(const char *data, int data_size, const char* device_id)
     int ret = 0;
     cJSON *root;
     char *myjson=NULL;
+    char sizeStr[1024] = {};
+    sprintf(sizeStr, "%d", data_size);
     
 	root=cJSON_CreateObject();
 	cJSON_AddStringToObject(root,"METHOD","TRANSFERCARD");
 	cJSON_AddStringToObject(root,"TYPE","TRANSFERCARD");
 	cJSON_AddStringToObject(root,"DEVICEID",device_id);
-    cJSON_AddNumberToObject(root, "FILESIZE", data_size);
+    cJSON_AddStringToObject(root, "FILESIZE", sizeStr);
 	myjson=cJSON_Print(root);
     ret = transfer_data_for_cmd(data, data_size, myjson);
     free(myjson);
@@ -418,13 +418,15 @@ int transfer_photo(const char *data, int data_size, const char* filename,const c
     int ret = 0;
     cJSON *root;
     char *myjson=NULL;
+    char sizeStr[1024] = {};
+    sprintf(sizeStr, "%d", data_size);
     
 	root=cJSON_CreateObject();
 	cJSON_AddStringToObject(root,"METHOD","TRANSFERPHOTO");
 	cJSON_AddStringToObject(root,"TYPE","TRANSFERPHOTO");
 	cJSON_AddStringToObject(root,"DEVICEID",device_id);
     cJSON_AddStringToObject(root,"FILENAME",filename);
-    cJSON_AddNumberToObject(root, "FILESIZE", data_size);
+    cJSON_AddStringToObject(root, "FILESIZE", sizeStr);
 	myjson=cJSON_Print(root);
     ret = transfer_data_for_cmd(data, data_size, myjson);
     free(myjson);

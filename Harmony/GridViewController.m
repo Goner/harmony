@@ -83,7 +83,8 @@
     GridCellView *cell = [GridCellView cellViewFromNib];
 
     UIImage *img = [[UIImage alloc] init];
-    MediaItem *item = [[self.mediaObjects objectAtIndex:index] getMediaItem];
+    MediaObject *object = [self.mediaObjects objectAtIndex:index];
+    MediaItem *item = [object getMediaItem];
 
     NSString *url = [item getThumbnailURL] ;
     [self.fetcher getDataFromURL:url completion:^(NSData *data){
@@ -91,15 +92,28 @@
     }];
     [cell setContentIndex: index];
     [cell setImage: img];
-    if ([item.id rangeOfString:@"*"].location != NSNotFound) {
+    if ([object.id rangeOfString:@"*"].location != NSNotFound) {
         [cell tagFavor];
+    }else {
+        [cell untagFavor];
     }
     [cell setDelegate: self];
     return cell;
 }
 
+- (BOOL) canMediaObjectsBeSelected{
+    if ([_mediaObjects count] > 0) {
+        return [[_mediaObjects objectAtIndex:0] isKindOfClass:[MediaItem class]];
+    }
+    return FALSE;
+}
+
 - (void) onLongPressed: (UILongPressGestureRecognizer *) recognizer
 {
+    if(![self canMediaObjectsBeSelected]){
+        return;
+    }
+    
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         self.multiSelectionMode = !self.multiSelectionMode;
         if (self.multiSelectionMode == NO) {
@@ -154,7 +168,7 @@
         }
         return;
     }
-
+    _multiSelectionMode = FALSE;
     [self.rootController hideButtonBack:self.currentCategory.parentCategory == nil];
     self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
     [self.gridView reloadData];
@@ -163,6 +177,7 @@
 
 - (void) gotoTopCatogery:(MediaCategory *)category{
     [self.rootController hideButtonBack:TRUE];
+    _multiSelectionMode = FALSE;
     self.currentCategory = category;
     self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
     [self.gridView reloadData];
@@ -179,28 +194,35 @@
     }
 }
 
+- (void) clearSelectionAfterActions{
+    self.multiSelectionMode = FALSE;
+    [self.gridView clearAllSelected];
+}
 - (void) downloadSelectedItems{
     [self applyBlockForSelectedItems:^(MediaItem *item){
         [self.fetcher downloadURL:[item getMediaURL]];
     }];
+    [self clearSelectionAfterActions];
 }
 
-- (void)tagFavorSelectedItems{    
-    for(GridCellView *cell in self.gridView.cells) {
-        if(cell.selected) {
-            MediaObject *obj = [self.mediaObjects objectAtIndex:cell.contentIndex];
-            BOOL favored = [obj.id rangeOfString:@"*"].location == NSNotFound;
-            if(favored) {
-                [NASMediaLibrary tagFavoriteObj:obj.id];
-                [cell tagFavor];
-                obj.id = [obj.id stringByAppendingString:@"*"];
-            } else {
-                [NASMediaLibrary untagFavoriteObj:obj.id];
-                [cell untagFavor];
-                obj.id = [obj.id stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"*"]];
-            }
+- (void)tagFavorSelectedItems{
+    NSMutableArray *favors = [[NSMutableArray alloc] init];
+    NSMutableArray *unFavors = [[NSMutableArray alloc] init];
+    
+    [self applyBlockForSelectedItems:^(MediaItem *item){
+        NSString *title = [[self.fetcher getFileNameFromURL:[item getMediaURL]] stringByDeletingPathExtension];
+        BOOL favored = [item.id rangeOfString:@"*"].location != NSNotFound;
+        if(favored) {
+            [unFavors addObject:title];
+        } else {
+            [favors addObject:title];
         }
-    }
+    }];
+    [NASMediaLibrary tagFavoriteObjects:favors];
+    [NASMediaLibrary untagFavoriteObjects:unFavors];
+    self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
+    [self.gridView reloadData];
+    [self clearSelectionAfterActions];
 }
 
 - (void)commitPrintSelectedItems{
@@ -209,6 +231,8 @@
         [array addObject:[self.fetcher getFileNameFromURL:[item getThumbnailURL]]];
     }];
     [NASMediaLibrary commitPrinttaskForFiles:array];
+    [self clearSelectionAfterActions];
+
 }
 
 - (void)shareAlbumSelectedItems{
@@ -219,6 +243,7 @@
     }];
     NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
     NSLog(@"%@", id);
+    [self clearSelectionAfterActions];
 }
 
 // MWPhotoBrowserDelegate

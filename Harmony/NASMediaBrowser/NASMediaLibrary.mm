@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 1
-#define FAKE_NASSERVER 1
+#define FAKE_INTERFACE 0
+#define FAKE_NASSERVER 0
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -332,13 +332,10 @@ static bool bRemoteAccess;
 
 + (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict{
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:paramDict];
-    int len = 0;
     const char* inParameter = [parameter UTF8String];
-    transact_proc_call(inParameter, NULL, &len);
-    char* outParameter = (char*)malloc(++len);
-    transact_proc_call(inParameter, outParameter, &len);
+    const char* outParameter = transact_proc_call(inParameter);
     NSString* result = [NSString stringWithCString:outParameter encoding:NSUTF8StringEncoding];
-    free(outParameter);
+    free((void*)outParameter);
     return [[[SBJsonParser alloc] init] objectWithString:result];
 }
 
@@ -349,17 +346,17 @@ static bool bRemoteAccess;
 + (NSArray *) getFriendList {
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                             @"FRIEND", @"METHOD",
-                               @"GETFRIENDLIST", @"TYP", nil];
+                               @"GETFRIENDLIST", @"TYPE", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
      NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
      NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    if([self checkResultWithJSON: resultDict])
+    if(![self checkResultWithJSON: resultDict])
         return nil;
     
-    NSArray* friends = [[NSMutableArray alloc] init];
+    NSMutableArray* friends = [[NSMutableArray alloc] init];
     NSArray* array = [resultDict objectForKey:@"LIST"];
     for(NSDictionary* obj in array) {
         Friend* f = [[Friend alloc] init];
@@ -367,6 +364,7 @@ static bool bRemoteAccess;
         f.sn = [obj objectForKey:@"SN"];
         f.isOnline = [[obj objectForKey:@"ONLINE"] boolValue];
         f.isShield = [[obj objectForKey:@"SHIELD"] boolValue];
+        [friends addObject:f];
     }
 
     return friends;
@@ -438,17 +436,17 @@ static bool bRemoteAccess;
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"SHARE", @"METHOD",
                                @"QUERY", @"TYPE",
-                               folder, "FOLDER",nil];
+                               folder, @"FOLDER",nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    if([self checkResultWithJSON: resultDict])
+    if(![self checkResultWithJSON: resultDict])
         return nil;
     
-    NSArray* friends = [[NSMutableArray alloc] init];
+    NSMutableArray* friends = [[NSMutableArray alloc] init];
     NSArray* array = [resultDict objectForKey:@"LIST"];
     for(NSDictionary* obj in array) {
         Friend* f = [[Friend alloc] init];
@@ -456,6 +454,7 @@ static bool bRemoteAccess;
         f.sn = [obj objectForKey:@"SN"];
         f.isOnline = [[obj objectForKey:@"ONLINE"] boolValue];
         f.isShield = [[obj objectForKey:@"SHIELD"] boolValue];
+        [friends addObject:f];
     }
     
     return friends;
@@ -465,30 +464,24 @@ static bool bRemoteAccess;
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"SHARE", @"METHOD",
                                @"GETFOLDER", @"TYPE",
-                               folder, "FOLDER",nil];
+                               [folder stringByAppendingString:@"/"], @"FOLDER",nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"FOLDERLIST\":[{\"FOLDERNAME\":\"FOLDERNAME\"},{\"FOLDER\":\"FODLDER2\"}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
-    if ([self checkResultWithJSON: resultDict])
+    if (![self checkResultWithJSON: resultDict])
         return nil;
-    NSArray* array = [resultDict objectForKey:@"FOLDERLIST"];
-    NSMutableArray* folders = [[NSMutableArray alloc] init];
-    for(NSDictionary* obj in array) {
-        NSString *folder = [obj objectForKey:@"FOLDERNAME"];
-        [folders addObject:folder];
-    }
-    return folders;
+    return [resultDict objectForKey:@"FOLDERLIST"];
 }
 
 //management interface
-+ (BOOL) tagFavoriteObj:(NSString *)objID {
++ (BOOL) tagFavoriteObjects:(NSArray *)favors {
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"FAVOR", @"METHOD",
                         @"ADD", @"TYPE",
-                        objID, @"OBJECTID", nil];
+                        favors, @"OBJECTIDLIST", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
 #else
@@ -498,11 +491,11 @@ static bool bRemoteAccess;
     return [self checkResultWithJSON: resultDict];
 }
 
-+ (BOOL) untagFavoriteObj:(NSString *)objID {
++ (BOOL) untagFavoriteObjects:(NSArray *)unFavors {
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                         @"FAVOR", @"METHOD",
                         @"DELETE", @"TYPE",
-                        objID, @"OBJECTID", nil];
+                        unFavors, @"OBJECTIDLIST", nil];
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
@@ -535,7 +528,7 @@ static bool bRemoteAccess;
                                    file, @"FILEPATH",
                                    @"A4", @"PAPER",
                                    @"16", @"SIZE",
-                                    1, @"COUNT", nil];
+                                    @"1", @"COUNT", nil];
        [printTask addObject:printItem];
     }
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:

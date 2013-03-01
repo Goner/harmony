@@ -198,27 +198,30 @@ static  Reachability *reachability;
                        if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
                            ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
                            NSUInteger size = [assetRepresentation size];
-                           uint8_t * buff =malloc(size);
+                           uint8_t * buf =malloc(size);
                            NSError * err = nil;
-                           NSUInteger gotByteCount = [assetRepresentation getBytes:buff fromOffset:0 length:size error:&err];
+                           NSUInteger gotByteCount = [assetRepresentation getBytes:buf fromOffset:0 length:size error:&err];
                            if (gotByteCount)
                            {
                                if (err)
                                {
                                    NSLog(@"UploadFail error:ALAssetTypePhoto, Error reading asset:%@",[err localizedDescription]);
-                                   free(buff);
+                                   free(buf);
                                }
                                else
                                {
                                    NSString *fileName = [assetRepresentation filename];
-                                   if(![backupedPhotos containsObject:fileName]){
-                                       NSData * photoData= [NSData dataWithBytesNoCopy:buff length:size freeWhenDone:YES];
-                                       [NASMediaLibrary backupPhotoData:photoData withName:fileName];
-                                       [backupedPhotos addObject:fileName];
-                                       [[NSUserDefaults standardUserDefaults] setObject:backupedPhotos forKey:@"Merry99BackupedPhotos"];
-                                   }
+                                   //if(![backupedPhotos containsObject:fileName]){
+                                       NSData * photoData= [NSData dataWithBytesNoCopy:buf length:size freeWhenDone:YES];
+                                   if([NASMediaLibrary backupPhotoData:photoData withName:[NSString stringWithFormat:@"/%@", fileName]]) {
+                                           [backupedPhotos addObject:fileName];
+                                           [[NSUserDefaults standardUserDefaults] setObject:backupedPhotos forKey:@"Merry99BackupedPhotos"];
+                                       }
+                                   //}
                                    
                                }
+                           } else {
+                               free(buf);
                            }
                            
                        }

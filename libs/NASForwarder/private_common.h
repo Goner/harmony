@@ -51,6 +51,6 @@ string Char2String(char *dest);
 /*初始化信号量*/
 int init_sem();
 int recv_msg_common(LPVOID usocket,char *buf,int *len);
-int send_msg_common(LPVOID usocket,char *buf,int len);
+int send_msg_common(LPVOID usocket,const char *buf,int len);
 
 #endif

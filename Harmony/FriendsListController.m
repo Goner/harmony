@@ -79,8 +79,8 @@
     }
     
     FriendCell *friendCell = (FriendCell *)cell;
-    NSString *friend= [_friends objectAtIndex:indexPath.row];
-    friendCell.friendNameLable.text = friend;
+    Friend *friend= [_friends objectAtIndex:indexPath.row];
+    friendCell.friendNameLable.text = friend.name;
     friendCell.checkStateImageView.hidden = ![_sharedFriends containsObject:friend];
     
     return cell;

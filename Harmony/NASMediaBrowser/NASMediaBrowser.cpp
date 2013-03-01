@@ -107,15 +107,13 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
         cJSON_AddStringToObject(requestJSONObj,"METHOD", "UDTACTION");
         cJSON_AddStringToObject(requestJSONObj,"HTTPSOAP", soapRequest);
         char* requestStr = cJSON_Print(requestJSONObj);
-        int len = 0;
-        transact_proc_call(requestStr, NULL, &len);
-        char* resultStr = (char*)malloc(++len);
-        transact_proc_call(requestStr, resultStr, &len);
+        const char* resultStr = transact_proc_call(requestStr);
         cJSON_Delete(requestJSONObj);
         if(*resultStr == '\0') {
             return NPT_FAILURE;
         }
         cJSON* resultJSONObj = cJSON_Parse(resultStr);
+        free((void*)resultStr);
         if(strcmp(resultJSONObj->child->valuestring, "SUCCESS")) {
             return NPT_FAILURE;
         }
