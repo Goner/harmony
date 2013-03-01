@@ -381,7 +381,8 @@ int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
         }
         memcpy(buf, data + data_pos, send_size);
 
-        if (UDT::ERROR == UDT::send(g_file_client, buf, send_size, 0)) {
+        send_size = UDT::send(g_file_client, buf, send_size, 0);
+        if (UDT::ERROR == send_size) {
             cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
             return GET_FILE_FAILD;
         }
