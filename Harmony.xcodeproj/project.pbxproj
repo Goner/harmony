@@ -1214,8 +1214,6 @@
 		0E77505716BC00C900FD3668 = {
 			isa = PBXGroup;
 			children = (
-				0EA887A216DD28D200763698 /* AddressBook.framework */,
-				0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */,
 				0E77506C16BC00C900FD3668 /* Harmony */,
 				0E77681016BC0A4E00FD3668 /* libs */,
 				0E7750B016BC04E900FD3668 /* pictures */,
@@ -1238,6 +1236,8 @@
 		0E77506516BC00C900FD3668 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EA887A216DD28D200763698 /* AddressBook.framework */,
+				0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */,
 				0EC05FBC16BEAC9100AF7E65 /* Security.framework */,
 				0E776BEA16BCBD6A00FD3668 /* libz.dylib */,
 				0E776BE816BCBD3E00FD3668 /* MobileCoreServices.framework */,

@@ -59,12 +59,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_friends count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return [_friends count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,11 +91,10 @@
     FriendCell *cell = (FriendCell *)[tableView cellForRowAtIndexPath:indexPath];
     if(cell.checkStateImageView.hidden){
         [_sharedFriends addObject:[_friends objectAtIndex:indexPath.row]];
-        cell.checkStateImageView.hidden = YES;
     } else {
         [_sharedFriends removeObject:[_friends objectAtIndex:indexPath.row]];
-        cell.checkStateImageView.hidden = FALSE;
     }
-}
+    cell.checkStateImageView.hidden = !cell.checkStateImageView.hidden;
+}	
 
 @end

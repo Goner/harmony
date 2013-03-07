@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 0
-#define FAKE_NASSERVER 0
+#define FAKE_INTERFACE 1
+#define FAKE_NASSERVER 1
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -123,6 +123,18 @@
 - (NSString *)description {
     return [NSString stringWithFormat:@"User: %@, SN: %@", name, sn];
 }
+
+- (BOOL) isEqual:(id)object{
+    if([object isKindOfClass:[User class]]){
+        return [self hash] == [object hash];
+    }
+    return FALSE;
+}
+
+- (NSUInteger)hash{
+    return [[self description] hash];
+}
+
 @end
 
 @implementation Friend
@@ -130,7 +142,18 @@
 @synthesize isShield;
 
 - (NSString *)description {
-    return [[super description] stringByAppendingFormat:@"online: %d, shield: %d", isOnline, isShield];
+    return [[super description] stringByAppendingFormat:@", online: %d, shield: %d", isOnline, isShield];
+}
+
+- (BOOL) isEqual:(id)object{
+    if([object isKindOfClass:[Friend class]]){
+        return [self hash] == [object hash];
+    }
+    return FALSE;
+}
+
+- (NSUInteger)hash{
+    return [[self description] hash];
 }
 @end
 
