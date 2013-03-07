@@ -470,6 +470,10 @@
 		0EC05FBD16BEAC9100AF7E65 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC05FBC16BEAC9100AF7E65 /* Security.framework */; };
 		0ECF314916BF2D0E00237533 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */; };
 		0EE43E2B16C0325700C55240 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE43E2A16C0325700C55240 /* AppIcon.png */; };
+		8480323D16E8E3420089CECB /* btn6d.png in Resources */ = {isa = PBXBuildFile; fileRef = 8480323C16E8E3420089CECB /* btn6d.png */; };
+		84E5C1B516E8D9E2005D9F18 /* btn6a.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E5C1B316E8D9E2005D9F18 /* btn6a.png */; };
+		84E5C1B616E8D9E2005D9F18 /* btn6b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E5C1B416E8D9E2005D9F18 /* btn6b.png */; };
+		84E5C1B816E8DA70005D9F18 /* btn6c.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E5C1B716E8DA70005D9F18 /* btn6c.png */; };
 		9F6EF08716DA593700A3E43E /* SharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6EF08516DA593700A3E43E /* SharingController.m */; };
 		9F6EF08816DA593700A3E43E /* SharingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08616DA593700A3E43E /* SharingController.xib */; };
 		9F6EF08C16DA613500A3E43E /* button_common_1a.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F6EF08A16DA613500A3E43E /* button_common_1a.png */; };
@@ -1130,6 +1134,10 @@
 		0EC05FBC16BEAC9100AF7E65 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0ECF314816BF2D0E00237533 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		0EE43E2A16C0325700C55240 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
+		8480323C16E8E3420089CECB /* btn6d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn6d.png; sourceTree = "<group>"; };
+		84E5C1B316E8D9E2005D9F18 /* btn6a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn6a.png; sourceTree = "<group>"; };
+		84E5C1B416E8D9E2005D9F18 /* btn6b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn6b.png; sourceTree = "<group>"; };
+		84E5C1B716E8DA70005D9F18 /* btn6c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn6c.png; sourceTree = "<group>"; };
 		9F6EF08416DA593700A3E43E /* SharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingController.h; sourceTree = "<group>"; };
 		9F6EF08516DA593700A3E43E /* SharingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingController.m; sourceTree = "<group>"; };
 		9F6EF08616DA593700A3E43E /* SharingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingController.xib; sourceTree = "<group>"; };
@@ -1385,6 +1393,10 @@
 				0E7750DF16BC04E900FD3668 /* btn5b.png */,
 				0E7750E016BC04E900FD3668 /* btn5c.png */,
 				0E7750E116BC04E900FD3668 /* btn5d.png */,
+				84E5C1B316E8D9E2005D9F18 /* btn6a.png */,
+				84E5C1B416E8D9E2005D9F18 /* btn6b.png */,
+				84E5C1B716E8DA70005D9F18 /* btn6c.png */,
+				8480323C16E8E3420089CECB /* btn6d.png */,
 			);
 			path = Bottom;
 			sourceTree = "<group>";
@@ -2527,6 +2539,10 @@
 				0E96004716DF5A3D0002BA9F /* FriendCell.xib in Resources */,
 				0E96004916DF5C410002BA9F /* DefaultUserIcon.png in Resources */,
 				0E96004B16DF5EE60002BA9F /* check.png in Resources */,
+				84E5C1B516E8D9E2005D9F18 /* btn6a.png in Resources */,
+				84E5C1B616E8D9E2005D9F18 /* btn6b.png in Resources */,
+				84E5C1B816E8DA70005D9F18 /* btn6c.png in Resources */,
+				8480323D16E8E3420089CECB /* btn6d.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
