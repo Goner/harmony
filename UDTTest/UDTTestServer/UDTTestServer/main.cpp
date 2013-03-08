@@ -64,9 +64,10 @@ int main()
                 cout << "Error occus at receiv package " << package_num << endl;
                 break;
             }
-            cout << "received " << package_num << "packages. received size " << recv_size << endl;
-            ++package_num;
             cur_data_size += recv_size;
+            cout << "received " << package_num << "packages. received size 0x" << recv_size << " total receive:0x"<< cur_data_size << endl;
+            ++package_num;
+
         }
         
 
