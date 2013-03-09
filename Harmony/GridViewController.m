@@ -52,7 +52,6 @@
     [self.rootController hideBottomBar: NO];
     [self.rootController hideCategoryDroplist:NO];
     [MainController setTopBarTitle:@""];
-    [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
 
     [self.view setFrame: [self.rootController rectWithoutBottomBar]];
     [self.gridView setFrame: [self.rootController rectWithBottomBar]];

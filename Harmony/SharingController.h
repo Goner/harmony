@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SharingCell.h"
+#import "MainController.h"
 
 @interface SharingController : UIViewController<UITableViewDataSource, UITableViewDelegate, SharingCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *bottomBar;
+@property (nonatomic, weak) MainController *rootController;
 
 - (IBAction)onAddSharing:(id)sender;
 

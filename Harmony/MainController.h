@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIView *topBar;
 @property (weak, nonatomic) IBOutlet UIButton *cateButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLable;
+@property (weak, nonatomic) IBOutlet UIImageView *bkgImage;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonEditing;
 @property (weak, nonatomic) IBOutlet UIButton *buttonMoreAction;
@@ -49,6 +50,7 @@
 
 - (CGRect) rectWithBottomBar;
 - (CGRect) rectWithoutBottomBar;
+- (CGRect) rectOfBottomBar;
 
 - (void) logout;
 

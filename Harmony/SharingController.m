@@ -43,6 +43,14 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    
+    [self.rootController hideButtonBack: NO];
+    [self.rootController hideBottomBar: YES];    
+    [self.view setFrame: [self.rootController rectWithoutBottomBar]];
+    [self.tableView setFrame: [self.rootController rectWithoutBottomBar]];
+    
+    [self.bottomBar setFrame: [self.rootController rectOfBottomBar]];
+
     [super viewWillAppear:animated];
     [MainController setTopBarTitle:@"好友共享"];
     [self.tableView reloadData];
@@ -56,6 +64,7 @@
 
 - (void)viewDidUnload {
     [self setTableView:nil];
+    [self setBottomBar:nil];
     [super viewDidUnload];
 }
 

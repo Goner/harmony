@@ -110,6 +110,7 @@
 - (void) showSharingView
 {
     SharingController *sharingController = [[SharingController alloc] initWithNibName: @"SharingController" bundle:nil];
+    sharingController.rootController = self.rootController;
     
     [self.navigationController pushViewController:sharingController animated:YES];
 }

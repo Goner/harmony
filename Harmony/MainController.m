@@ -44,6 +44,7 @@ static MainController *currentMainController;
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.gridController];
     [self.navigationController setNavigationBarHidden:YES];
     [self.navigationController.view setFrame: subViewRect];
+    [self.bkgImage setFrame: contentRect];
 
     //add view controllers into self
     [self addChildViewController: self.navigationController];
@@ -73,6 +74,7 @@ static MainController *currentMainController;
     [self setBottomBar:nil];
     [self setTopBar:nil];
     [self setCateButton:nil];
+    [self setBkgImage:nil];
     [super viewDidUnload];
 }
 
@@ -114,6 +116,15 @@ static MainController *currentMainController;
 {
     CGRect ret = self.view.bounds;
     ret.size.height -= self.topBar.bounds.size.height - CONTENT_MARGIN;
+    return ret;
+}
+
+- (CGRect) rectOfBottomBar
+{
+    CGRect ret = self.contentView.bounds;
+    ret.origin.y = ret.size.height - self.bottomBar.bounds.size.height;
+    ret.size.height = self.bottomBar.bounds.size.height;
+
     return ret;
 }
 
