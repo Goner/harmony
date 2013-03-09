@@ -123,6 +123,9 @@
                                         <state key="highlighted" image="btn6a.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onButtonEditingPressed:" destination="2" eventType="touchUpInside" id="UiK-5j-jrq"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -196,6 +199,12 @@
                     <connections>
                         <outlet property="bottomBar" destination="2Ku-Ej-bDo" id="z4N-og-Hf5"/>
                         <outlet property="buttonBack" destination="YYH-Lg-jBE" id="36W-SJ-Mnq"/>
+                        <outlet property="buttonDownload" destination="Jlz-y3-LJw" id="hTN-GC-wUa"/>
+                        <outlet property="buttonEditing" destination="vyr-F1-ez3" id="y4Q-FM-6o9"/>
+                        <outlet property="buttonMoreAction" destination="IZ8-rH-4Ne" id="GiH-TV-k3i"/>
+                        <outlet property="buttonPhotoPrint" destination="GLx-Gr-w3x" id="QlS-rk-E3j"/>
+                        <outlet property="buttonShareAlbum" destination="v8m-fK-AMo" id="M81-L7-uoU"/>
+                        <outlet property="buttonTagFavor" destination="Ch1-3E-ScC" id="W0Q-Qs-gvN"/>
                         <outlet property="cateButton" destination="5n4-54-XxT" id="cMs-51-N6j"/>
                         <outlet property="contentView" destination="DGx-33-gYO" id="NEu-aq-4YS"/>
                         <outlet property="titleLable" destination="DRl-UL-B94" id="wbK-Hj-90w"/>
@@ -368,10 +377,17 @@
                 <relationship kind="action" name="onButtonAlbumSharePressed:"/>
                 <relationship kind="action" name="onButtonCategoryPressed:"/>
                 <relationship kind="action" name="onButtonDownloadPressed:"/>
+                <relationship kind="action" name="onButtonEditingPressed:"/>
                 <relationship kind="action" name="onButtonPhotoPrintPressed:"/>
                 <relationship kind="action" name="onButtonTagFavorPressed:"/>
                 <relationship kind="outlet" name="bottomBar" candidateClass="UIView"/>
                 <relationship kind="outlet" name="buttonBack" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonDownload" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonEditing" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonMoreAction" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonPhotoPrint" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonShareAlbum" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="buttonTagFavor" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="cateButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="contentView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="titleLable" candidateClass="UILabel"/>

@@ -19,8 +19,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-
 }
 
 
@@ -28,8 +26,8 @@
 {
     [self.rootController hideButtonBack: NO];
     [self.rootController hideBottomBar: NO];
+    [MainController setTopBarTitle:@""];
     [self.navigationController.view setFrame: [self.rootController rectWithBottomBar]];
-
 }
 
 @end

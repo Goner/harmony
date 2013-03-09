@@ -53,6 +53,7 @@ static MainController *currentMainController;
     self.mediaCategories = [NASMediaLibrary getMediaCategories];
     
     _categoryIndex = -1;
+    self.editingMode = NO;
     [self setCategoryIndex: 0];
     
     currentMainController = self;
@@ -133,6 +134,10 @@ static MainController *currentMainController;
     [self.cateButton.superview setHidden:hidden];
 }
 
+- (void) enableButtonEditing: (BOOL)enable{
+    [self.buttonEditing setEnabled:enable];
+}
+
 + (void) setTopBarTitle:(NSString *)title {
     if(currentMainController){
         currentMainController.titleLable.text = title;
@@ -166,7 +171,24 @@ static MainController *currentMainController;
   
 }
 
+- (void)enableBottomBarEditingState:(BOOL)state{
+    _buttonEditing.hidden = state;
+    _buttonMoreAction.hidden = state;
+    
+    _buttonShareAlbum.hidden = !state;
+    _buttonPhotoPrint.hidden = !state;
+    _buttonDownload.hidden = !state;
+    _buttonTagFavor.hidden = !state;
+}
+
 - (IBAction)onBackButtonPressed:(id)sender {
+    if (self.editingMode) {
+        self.editingMode = NO;
+        [self.gridController clearSelections];
+        [self enableBottomBarEditingState:NO];
+        [self hideCategoryDroplist:NO];
+        return;
+    }
     if([self.navigationController.viewControllers count] > 1) {
         [self.navigationController popViewControllerAnimated: YES];
     } else {
@@ -188,6 +210,13 @@ static MainController *currentMainController;
 
 - (IBAction)onButtonPhotoPrintPressed:(id)sender{
     [self.gridController commitPrintSelectedItems];
+}
+
+- (IBAction)onButtonEditingPressed:(id)sender{
+    [self enableBottomBarEditingState:YES];
+    self.editingMode = YES;
+    [self hideCategoryDroplist:YES];
+    [self hideButtonBack:NO];
 }
 
 - (void) logout

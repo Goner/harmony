@@ -19,11 +19,8 @@
 
 
 @property (weak, nonatomic) IBOutlet ScrollGridView *gridView;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGes;
-@property (nonatomic) BOOL multiSelectionMode;
 @property (nonatomic, weak) MainController *rootController;
 
-//@property (nonatomic) NSMutableArray *catogeryStack;
 @property (nonatomic) MediaCategory *currentCategory;
 @property (nonatomic, strong) NSArray *mediaObjects;
 @property (nonatomic, strong) MediaResourceFetcher* fetcher;
@@ -31,6 +28,8 @@
 - (void) backToParentCatogery;
 - (void) gotoTopCatogery:(MediaCategory *)category;
 
+
+- (void) clearSelections;
 - (void) downloadSelectedItems;
 - (void) tagFavorSelectedItems;
 - (void) shareAlbumSelectedItems;

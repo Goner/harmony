@@ -985,6 +985,9 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     }
 }
 
+- (NSInteger)getCurrentPageIndex{
+    return _currentPageIndex;
+}
 #pragma mark - Misc
 
 - (void)doneButtonPressed:(id)sender {

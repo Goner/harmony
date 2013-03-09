@@ -14,6 +14,7 @@
 
 
 @interface GridViewController ()
+- (BOOL)canBeInEditingMode;
 - (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block;
 @end
 
@@ -43,10 +44,6 @@
     self.gridView.vMargin = 12;
     self.gridView.numberOfColumns = 3;
     self.gridView.dataSource = self;
-    
-    self.longPressGes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressed:)];
-    self.multiSelectionMode = NO;
-    [self.gridView addGestureRecognizer:self.longPressGes];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -108,25 +105,10 @@
     return FALSE;
 }
 
-- (void) onLongPressed: (UILongPressGestureRecognizer *) recognizer
-{
-    if(![self canMediaObjectsBeSelected]){
-        return;
-    }
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        self.multiSelectionMode = !self.multiSelectionMode;
-        if (self.multiSelectionMode == NO) {
-            [self.gridView clearAllSelected];
-        }
-    }
-}
-
-
 -(void) onTap: (UIView *) view
 {
     GridCellView *cell = (GridCellView *)view;
-    if (self.multiSelectionMode) {
+    if (self.rootController.editingMode) {
         cell.selected = !cell.selected;
     } else {
         MediaObject *object = [self.mediaObjects objectAtIndex:cell.contentIndex];
@@ -142,6 +124,7 @@
 
             [self.navigationController pushViewController:browserController animated:YES];
         }
+        [self.rootController enableButtonEditing:[self canBeInEditingMode]];
     }
     
 }
@@ -157,6 +140,9 @@
     return [self.mediaObjects objectAtIndex: index];
 }
 
+- (BOOL)canBeInEditingMode{
+    return [_mediaObjects count] > 0 && [[_mediaObjects objectAtIndex:0] isKindOfClass:[MediaItem class]];
+}
 - (void)backToParentCatogery{
     self.currentCategory = self.currentCategory.parentCategory;
     if (self.currentCategory == nil) {
@@ -168,22 +154,26 @@
         }
         return;
     }
-    _multiSelectionMode = FALSE;
     [self.rootController hideButtonBack:self.currentCategory.parentCategory == nil];
     self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
+    [self.rootController enableButtonEditing:[self canBeInEditingMode]];
     [self.gridView reloadData];
 }
 
-
 - (void) gotoTopCatogery:(MediaCategory *)category{
     [self.rootController hideButtonBack:TRUE];
-    _multiSelectionMode = FALSE;
     self.currentCategory = category;
     self.mediaObjects = [NASMediaLibrary getMediaObjects:category];
+    [self.rootController enableButtonEditing:[self canBeInEditingMode]];
     [self.gridView reloadData];
 }
 
 - (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block {
+    if([self.navigationController.topViewController isKindOfClass:[PictureViewerController class]]){
+        PictureViewerController *pictureViewerController = (PictureViewerController *)self.navigationController.topViewController;
+        block([self.mediaObjects objectAtIndex:[pictureViewerController getCurrentPageIndex]]);
+        return;
+    }
     for(GridCellView *cell in self.gridView.cells){
         if(cell.selected) {
             MediaObject *object = [self.mediaObjects objectAtIndex:cell.contentIndex];
@@ -194,15 +184,15 @@
     }
 }
 
-- (void) clearSelectionAfterActions{
-    self.multiSelectionMode = FALSE;
+- (void) clearSelections{
     [self.gridView clearAllSelected];
 }
+
 - (void) downloadSelectedItems{
     [self applyBlockForSelectedItems:^(MediaItem *item){
         [self.fetcher downloadURL:[item getMediaURL]];
     }];
-    [self clearSelectionAfterActions];
+    [self clearSelections];
 }
 
 - (void)tagFavorSelectedItems{
@@ -222,7 +212,7 @@
     [NASMediaLibrary untagFavoriteObjects:unFavors];
     self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
     [self.gridView reloadData];
-    [self clearSelectionAfterActions];
+    [self clearSelections];
 }
 
 - (void)commitPrintSelectedItems{
@@ -231,7 +221,7 @@
         [array addObject:[self.fetcher getFileNameFromURL:[item getThumbnailURL]]];
     }];
     [NASMediaLibrary commitPrinttaskForFiles:array];
-    [self clearSelectionAfterActions];
+    [self clearSelections];
 
 }
 
@@ -243,7 +233,7 @@
     }];
     NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
     NSLog(@"%@", id);
-    [self clearSelectionAfterActions];
+    [self clearSelections];
 }
 
 // MWPhotoBrowserDelegate

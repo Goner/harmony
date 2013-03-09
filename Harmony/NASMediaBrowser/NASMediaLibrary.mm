@@ -314,15 +314,15 @@ static bool bRemoteAccess;
 + (NSArray *) getMediaObjects:(MediaCategory *)category withMaxResults:(int)maxResults{
 #if FAKE_NASSERVER
     NSMutableArray* array = [[NSMutableArray alloc] init];
-    for(int i = 0; i < 5; i++) {
-        MediaCategory* categoryChild = [[MediaCategory alloc] init];
-        categoryChild.title = [NSString  stringWithFormat:@"title%d",i ];
-        categoryChild.id = [NSString  stringWithFormat:@"id%d",i];
-        categoryChild.childrenCount = i+1;
-        categoryChild.parentCategory = category;
-        [array addObject:categoryChild];
-    }
-    for(int i = 5; i < 12; i++) {
+//    for(int i = 0; i < 5; i++) {
+//        MediaCategory* categoryChild = [[MediaCategory alloc] init];
+//        categoryChild.title = [NSString  stringWithFormat:@"title%d",i ];
+//        categoryChild.id = [NSString  stringWithFormat:@"id%d",i];
+//        categoryChild.childrenCount = i+1;
+//        categoryChild.parentCategory = category;
+//        [array addObject:categoryChild];
+//    }
+    for(int i = 0; i < 16; i++) {
         MediaItem* item = [[MediaItem alloc] init];
         item.title = [NSString  stringWithFormat:@"item_title_%d", i];
         item.id = [NSString  stringWithFormat:@"item_id_%d", i];
