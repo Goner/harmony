@@ -75,6 +75,7 @@
 {
     AddSharingController *addSharingController = [[AddSharingController alloc] initWithNibName: @"AddSharingController" bundle:nil];
     addSharingController.folderPath = [_folderPath stringByAppendingPathComponent:[_subFolders objectAtIndex:indexPath.row]];
+    addSharingController.shareFolders = self.shareFolders;
     [self.navigationController pushViewController:addSharingController animated:YES];
 }
 

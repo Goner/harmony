@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SharingCell.h"
 
-@interface SharingController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface SharingController : UIViewController<UITableViewDataSource, UITableViewDelegate, SharingCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 

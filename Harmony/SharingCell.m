@@ -27,6 +27,8 @@
     // Configure the view for the selected state
 }
 
-
+- (IBAction)cacelSharing:(id)sender{
+    [_cellDelegate cancelSharedItem:self.row];
+}
 
 @end

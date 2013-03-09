@@ -7,7 +7,6 @@
 //
 
 #import "SharingController.h"
-#import "SharingCell.h"
 #import "AddSharingController.h"
 #import "FriendsListController.h"
 #import "MainController.h"
@@ -15,6 +14,7 @@
 
 @interface SharingController ()
 @property (retain) NSMutableArray *shareFolders;
+@property (weak, nonatomic)SharingCell *editingCell;
 @end
 
 @implementation SharingController
@@ -35,6 +35,11 @@
     self.tableView.delegate = self;
     // Do any additional setup after loading the view from its nib.
     _shareFolders = [NSMutableArray arrayWithArray:[NASMediaLibrary getAllShareFolders]];
+    
+    UISwipeGestureRecognizer *gesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellSwipe:)];
+    [gesture setDirection:(UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight)];
+    [self.tableView addGestureRecognizer:gesture];
+    _editingCell = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -59,7 +64,17 @@
     return  [_shareFolders count];
 }
 
-
+- (void)handleCellSwipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        CGPoint swipeLocation = [recognizer locationInView:_tableView];
+        NSIndexPath *swipedIndexPath = [_tableView indexPathForRowAtPoint:swipeLocation];
+        SharingCell *sCell = (SharingCell *)[_tableView cellForRowAtIndexPath:swipedIndexPath];
+        // do what you want here
+        sCell.cancelSharingButton.hidden = NO;
+        _editingCell = sCell;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -73,6 +88,7 @@
     }
     
     SharingCell *sCell = (SharingCell *)cell;
+    sCell.row = indexPath.row;
     
     sCell.title.text = [_shareFolders objectAtIndex:indexPath.row];
     return  cell;
@@ -80,6 +96,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(_editingCell){
+        _editingCell.cancelSharingButton.hidden = YES;
+        _editingCell = nil;
+        return;
+    }
     FriendsListController *friendsListController = [[FriendsListController alloc] initWithNibName:@"FriendsListController" bundle:nil];
     
     friendsListController.sharedFolders = _shareFolders;
@@ -96,4 +117,8 @@
     [self.navigationController pushViewController:addSharingController animated:YES];
 }
 
+- (void)cancelSharedItem:(int)row{
+    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [NASMediaLibrary unshareFolder:[_shareFolders objectAtIndex:row] withFriends:nil];
+}
 @end

@@ -187,6 +187,7 @@ static MainController *currentMainController;
         [self.gridController clearSelections];
         [self enableBottomBarEditingState:NO];
         [self hideCategoryDroplist:NO];
+        [self hideButtonBack:self.gridController.currentCategory.parentCategory == nil];
         return;
     }
     if([self.navigationController.viewControllers count] > 1) {
@@ -196,20 +197,38 @@ static MainController *currentMainController;
     }
 }
 
+- (void)autoFadeAlter{
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:@"操作完成" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    [alert show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        [alert dismissWithClickedButtonIndex:0 animated:YES];
+    });
+
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView {
+	[alertView setFrame:CGRectMake(10, 200, 280, 80)];
+    alertView.alpha = 0.5;
+}
+
 - (IBAction)onButtonDownloadPressed:(id)sender{
     [self.gridController downloadSelectedItems];
+    [self autoFadeAlter];
 }
 
 - (IBAction)onButtonTagFavorPressed:(id)sender{
     [self.gridController tagFavorSelectedItems];
+    [self autoFadeAlter];
 }
 
 - (IBAction)onButtonAlbumSharePressed:(id)sender{
     [self.gridController shareAlbumSelectedItems];
+    [self autoFadeAlter];
 }
 
 - (IBAction)onButtonPhotoPrintPressed:(id)sender{
     [self.gridController commitPrintSelectedItems];
+    [self autoFadeAlter];
 }
 
 - (IBAction)onButtonEditingPressed:(id)sender{
