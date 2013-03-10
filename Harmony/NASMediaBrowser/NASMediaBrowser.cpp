@@ -8,6 +8,7 @@
 #include "PltUtilities.h"
 
 #include "interfaceudt_client.h"
+#include "remote_auth.h"
 #include "cJSON.h"
 
 const char* NASDeviceID = "996d6572-0000-0000-004009901099";
@@ -87,7 +88,7 @@ NASRemoteMediaBrowser::NASRemoteMediaBrowser(const char* account,
 NPT_Result
 NASRemoteMediaBrowser::Connect()
 {
-    int ret = remote_access_auth(_account, _password, _license, 0);
+    int ret = remote_auth(_account, _password);
     return ret != -1 ? NPT_SUCCESS : NPT_FAILURE;
 }
 

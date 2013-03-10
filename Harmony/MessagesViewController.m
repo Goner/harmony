@@ -65,7 +65,7 @@
     cell.textLabel.lineBreakMode = UILineBreakModeCharacterWrap;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
-    [cell.textLabel setText:[[messages objectAtIndex:indexPath.row] description]];
+    [cell.textLabel setText:[messages objectAtIndex:indexPath.row]];
     
     return cell;
 }

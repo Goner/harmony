@@ -10,8 +10,14 @@
 		0E0F49EC16DE2BAC004472B6 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F49EB16DE2BAC004472B6 /* logo.png */; };
 		0E0F49F016DE2BF0004472B6 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F49EE16DE2BF0004472B6 /* AboutViewController.m */; };
 		0E0F49F116DE2BF0004472B6 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */; };
+		0E17DB0516EB0A2C0002EF0A /* curl_exchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E17DAFD16EB0A2C0002EF0A /* curl_exchange.cpp */; };
+		0E17DB0616EB0A2C0002EF0A /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E17DAFF16EB0A2C0002EF0A /* md5.cpp */; };
+		0E17DB0716EB0A2C0002EF0A /* parsewebjson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E17DB0116EB0A2C0002EF0A /* parsewebjson.cpp */; };
+		0E17DB0816EB0A2C0002EF0A /* remote_auth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E17DB0316EB0A2C0002EF0A /* remote_auth.cpp */; };
 		0E1D343016BD25FC00729C51 /* 日期b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D342F16BD25FB00729C51 /* 日期b.png */; };
 		0E1D343216BD261100729C51 /* 视频b.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D343116BD261000729C51 /* 视频b.png */; };
+		0E1E12C016EB147C00979190 /* libcurl-device.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1E12BE16EB147C00979190 /* libcurl-device.a */; };
+		0E1E12C116EB147C00979190 /* libcurl-simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1E12BF16EB147C00979190 /* libcurl-simulator.a */; };
 		0E1F88AF16DE51280027187D /* DataSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88AD16DE51280027187D /* DataSyncViewController.m */; };
 		0E1F88B016DE51280027187D /* DataSyncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F88AE16DE51280027187D /* DataSyncViewController.xib */; };
 		0E1F88B816DE77FC0027187D /* AddSharingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F88B316DE77FC0027187D /* AddSharingCell.m */; };
@@ -497,8 +503,28 @@
 		0E0F49ED16DE2BF0004472B6 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		0E0F49EE16DE2BF0004472B6 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		0E17DAF416EB0A030002EF0A /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
+		0E17DAF516EB0A030002EF0A /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
+		0E17DAF616EB0A030002EF0A /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
+		0E17DAF716EB0A030002EF0A /* curlver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlver.h; sourceTree = "<group>"; };
+		0E17DAF816EB0A030002EF0A /* easy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easy.h; sourceTree = "<group>"; };
+		0E17DAF916EB0A030002EF0A /* mprintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mprintf.h; sourceTree = "<group>"; };
+		0E17DAFA16EB0A030002EF0A /* multi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multi.h; sourceTree = "<group>"; };
+		0E17DAFB16EB0A030002EF0A /* stdcheaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdcheaders.h; sourceTree = "<group>"; };
+		0E17DAFC16EB0A030002EF0A /* typecheck-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "typecheck-gcc.h"; sourceTree = "<group>"; };
+		0E17DAFD16EB0A2C0002EF0A /* curl_exchange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = curl_exchange.cpp; path = libs/NASForwarder/curl_exchange.cpp; sourceTree = "<group>"; };
+		0E17DAFE16EB0A2C0002EF0A /* curl_exchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = curl_exchange.h; path = libs/NASForwarder/curl_exchange.h; sourceTree = "<group>"; };
+		0E17DAFF16EB0A2C0002EF0A /* md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = md5.cpp; path = libs/NASForwarder/md5.cpp; sourceTree = "<group>"; };
+		0E17DB0016EB0A2C0002EF0A /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = md5.h; path = libs/NASForwarder/md5.h; sourceTree = "<group>"; };
+		0E17DB0116EB0A2C0002EF0A /* parsewebjson.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parsewebjson.cpp; path = libs/NASForwarder/parsewebjson.cpp; sourceTree = "<group>"; };
+		0E17DB0216EB0A2C0002EF0A /* parsewebjson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parsewebjson.h; path = libs/NASForwarder/parsewebjson.h; sourceTree = "<group>"; };
+		0E17DB0316EB0A2C0002EF0A /* remote_auth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = remote_auth.cpp; path = libs/NASForwarder/remote_auth.cpp; sourceTree = "<group>"; };
+		0E17DB0416EB0A2C0002EF0A /* remote_auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = remote_auth.h; path = libs/NASForwarder/remote_auth.h; sourceTree = "<group>"; };
+		0E17DB0A16EB0AC90002EF0A /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.h; path = libs/NASForwarder/message.h; sourceTree = "<group>"; };
 		0E1D342F16BD25FB00729C51 /* 日期b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "日期b.png"; sourceTree = "<group>"; };
 		0E1D343116BD261000729C51 /* 视频b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频b.png"; sourceTree = "<group>"; };
+		0E1E12BE16EB147C00979190 /* libcurl-device.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libcurl-device.a"; sourceTree = "<group>"; };
+		0E1E12BF16EB147C00979190 /* libcurl-simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libcurl-simulator.a"; sourceTree = "<group>"; };
 		0E1F88AC16DE51280027187D /* DataSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSyncViewController.h; sourceTree = "<group>"; };
 		0E1F88AD16DE51280027187D /* DataSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSyncViewController.m; sourceTree = "<group>"; };
 		0E1F88AE16DE51280027187D /* DataSyncViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataSyncViewController.xib; sourceTree = "<group>"; };
@@ -1165,6 +1191,8 @@
 				0E77506716BC00C900FD3668 /* UIKit.framework in Frameworks */,
 				0E77506916BC00C900FD3668 /* Foundation.framework in Frameworks */,
 				0E77506B16BC00C900FD3668 /* CoreGraphics.framework in Frameworks */,
+				0E1E12C016EB147C00979190 /* libcurl-device.a in Frameworks */,
+				0E1E12C116EB147C00979190 /* libcurl-simulator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1197,6 +1225,25 @@
 				0E0F49EF16DE2BF0004472B6 /* AboutViewController.xib */,
 			);
 			name = About;
+			sourceTree = "<group>";
+		};
+		0E17DAF316EB0A030002EF0A /* curl */ = {
+			isa = PBXGroup;
+			children = (
+				0E1E12BE16EB147C00979190 /* libcurl-device.a */,
+				0E1E12BF16EB147C00979190 /* libcurl-simulator.a */,
+				0E17DAF416EB0A030002EF0A /* curl.h */,
+				0E17DAF516EB0A030002EF0A /* curlbuild.h */,
+				0E17DAF616EB0A030002EF0A /* curlrules.h */,
+				0E17DAF716EB0A030002EF0A /* curlver.h */,
+				0E17DAF816EB0A030002EF0A /* easy.h */,
+				0E17DAF916EB0A030002EF0A /* mprintf.h */,
+				0E17DAFA16EB0A030002EF0A /* multi.h */,
+				0E17DAFB16EB0A030002EF0A /* stdcheaders.h */,
+				0E17DAFC16EB0A030002EF0A /* typecheck-gcc.h */,
+			);
+			name = curl;
+			path = libs/curl;
 			sourceTree = "<group>";
 		};
 		0E1F88AB16DE50740027187D /* DataSyncView */ = {
@@ -1484,6 +1531,7 @@
 		0E77681016BC0A4E00FD3668 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				0E17DAF316EB0A030002EF0A /* curl */,
 				0EA8879716DD280800763698 /* UIDevice-with-UniqueIdentifier-for-iOS-5 */,
 				0E776BC416BCA43800FD3668 /* ASIHTTPRequest */,
 				0E77683C16BC0E6B00FD3668 /* MWPhotoBrowser */,
@@ -1561,6 +1609,15 @@
 		0E77681316BC0A8500FD3668 /* NASForwarder */ = {
 			isa = PBXGroup;
 			children = (
+				0E17DB0A16EB0AC90002EF0A /* message.h */,
+				0E17DAFD16EB0A2C0002EF0A /* curl_exchange.cpp */,
+				0E17DAFE16EB0A2C0002EF0A /* curl_exchange.h */,
+				0E17DAFF16EB0A2C0002EF0A /* md5.cpp */,
+				0E17DB0016EB0A2C0002EF0A /* md5.h */,
+				0E17DB0116EB0A2C0002EF0A /* parsewebjson.cpp */,
+				0E17DB0216EB0A2C0002EF0A /* parsewebjson.h */,
+				0E17DB0316EB0A2C0002EF0A /* remote_auth.cpp */,
+				0E17DB0416EB0A2C0002EF0A /* remote_auth.h */,
 				0E7768DB16BC1AC100FD3668 /* cc.h */,
 				0E7768DC16BC1AC100FD3668 /* cJSON.c */,
 				0E7768DD16BC1AC100FD3668 /* cJSON.h */,
@@ -2901,6 +2958,10 @@
 				0E1F88BA16DE77FC0027187D /* AddSharingController.m in Sources */,
 				0E96003B16DF46D40002BA9F /* FriendsListController.m in Sources */,
 				0E96004516DF59C60002BA9F /* FriendCell.m in Sources */,
+				0E17DB0516EB0A2C0002EF0A /* curl_exchange.cpp in Sources */,
+				0E17DB0616EB0A2C0002EF0A /* md5.cpp in Sources */,
+				0E17DB0716EB0A2C0002EF0A /* parsewebjson.cpp in Sources */,
+				0E17DB0816EB0A2C0002EF0A /* remote_auth.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3028,6 +3089,7 @@
 					"\"$(SRCROOT)/libs/PlatinumKit/Platinum/Targets/universal-apple-iphonesimulator/Debug\"",
 					"\"$(SRCROOT)/libs/udt4/ios/DerivedData/udt4/Build/Products/Debug-iphoneos\"",
 					"\"$(SRCROOT)/libs/udt4/ios/DerivedData/udt4/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/libs/curl\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -3060,6 +3122,7 @@
 					"\"$(SRCROOT)/libs/PlatinumKit/Platinum/Targets/universal-apple-iphonesimulator/Debug\"",
 					"\"$(SRCROOT)/libs/udt4/ios/DerivedData/udt4/Build/Products/Debug-iphoneos\"",
 					"\"$(SRCROOT)/libs/udt4/ios/DerivedData/udt4/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/libs/curl\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

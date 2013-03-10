@@ -7,7 +7,7 @@
 #define MAX_PASSWD_SIZE 32
 #define MAX_MAC_SIZE 20
 #define MAX_IP_SIZE 20
-
+#define MAX_TOKEN_SIZE 128
 #define MAX_PACKET_SIZE 4000
 
 #define MSG_HEARTBEAT 100
@@ -22,10 +22,6 @@
 #define MSG_MAKE_TORRENT_HOLE_S2B 109
 #define MSG_MAKE_HOLE_EMPTY_PACKET 110
 #define MSG_CANCEL_FRIEND_SHARING 111
-
-#define SERVERIP "202.85.216.203"
-#define SERVERPORT 9100
-#define CLIENT_LOCAL_PORT 9002
 
 #pragma pack(push)
 #pragma pack(1)
@@ -45,25 +41,43 @@ struct heartbeat_ack_message
 	int outer_port;
 };
 
+//用户外网登录
+struct outer_login_message
+{
+    char username[MAX_USERNAME_SIZE];
+    char password[MAX_PASSWD_SIZE];
+};
+
+//用户外网登录返回信息
+struct outer_login_ack_message
+{
+	int flag; //0::失败 1:成功
+	char token[MAX_TOKEN_SIZE]; // 返回的令牌
+	char serialnum[MAX_SERIALNUM_SIZE];
+};
+
 //client发往balance请求建立通道消息 c:客户端 s:balance服务器 b:盒子box
 struct build_channel_c2s_message
 {
-	char mac[MAX_MAC_SIZE];
+	char username[MAX_USERNAME_SIZE];	     
+	char serialnum[MAX_SERIALNUM_SIZE]; 
+	char token[MAX_TOKEN_SIZE];
+	int flag;   // 1:建立传输消息通道 2:建立传输文件通道
 };
 
 //balance发往client,请求建立通道返回消息
 struct build_channel_s2c_message
 {
-	int online_flag; //0:盒子不在线 1:盒子在线
+	int status; //0:盒子不在线 1:盒子在线 2:令牌无效
 	char box_ip[MAX_IP_SIZE];
 	int box_port;
 };
-
 //balance发往盒子box，客户端请求建立通道打洞消息
 struct make_hole_s2b_message
 {
 	char client_ip[MAX_IP_SIZE];
 	int client_port;
+	int flag;   // 1:建立传输消息通道 2:建立传输文件通道
 };
 
 //box发往blance，客户端请求建立通道打洞返回消息-其中包含该洞应该发往的客户端IP端口
@@ -99,10 +113,5 @@ struct cancel_friend_sharing_message
 };
 #pragma pack(pop)
 
-int judge_message_size(char msg_type);
-void * recv_message(void * arg);
-int build_channel(struct build_channel_c2s_message build_channel_msg, struct build_channel_s2c_message &build_channel_ack_msg);
-int myclose(int sockfd);
-int mysendto(int sockfd, char *buff, int len, int flag, struct sockaddr *addr);
-int init();
 #endif 
+

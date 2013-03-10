@@ -157,17 +157,6 @@
 }
 @end
 
-@implementation NASMessage
-@synthesize taskType;
-@synthesize startTime;
-@synthesize status;
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"Task Type:%@, start at:%@, status:%d", taskType, startTime, status];
-}
-@end
-
-
 const char* RootCotainerID = "0";
 const char* PhotoLibraryName = "Photos"; //or "Pictures";
 
@@ -226,17 +215,17 @@ static bool bRemoteAccess;
 #if FAKE_NASSERVER
     return TRUE;
 #else
-    std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
-    if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
-        nasMediaBrowserPtr  = localMediaBrowserPtr;
-        NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
-        
-        if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
+//    std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
+//    if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
+//        nasMediaBrowserPtr  = localMediaBrowserPtr;
+//        NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
+//        
+//        if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
+//            return TRUE;
+//        } else {
+//            return FALSE;
+//        }
+//    }
     
     std::shared_ptr<NASRemoteMediaBrowser> remoteMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
         if(NPT_SUCCEEDED(remoteMediaBrowserPtr->Connect())){
@@ -574,7 +563,7 @@ static bool bRemoteAccess;
 #if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
 #else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"},{\"TP\":\"PRINT\",\"STIME\":\"XXX\",\"STATUS\":\"1\"}]}";
+    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\"NOTIFY\":\"久久相册共享已经成功\"},{\"NOTIFY\":\"久久冲印小图已经上传，可以开始制作影集了！大图传送中….\"},{\"NOTIFY\":\"久久冲印大图已经上传成功，订单号码:xxx\"}]}";
     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
 #endif
     NSMutableArray *messages = [[NSMutableArray alloc] init];
@@ -582,13 +571,9 @@ static bool bRemoteAccess;
         return messages;
     }
     
-    NSArray *logs = [resultDict objectForKey:@"SERVICELOGLIST"];
-    for (NSDictionary *log in logs) {
-        NASMessage *message = [[NASMessage alloc] init];
-        message.taskType = [log objectForKey:@"TP"];
-        message.startTime = [log objectForKey:@"STIME"];
-        message.status = [[log objectForKey:@"STATUS"] intValue];
-        [messages addObject:message];
+    NSArray *notifys = [resultDict objectForKey:@"SERVICELOGLIST"];
+    for (NSDictionary *notify in notifys) {
+        [messages addObject:[notify objectForKey:@"NOTIFY"]];
     }
     return messages;
 }

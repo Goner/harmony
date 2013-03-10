@@ -96,17 +96,6 @@
 - (NSString *)description;
 @end
 
-@interface NASMessage : NSObject{
-    NSString *taskType;
-    NSString *startTime;
-    int status;
-}
-
-@property (retain) NSString *taskType;
-@property (retain) NSString *startTime;
-@property (assign) int status;
-@end
-
 @interface NASMediaLibrary : NSObject
 + (BOOL)     initWithUser:(NSString*) user password:(NSString*) passwd;
 
