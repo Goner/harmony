@@ -83,6 +83,10 @@
     friendCell.friendNameLable.text = friend.name;
     friendCell.checkStateImageView.hidden = ![_sharedFriends containsObject:friend];
     
+    UIView *bgView = [[UIView alloc] init];
+    [bgView setBackgroundColor:[UIColor colorWithRed:0.69 green:0.69 blue:0.588 alpha:1]];
+    [cell setSelectedBackgroundView:bgView];
+    
     return cell;
 }
 

@@ -185,7 +185,6 @@
 				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<string key="IBUIRestorationIdentifier">AddSharingCell</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="867588939"/>
 				<string key="IBUIReuseIdentifier">SharingCell</string>
 			</object>

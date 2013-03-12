@@ -68,6 +68,10 @@
     aCell.row = indexPath.row;
     aCell.cellDelegate = self;
     
+    UIView *bgView = [[UIView alloc] init];
+    [bgView setBackgroundColor:[UIColor colorWithRed:0.69 green:0.69 blue:0.588 alpha:1]];
+    [cell setSelectedBackgroundView:bgView];
+    
     return  cell;
 }
 
