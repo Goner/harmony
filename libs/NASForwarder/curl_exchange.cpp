@@ -28,7 +28,7 @@ int exchange_with_mysql(char *url, char *request, char *response)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);   
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);   
     curl_easy_setopt(curl, CURLOPT_POST, 1);  //设置为非0表示本次操作为POST 
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0); 
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
     /*
     HTTP/1.1 200 OK
     Content-Type: text/json; charset=UTF-8

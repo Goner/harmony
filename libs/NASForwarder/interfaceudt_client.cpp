@@ -54,12 +54,7 @@ int recv_msg(char **buf, int *len)
 }
 
 
-int remote_access_auth (char *account, char *password, char *license, int len)
-{
-	char remote_ip[MAX_IP]="10.1.8.132";
-	char remote_msg_port[MAX_PORT]="8200";
-	return udt_connect(&g_msg_client,remote_ip,remote_msg_port,CON_MSG);
-}
+
 
 int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int con_type)
 {

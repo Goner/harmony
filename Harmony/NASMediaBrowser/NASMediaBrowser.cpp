@@ -100,7 +100,7 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
 {
     NPT_Int32 index = start;
     do {
-        Arguments arguments = SetActionArguments(obj_id, index, 30);
+        Arguments arguments = SetActionArguments(obj_id, index, 16);
         NPT_String soapRequest;
         FormatSoapRequest(NASServiceType, "Browser", arguments, soapRequest);
         
@@ -134,11 +134,12 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
             items->Clear();
         }
         
-        if ((tm && tm < list->GetItemCount()) || (max_results && max_results <= list->GetItemCount())) {
+        if ((tm && tm <= list->GetItemCount()) || (max_results && max_results <= list->GetItemCount())) {
             break;
         }
         
         index = start + list->GetItemCount();
+        printf("start:%d, index:%d\n", start, index);
         
     } while (1);
 
@@ -252,7 +253,7 @@ NASRemoteMediaBrowser::ParseSoapResponse(const char*  soapResponse,
         goto failure;
     
     // verify action name is identical to SOAPACTION header
-    if (soap_action_response->GetTag().Compare(NPT_String(actionName) + "Response", true))
+    if (!soap_action_response->GetTag().Compare(NPT_String(actionName) + "Response", true))
         goto failure;
     
     // verify namespace

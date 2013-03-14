@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 1
-#define FAKE_NASSERVER 1
+#define FAKE_INTERFACE 0
+#define FAKE_NASSERVER 0
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -215,17 +215,17 @@ static bool bRemoteAccess;
 #if FAKE_NASSERVER
     return TRUE;
 #else
-//    std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
-//    if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
-//        nasMediaBrowserPtr  = localMediaBrowserPtr;
-//        NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
-//        
-//        if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
-//            return TRUE;
-//        } else {
-//            return FALSE;
-//        }
-//    }
+    std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
+    if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
+        nasMediaBrowserPtr  = localMediaBrowserPtr;
+        NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
+        
+        if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
     
     std::shared_ptr<NASRemoteMediaBrowser> remoteMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
         if(NPT_SUCCEEDED(remoteMediaBrowserPtr->Connect())){
@@ -235,6 +235,10 @@ static bool bRemoteAccess;
     }
     return FALSE;
 #endif
+}
+
++ (BOOL)isRemoteAccess{
+    return bRemoteAccess;
 }
 
 + (MediaObject *)convToMediaObjct:(PLT_MediaObject *)pltObject{
@@ -276,12 +280,9 @@ static bool bRemoteAccess;
     
    static CategoryDesc mediaCetegories[] = {
         {ImageRecentID,ImageRecentTitle},
+        {ImageFavorID, ImageFavorTitle},
         {ImagePersonID,IMagePersonTitle},
-//      {ImageLocationID, ImageLocationTitle},
-        {ImageDateID, ImageDateTitle},
-        {ImageFavorID, ImageFavorTitle}
-        //,{MusicID, MusicTitle}
-        //,{VideoID, VideoTitle}
+        {ImageDateID, ImageDateTitle}
     };
     
     for (int i = 0; i < sizeof(mediaCetegories)/sizeof(CategoryDesc); i++) {

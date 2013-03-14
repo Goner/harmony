@@ -21,7 +21,7 @@
 #include "message.h"
 
 
-#define SERVERIP "10.1.8.253"
+#define SERVERIP "202.85.216.203" //"10.1.8.253"
 #define SERVERPORT 9100
 #define CLIENT_LOCAL_PORT 9002
 #define CLIENT_LOCAL_PORT1 9003
@@ -434,6 +434,7 @@ int remote_auth(char *user,char *pwd)
     }
     else
     {
+        close(sockfd);
         printf("build_channel failed\n");
         return -1;
     }
@@ -446,6 +447,7 @@ int remote_auth(char *user,char *pwd)
     ret = init();
     if(ret == -1)
     {
+        close(sockfd);
 	    printf("reinit failed\n");
 	    return -1;
     }
@@ -463,13 +465,14 @@ int remote_auth(char *user,char *pwd)
     ret = mysendto(sockfd, send, strlen(send), 0, (struct sockaddr *)&box_addr);
     if (ret == -1)
     {
+        close(sockfd);
         printf("send to box p2p test data failed\n ");
     }
     else
     {
         printf("send to box p2p test data OK sendnum:%d box_ip:%s box_port:%d\n", ret, build_channel_ack_msg.box_ip, build_channel_ack_msg.box_port);
     }
-    mysleep(3);    
+    
     g_msg_client =UDT::socket(AF_INET, SOCK_DGRAM, 0);
     int snd_buf = 64000;
     int rcv_buf = 64000;
@@ -482,19 +485,25 @@ int remote_auth(char *user,char *pwd)
     bool rendezvous = true;
     if (UDT::setsockopt (g_msg_client, SOL_SOCKET, UDT_RENDEZVOUS,&rendezvous , sizeof(bool)) !=0)
     {
+        close(sockfd);
+        close(g_msg_client);
         printf("setsockopt SO_REUSEADDR %s \n",UDT::getlasterror().getErrorMessage());
         return -1;
     }
                  
     if (UDT::ERROR == UDT::bind(g_msg_client, sockfd))
     {
+        close(sockfd);
+        close(g_msg_client);
         printf("UDT bind failed:%s\n" , UDT::getlasterror().getErrorMessage());
         return -1;         
     }    
 
     if (UDT::ERROR == UDT::connect(g_msg_client, (struct sockaddr *)&box_addr,sizeof(box_addr)))
     {
-        printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());        
+        close(sockfd);
+        close(g_msg_client);
+        printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());
         return -1;
     }
     else
@@ -519,6 +528,10 @@ int remote_auth(char *user,char *pwd)
     }
     else
     {
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
         printf("build_channel failed\n");
         return -1;
     }
@@ -530,6 +543,10 @@ int remote_auth(char *user,char *pwd)
     ret = init1();
     if(ret == -1)
     {
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
 	    printf("reinit failed\n");
 	    return -1;
     }
@@ -547,29 +564,44 @@ int remote_auth(char *user,char *pwd)
     ret = mysendto(sockfd1, send1, strlen(send1), 0, (struct sockaddr *)&box_addr);
     if (ret == -1)
     {
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
         printf("send to box p2p test data failed\n ");
     }
     else
     {
         printf("send to box p2p test data OK sendnum:%d box_ip:%s box_port:%d\n", ret, build_channel_ack_msg1.box_ip, build_channel_ack_msg1.box_port);
-    }
-    mysleep(3);    
+    }   
     
     if (UDT::setsockopt (g_file_client, SOL_SOCKET, UDT_RENDEZVOUS,&rendezvous , sizeof(bool)) !=0)
     {
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
         printf("setsockopt SO_REUSEADDR %s \n",UDT::getlasterror().getErrorMessage());
         return -1;
     }
                  
     if (UDT::ERROR == UDT::bind(g_file_client, sockfd1))
     {
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
         printf("UDT bind failed:%s\n" , UDT::getlasterror().getErrorMessage());
         return -1;         
     }    
 
     if (UDT::ERROR == UDT::connect(g_file_client, (struct sockaddr *)&box_addr,sizeof(box_addr)))
     {
-        printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());        
+        close(sockfd);
+        close(g_msg_client);
+        close(sockfd1);
+        close(g_file_client);
+        printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());
         return -1;            
     }
     else

@@ -26,7 +26,7 @@
     if (self) {
         // Custom initialization
         self.fetcher = [[MediaResourceFetcher alloc] init ];
-        [self.fetcher initWithNetworkMode:LOCAL_NETWORK];
+        [self.fetcher initWithNetworkMode:[NASMediaLibrary isRemoteAccess] ? REMOTE_NETWORK : LOCAL_NETWORK];
     }
     return self;
 }
@@ -246,7 +246,7 @@
 {
     NSString *urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getResizedURL];
     if(!urlString) {
-        urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getMediaURL];
+        urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getResizedURL];
     }
     MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;

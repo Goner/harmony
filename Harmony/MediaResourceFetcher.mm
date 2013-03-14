@@ -27,8 +27,12 @@
     if (data != nil){
         processData(data);
     }
-    if (LOCAL_NETWORK == networkMode) {
-        ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURL *mediaURL = [NSURL URLWithString:url];
+    if (REMOTE_NETWORK == networkMode){
+        mediaURL = [NSURL URLWithString:[@"http://114.249.228.186:8200" stringByAppendingString:[mediaURL path]]];
+    }
+    if (LOCAL_NETWORK == networkMode || REMOTE_NETWORK == networkMode) {
+        ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:mediaURL];
         [request setCompletionBlock:^{
             NSData *responseData = [request responseData];
             dispatch_async(dispatch_get_main_queue(), ^{

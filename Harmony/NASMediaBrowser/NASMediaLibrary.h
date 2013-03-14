@@ -97,7 +97,8 @@
 @end
 
 @interface NASMediaLibrary : NSObject
-+ (BOOL)     initWithUser:(NSString*) user password:(NSString*) passwd;
++ (BOOL) initWithUser:(NSString*) user password:(NSString*) passwd;
++ (BOOL) isRemoteAccess;
 
 //media interface
 + (NSArray *) getMediaCategories;
