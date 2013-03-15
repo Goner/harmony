@@ -174,7 +174,7 @@
 }
 
 - (void) applyBlockForSelectedItems:(void(^)(MediaItem *))block {
-    if([self.navigationController.topViewController isKindOfClass:[PictureViewerController class]]){
+    if(self.rootController.imageBrowserEditingMode){
         PictureViewerController *pictureViewerController = (PictureViewerController *)self.navigationController.topViewController;
         block([self.mediaObjects objectAtIndex:[pictureViewerController getCurrentPageIndex]]);
         return;
@@ -201,16 +201,20 @@
 }
 
 - (void)tagFavorSelectedItems{
+
     NSMutableArray *favors = [[NSMutableArray alloc] init];
     NSMutableArray *unFavors = [[NSMutableArray alloc] init];
     
     [self applyBlockForSelectedItems:^(MediaItem *item){
-        NSString *title = [[self.fetcher getFileNameFromURL:[item getMediaURL]] stringByDeletingPathExtension];
+        NSString *title = [[self.fetcher getFileNameFromURL:[item getThumbnailURL]] stringByDeletingPathExtension];
         BOOL favored = [item.id rangeOfString:@"*"].location != NSNotFound;
         if(favored) {
             [unFavors addObject:title];
         } else {
             [favors addObject:title];
+        }
+        if(self.rootController.imageBrowserEditingMode){
+            self.rootController.favorImage.hidden = favored;
         }
     }];
     [NASMediaLibrary tagFavoriteObjects:favors];
@@ -236,7 +240,6 @@
         NSString *file =[ self.fetcher getFileNameFromURL:[item getMediaURL]];
         [array addObject:file];
     }];
-    NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
     [self clearSelections];
 }
 
@@ -253,6 +256,14 @@
     MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;
 }
+
+- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index{
+    MediaItem *item = [self.mediaObjects objectAtIndex:index];
+    BOOL favored = [item.id rangeOfString:@"*"].location != NSNotFound;
+    self.rootController.favorImage.hidden = !favored;
+    return nil;
+}
+
 @end
 
 

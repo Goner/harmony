@@ -93,8 +93,8 @@
 - (NSString *)getURLForKey:(NSString *)key{
 #if FAKE_NASSERVER
     static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"http://img3.cache.netease.com/photo/0008/2012-03-27/t_7TK32ME629A50008.jpg",@"Thumbnail",
-                                     @"http://news.xinhuanet.com/yzyd/travel/20130130/145710538519106419931n.jpg",@"Resized",
+                                     @"http://img3.cache.netease.com/photo/0008/2012-03-27/t_7TK32ME629A50008.jpg",@"Thumbnails",
+                                     @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"Resized",
                                      @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
     NSString *url = [fakeURLs objectForKey:key];
     return url;

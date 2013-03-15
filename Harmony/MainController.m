@@ -214,6 +214,7 @@ static MainController *currentMainController;
     if(self.imageBrowserEditingMode) {
         self.imageBrowserEditingMode = NO;
         [self enableBottomBarEditingState:NO];
+        self.favorImage.hidden = YES;
         [self hideButtonBack:self.gridController.currentCategory.parentCategory == nil];
     }
     if([self.navigationController.viewControllers count] > 1) {

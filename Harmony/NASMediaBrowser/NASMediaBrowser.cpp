@@ -36,7 +36,7 @@ MediaBrowserEx::OnDeviceAdded(PLT_DeviceDataReference& device)
 NPT_Result
 MediaBrowserEx::WaitForDeviceDiscover()
 {
-    return shared_var.WaitUntilEquals(1, 30000);
+    return shared_var.WaitUntilEquals(1, 9000);
 }
 
 
@@ -208,7 +208,7 @@ NASRemoteMediaBrowser::ParseSoapResponse(const char*  soapResponse,
                                          const char*  actionName,
                                          Arguments&    arguments)
 {
-    NPT_Result          res;
+    NPT_Result          res = NPT_SUCCESS;
     NPT_String          service_type;
     NPT_String          str;
     NPT_XmlElementNode* xml = NULL;
