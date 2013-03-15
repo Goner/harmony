@@ -44,9 +44,16 @@
 - (NSString *) description {
     return [NSString stringWithFormat: @"MediaObject: %@, %@, %@", title, id, parentCategory];
 }
+- (NSString *)getThumbnailURL {
+    return nil;
+}
 
-- (id)getMediaItem {
-    return self;
+- (NSString *)getResizedURL {
+    return nil;
+}
+
+- (NSString *)getMediaURL {
+    return nil;
 }
 @end
 
@@ -56,21 +63,18 @@
 - (NSString *)description {
     return [[NSString stringWithFormat:@"MediaContainer: %d, ", childrenCount] stringByAppendingString: [super description]];
 }
-- (id)getMediaItem {
-    MediaObject *obj = self;
-    do {
-        NSArray *array = [NASMediaLibrary getMediaObjects:(MediaCategory *)obj withMaxResults:1];
-        if(array.count == 0) {
-            obj = nil;
-            break;
-        }
-        for (MediaObject *obj in array){
-            if([obj isKindOfClass:[MediaItem class]]){
-                return obj;
-            }
-        }
-    }while(1);
-    return nil;
+
+- (NSString *)getThumbnailURL {
+    NSString * sid = [[NASMediaLibrary getServerBaseURL] stringByAppendingFormat:@"%@", self.id];
+    return [[NASMediaLibrary getServerBaseURL] stringByAppendingFormat:@"/Thumbnails/%@", self.id];
+}
+
+- (NSString *)getResizedURL {
+    return [[NASMediaLibrary getServerBaseURL] stringByAppendingFormat:@"/Resized/%@", self.id];
+}
+
+- (NSString *)getMediaURL {
+    return [[NASMediaLibrary getServerBaseURL] stringByAppendingFormat:@"/MediaItems/%@", self.id];
 }
 @end
 
@@ -104,7 +108,7 @@
 #endif
 }
 - (NSString *)getThumbnailURL {
-    return [self getURLForKey:@"Thumbnail"];
+    return [self getURLForKey:@"Thumbnails"];
 }
 
 - (NSString *)getResizedURL {
@@ -147,13 +151,13 @@
 
 - (BOOL) isEqual:(id)object{
     if([object isKindOfClass:[Friend class]]){
-        return [self hash] == [object hash];
+        return [self.name compare:((Friend *)object).name] == NSOrderedSame;
     }
     return FALSE;
 }
 
 - (NSUInteger)hash{
-    return [[self description] hash];
+    return [self.name hash];
 }
 @end
 
@@ -206,6 +210,8 @@ typedef std::shared_ptr<NASMediaBrowser> NASMediaBrowserPtr;
 @implementation NASMediaLibrary
 static NASMediaBrowserPtr nasMediaBrowserPtr;
 static bool bRemoteAccess;
+static NPT_String ipAddress;
+static NSString * loginedUserName;
 
 + (BOOL) initWithUser:(NSString *)user password:(NSString *)passwd {
     nasMediaBrowserPtr = nullptr;
@@ -215,30 +221,36 @@ static bool bRemoteAccess;
 #if FAKE_NASSERVER
     return TRUE;
 #else
-    std::shared_ptr<NASLocalMediaBrowser> localMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
-    if(NPT_SUCCEEDED(localMediaBrowserPtr->Connect())){
-        nasMediaBrowserPtr  = localMediaBrowserPtr;
-        NPT_String ipAddress = localMediaBrowserPtr->GetIpAddress();
-        
-        if(local_access_auth((char*)ipAddress, (char*)[user UTF8String], (char*)[passwd UTF8String]) == 0){
-            return TRUE;
-        } else {
+    nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
+    if(NPT_SUCCEEDED(nasMediaBrowserPtr->Connect())){
+        ipAddress = nasMediaBrowserPtr->GetIpAddress();
+        if(local_access_auth(ipAddress, userName, password) != 0){
             return FALSE;
         }
+        bRemoteAccess = FALSE;
+    } else {    
+        nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
+        if(NPT_FAILED(nasMediaBrowserPtr->Connect())){
+            return FALSE;
+        }
+        ipAddress = nasMediaBrowserPtr->GetIpAddress();
+        bRemoteAccess = TRUE;
     }
-    
-    std::shared_ptr<NASRemoteMediaBrowser> remoteMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
-        if(NPT_SUCCEEDED(remoteMediaBrowserPtr->Connect())){
-            nasMediaBrowserPtr = remoteMediaBrowserPtr;
-            bRemoteAccess = TRUE;
-            return TRUE;
-    }
-    return FALSE;
+    loginedUserName = user;
+    return TRUE;
 #endif
+}
+
++ (NSString *)getServerBaseURL{
+    return [NSString stringWithFormat:@"http://%s:8200",ipAddress.GetChars()];
 }
 
 + (BOOL)isRemoteAccess{
     return bRemoteAccess;
+}
+
++ (NSString *)getLoginedUserName{
+    return loginedUserName;
 }
 
 + (MediaObject *)convToMediaObjct:(PLT_MediaObject *)pltObject{

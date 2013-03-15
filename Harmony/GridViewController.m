@@ -80,14 +80,18 @@
 
     UIImage *img = [[UIImage alloc] init];
     MediaObject *object = [self.mediaObjects objectAtIndex:index];
-    MediaItem *item = [object getMediaItem];
 
-    NSString *url = [item getThumbnailURL] ;
+    NSString *url = [object getThumbnailURL] ;
     [self.fetcher getDataFromURL:url completion:^(NSData *data){
         [cell setImage:[UIImage imageWithData:data]];
     }];
     [cell setContentIndex: index];
     [cell setImage: img];
+    if([object isKindOfClass:[MediaCategory class]]){
+        cell.titleLable.hidden = NO;
+        cell.titleLable.text = object.title;
+    }
+    
     if ([object.id rangeOfString:@"*"].location != NSNotFound) {
         [cell tagFavor];
     }else {
@@ -116,14 +120,16 @@
             self.mediaObjects = [NASMediaLibrary getMediaObjects:self.currentCategory];
             [self.gridView reloadData];
             [[self rootController] hideButtonBack: FALSE];
+            [self.rootController enableButtonEditing:[self canBeInEditingMode]];
         } else {
             PictureViewerController *browserController = [[PictureViewerController alloc] initWithDelegate:self];
             browserController.rootController = self.rootController;
             [browserController setInitialPageIndex: cell.contentIndex];
+            [self.rootController enableImageBrowserEditing:YES];
 
             [self.navigationController pushViewController:browserController animated:YES];
         }
-        [self.rootController enableButtonEditing:[self canBeInEditingMode]];
+        
     }
     
 }
@@ -231,7 +237,6 @@
         [array addObject:file];
     }];
     NSString *id = [NASMediaLibrary shareAlbumWithFiles:array];
-    NSLog(@"%@", id);
     [self clearSelections];
 }
 
@@ -244,10 +249,7 @@
 
 - (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    NSString *urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getResizedURL];
-    if(!urlString) {
-        urlString = [[[self.mediaObjects objectAtIndex:index] getMediaItem] getResizedURL];
-    }
+    NSString *urlString = [[self.mediaObjects objectAtIndex:index] getResizedURL];
     MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;
 }

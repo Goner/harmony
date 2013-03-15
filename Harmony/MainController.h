@@ -17,6 +17,7 @@
 @property (nonatomic, assign) int categoryIndex;
 @property (nonatomic, strong) NSArray *mediaCategories;
 @property (nonatomic) BOOL editingMode;
+@property (nonatomic) BOOL imageBrowserEditingMode;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 - (IBAction)onBackButtonPressed:(id)sender;
@@ -39,6 +40,7 @@
 - (void) hideBottomBar: (BOOL) hiden;
 - (void) hideCategoryDroplist: (BOOL) hiden;
 - (void) enableButtonEditing: (BOOL)enable;
+- (void) enableImageBrowserEditing: (BOOL)enable;
 
 - (IBAction)onButtonActionMorePressed:(id)sender;
 - (IBAction)onButtonCategoryPressed:(id)sender;

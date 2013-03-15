@@ -45,8 +45,10 @@
 @property (retain) NSString* id;
 @property (retain) MediaCategory *parentCategory;
 
+- (NSString *)getThumbnailURL;
+- (NSString *)getResizedURL;
+- (NSString *)getMediaURL;
 - (NSString *)description;
-- (id)getMediaItem;
 @end
 
 @interface MediaCategory : MediaObject {
@@ -56,6 +58,7 @@
 @property (assign) NSInteger childrenCount;
 
 - (NSString *)description;
+
 @end
 
 @interface MediaItem : MediaObject {
@@ -69,9 +72,6 @@
 @property (retain) NSArray* resources;
 
 - (NSString *)description;
-- (NSString *)getThumbnailURL;
-- (NSString *)getResizedURL;
-- (NSString *)getMediaURL;
 @end
 
 @interface User : NSObject {
@@ -99,6 +99,8 @@
 @interface NASMediaLibrary : NSObject
 + (BOOL) initWithUser:(NSString*) user password:(NSString*) passwd;
 + (BOOL) isRemoteAccess;
++ (NSString *)getServerBaseURL;
++ (NSString *)getLoginedUserName;
 
 //media interface
 + (NSArray *) getMediaCategories;

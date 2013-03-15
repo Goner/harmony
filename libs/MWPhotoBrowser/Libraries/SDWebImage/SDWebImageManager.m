@@ -9,6 +9,7 @@
 #import "SDWebImageManager.h"
 #import "SDImageCache.h"
 #import "SDWebImageDownloader.h"
+#import "NASMediaLibrary.h"
 
 static SDWebImageManager *instance;
 
@@ -50,12 +51,17 @@ static SDWebImageManager *instance;
     return instance;
 }
 
+- getCacheKeyForURL:(NSURL *)url{
+    NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[[url pathComponents] componentsJoinedByString:@"-"]];
+    return cacheKey;
+}
 /**
  * @deprecated
  */
 - (UIImage *)imageWithURL:(NSURL *)url
 {
-    return [[SDImageCache sharedImageCache] imageFromKey:[url absoluteString]];
+ 
+    return [[SDImageCache sharedImageCache] imageFromKey:[self getCacheKeyForURL:url]];
 }
 
 /**
@@ -100,7 +106,7 @@ static SDWebImageManager *instance;
     [cacheDelegates addObject:delegate];
     [cacheURLs addObject:url];
     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:delegate, @"delegate", url, @"url", [NSNumber numberWithInt:options], @"options", nil];
-    [[SDImageCache sharedImageCache] queryDiskCacheForKey:[url absoluteString] delegate:self userInfo:info];
+    [[SDImageCache sharedImageCache] queryDiskCacheForKey:[self getCacheKeyForURL:url] delegate:self userInfo:info];
 }
 
 - (void)cancelForDelegate:(id<SDWebImageManagerDelegate>)delegate
@@ -243,7 +249,7 @@ static SDWebImageManager *instance;
         // Store the image in the cache
         [[SDImageCache sharedImageCache] storeImage:image
                                           imageData:downloader.imageData
-                                             forKey:[downloader.url absoluteString]
+                                             forKey:[self getCacheKeyForURL:downloader.url]
                                              toDisk:!(options & SDWebImageCacheMemoryOnly)];
     }
     else if (!(options & SDWebImageRetryFailed))

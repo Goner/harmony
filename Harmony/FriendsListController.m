@@ -41,18 +41,17 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated{
+    if([_sharedFolders count] == 0){
+        [_sharedFolders removeObject:_curFolderPath];
+    }
+    [NASMediaLibrary shareFolder:_curFolderPath withFriends:_sharedFriends];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload
-{
-    if([_sharedFolders count] == 0){
-       [_sharedFolders removeObject:_curFolderPath];
-    }
-    [NASMediaLibrary shareFolder:_curFolderPath withFriends:_sharedFriends];
 }
 
 #pragma mark - Table view data source
@@ -81,7 +80,8 @@
     FriendCell *friendCell = (FriendCell *)cell;
     Friend *friend= [_friends objectAtIndex:indexPath.row];
     friendCell.friendNameLable.text = friend.name;
-    friendCell.checkStateImageView.hidden = ![_sharedFriends containsObject:friend];
+    BOOL bContain = [_sharedFriends containsObject:friend];
+    friendCell.checkStateImageView.hidden = !bContain;
     
     UIView *bgView = [[UIView alloc] init];
     [bgView setBackgroundColor:[UIColor colorWithRed:0.69 green:0.69 blue:0.588 alpha:1]];

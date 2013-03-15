@@ -41,6 +41,8 @@
     }
     NSString *user = [data objectForKey:@"userName"];
     NSString *passwd = [data objectForKey:@"password"];
+    self.userName.text = user;
+    self.password.text = passwd;
     [self loginWithUser:user withPassword:passwd updateLoginRecord:FALSE];
 }
 

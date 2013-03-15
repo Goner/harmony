@@ -11,6 +11,7 @@
 #import "ASINetworkQueue.h"
 #import "ASIHTTPRequest.h"
 #import "AssetsLibrary/ALAssetsLibrary.h"
+#import "NASMediaLibrary.h"
 
 @implementation MediaResourceFetcher
 @synthesize networkQueue;
@@ -26,10 +27,11 @@
     NSData* data = [self getCacheDataForURL:url];
     if (data != nil){
         processData(data);
+        return;
     }
     NSURL *mediaURL = [NSURL URLWithString:url];
     if (REMOTE_NETWORK == networkMode){
-        mediaURL = [NSURL URLWithString:[@"http://114.249.228.186:8200" stringByAppendingString:[mediaURL path]]];
+        mediaURL = [NSURL URLWithString:[[NASMediaLibrary getServerBaseURL] stringByAppendingString:[mediaURL path]]];
     }
     if (LOCAL_NETWORK == networkMode || REMOTE_NETWORK == networkMode) {
         ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:mediaURL];
@@ -59,9 +61,9 @@
 }
 
 - (NSString *)getCacheFilePathFromURL:(NSString *)url{
-    NSString *fileName = [self getFileNameFromURL:url];
+    NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[[[NSURL URLWithString:url] pathComponents] componentsJoinedByString:@"-"]];
     NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    return [cachesPath stringByAppendingPathComponent:fileName];
+    return [cachesPath stringByAppendingPathComponent:cacheKey];
 }
 
 - (NSData *)getCacheDataForURL:(NSString *)url {

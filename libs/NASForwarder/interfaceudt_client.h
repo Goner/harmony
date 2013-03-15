@@ -7,7 +7,7 @@
 
 const char* transact_proc_call(const char *in_param);
 
-int local_access_auth(char *ip, char *account, char *password);
+int local_access_auth(const char *ip, const char *account, const char *password);
 int send_msg(char *buf, int len);
 int recv_msg(char **buf, int *len);
 int get_vcard_data(const char *device_id, char **pvcard_data);

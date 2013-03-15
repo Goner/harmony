@@ -89,6 +89,10 @@ static MainController *currentMainController;
         _categoryIndex = -1;
     }
     
+    if (self.imageBrowserEditingMode) {
+        [self enableImageBrowserEditing:NO];
+    }
+    
     if (_categoryIndex != index) {
         _categoryIndex = index;
         NSString *title = [[self.mediaCategories objectAtIndex: index] title];
@@ -192,6 +196,12 @@ static MainController *currentMainController;
     _buttonTagFavor.hidden = !state;
 }
 
+- (void) enableImageBrowserEditing: (BOOL)enable{
+    [self enableBottomBarEditingState:enable];
+    [self hideButtonBack:NO];
+    self.imageBrowserEditingMode = YES;
+}
+
 - (IBAction)onBackButtonPressed:(id)sender {
     if (self.editingMode) {
         self.editingMode = NO;
@@ -200,6 +210,11 @@ static MainController *currentMainController;
         [self hideCategoryDroplist:NO];
         [self hideButtonBack:self.gridController.currentCategory.parentCategory == nil];
         return;
+    }
+    if(self.imageBrowserEditingMode) {
+        self.imageBrowserEditingMode = NO;
+        [self enableBottomBarEditingState:NO];
+        [self hideButtonBack:self.gridController.currentCategory.parentCategory == nil];
     }
     if([self.navigationController.viewControllers count] > 1) {
         [self.navigationController popViewControllerAnimated: YES];

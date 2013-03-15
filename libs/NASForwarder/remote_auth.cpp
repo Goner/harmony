@@ -397,7 +397,7 @@ int user_outer_login(struct outer_login_message msg, struct outer_login_ack_mess
 
 
 
-int remote_auth(char *user,char *pwd)
+int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
 {
 	int ret = -1;
     struct outer_login_message msg;
@@ -430,6 +430,7 @@ int remote_auth(char *user,char *pwd)
     ret = build_channel(sockfd, CLIENT_LOCAL_PORT, build_channel_msg, build_channel_ack_msg);
     if (ret == 0)
     {
+        strncpy(ipAddress, build_channel_ack_msg.box_ip, 16);
         printf("build channel OK get box outer_ip:%s outer_port:%d\n", build_channel_ack_msg.box_ip, build_channel_ack_msg.box_port);
     }
     else

@@ -46,7 +46,7 @@ extern UDTSOCKET g_remotemsg_client;
 /*UDT建立连接，
 type：CON_MSG，消息传输
 	  CON_FILE 文件传输*/
-int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int type);
+int udt_connect(UDTSOCKET *client,const char *udt_ip,char *udt_port,int type);
 string Char2String(char *dest);
 /*初始化信号量*/
 int init_sem();

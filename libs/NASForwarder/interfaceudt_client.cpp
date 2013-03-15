@@ -56,7 +56,7 @@ int recv_msg(char **buf, int *len)
 
 
 
-int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int con_type)
+int udt_connect(UDTSOCKET *client,const char *udt_ip,char *udt_port,int con_type)
 {
    UDT::startup();
    int i=0;
@@ -136,7 +136,7 @@ int udt_connect(UDTSOCKET *client,char *udt_ip,char *udt_port,int con_type)
 
 
 
-int local_access_auth(char *ip, char *account, char *password)
+int local_access_auth(const char *ip, const char *account, const char *password)
 {
 	int ret=-1;
 	UDTSOCKET client;

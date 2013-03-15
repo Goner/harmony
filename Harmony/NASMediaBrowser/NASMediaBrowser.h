@@ -46,6 +46,7 @@ public:
                                PLT_MediaObjectListReference& list,
                                NPT_Int32                     start = 0,
                                NPT_Cardinal                  max_results = 0) = 0;
+    virtual NPT_String GetIpAddress() = 0;
 };
 
 
@@ -58,7 +59,6 @@ public:
                                PLT_MediaObjectListReference& list,
                                NPT_Int32                     start = 0,
                                NPT_Cardinal                  max_results = 0);
-public:
     NPT_String GetIpAddress();
 
 private:
@@ -78,6 +78,7 @@ public:
                        PLT_MediaObjectListReference& list,
                        NPT_Int32                     start = 0,
                        NPT_Cardinal                  max_results = 0);
+    NPT_String GetIpAddress() {return _ipAddress;}
 private:
     NPT_Result FormatSoapRequest(const char*        actionName,
                                  const char*        serviceType,
@@ -91,6 +92,7 @@ private:
                             NPT_Int32       start,
                             NPT_Cardinal    max_results);
 private:
+    NPT_String _ipAddress;
     NPT_String _account;
     NPT_String _password;
     NPT_String _license;

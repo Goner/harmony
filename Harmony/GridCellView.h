@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UIImageView *favorImage;
+@property (weak, nonatomic) IBOutlet UILabel *titleLable;
 
 @property (nonatomic) int contentIndex;
 @property (nonatomic) BOOL selected;
