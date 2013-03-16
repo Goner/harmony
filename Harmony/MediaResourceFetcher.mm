@@ -27,6 +27,7 @@
     NSData* data = [self getCacheDataForURL:url];
     if (data != nil){
         processData(data);
+        NSLog(@"hit fetcher cache.\n");
         return;
     }
     NSURL *mediaURL = [NSURL URLWithString:url];
@@ -61,7 +62,8 @@
 }
 
 - (NSString *)getCacheFilePathFromURL:(NSString *)url{
-    NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[[[NSURL URLWithString:url] pathComponents] componentsJoinedByString:@"-"]];
+    NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[[[NSURL URLWithString:url] path] stringByReplacingOccurrencesOfString:@"/" withString:@"-"]];
+    NSLog(@"get cache file path for key:%@\n", cacheKey);
     NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     return [cachesPath stringByAppendingPathComponent:cacheKey];
 }

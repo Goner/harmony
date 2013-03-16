@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 0
-#define FAKE_NASSERVER 0
+#define FAKE_INTERFACE 1
+#define FAKE_NASSERVER 1
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -219,6 +219,8 @@ static NSString * loginedUserName;
     const char* userName = [user UTF8String];
     const char* password = [passwd UTF8String];
 #if FAKE_NASSERVER
+    loginedUserName = user;
+    ipAddress = "127.0.0.1";
     return TRUE;
 #else
     nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();

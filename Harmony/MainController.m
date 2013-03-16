@@ -91,6 +91,7 @@ static MainController *currentMainController;
     
     if (self.imageBrowserEditingMode) {
         [self enableImageBrowserEditing:NO];
+        self.favorImage.hidden = YES;
     }
     
     if (_categoryIndex != index) {

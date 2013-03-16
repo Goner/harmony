@@ -78,15 +78,12 @@
 {
     GridCellView *cell = [GridCellView cellViewFromNib];
 
-    UIImage *img = [[UIImage alloc] init];
     MediaObject *object = [self.mediaObjects objectAtIndex:index];
-
     NSString *url = [object getThumbnailURL] ;
     [self.fetcher getDataFromURL:url completion:^(NSData *data){
         [cell setImage:[UIImage imageWithData:data]];
     }];
     [cell setContentIndex: index];
-    [cell setImage: img];
     if([object isKindOfClass:[MediaCategory class]]){
         cell.titleLable.hidden = NO;
         cell.titleLable.text = object.title;
