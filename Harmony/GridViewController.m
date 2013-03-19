@@ -249,7 +249,11 @@
 
 - (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    NSString *urlString = [[self.mediaObjects objectAtIndex:index] getResizedURL];
+    MediaObject *object = [self.mediaObjects objectAtIndex:index];
+    NSString *urlString = [object getResizedURL];
+    if(urlString == nil) {
+        urlString = [object getMediaURL];
+    }
     MWPhoto *pic = [MWPhoto photoWithURL: [NSURL URLWithString:urlString]];
     return pic;
 }

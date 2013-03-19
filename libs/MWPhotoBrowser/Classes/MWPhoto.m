@@ -109,17 +109,14 @@ caption = _caption;
             UIImage *cachedImage = [manager imageWithURL:_photoURL];
             if (cachedImage) {
                 // Use the cached image immediatly
-                NSLog(@"hit cached image.\n");
                 self.underlyingImage = cachedImage;
                 [self imageDidFinishLoadingSoDecompress];
             } else {
                 // Start an async download
-                NSLog(@"download url:%@", _photoURL);
                 [manager downloadWithURL:_photoURL delegate:self];
             }
         } else {
             // Failed - no source
-            NSLog(@"url is empty.\n");
             self.underlyingImage = nil;
             [self imageLoadingComplete];
         }

@@ -63,7 +63,6 @@
 
 - (NSString *)getCacheFilePathFromURL:(NSString *)url{
     NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[[[NSURL URLWithString:url] path] stringByReplacingOccurrencesOfString:@"/" withString:@"-"]];
-    NSLog(@"get cache file path for key:%@\n", cacheKey);
     NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     return [cachesPath stringByAppendingPathComponent:cacheKey];
 }

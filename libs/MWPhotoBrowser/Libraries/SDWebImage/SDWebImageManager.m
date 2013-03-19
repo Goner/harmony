@@ -53,7 +53,6 @@ static SDWebImageManager *instance;
 
 - getCacheKeyForURL:(NSURL *)url{
     NSString *cacheKey = [[NASMediaLibrary getLoginedUserName] stringByAppendingString:[url.path stringByReplacingOccurrencesOfString:@"/" withString:@"-"]];
-    NSLog(@"url:%@ the cache key:%@", url, cacheKey);
     return cacheKey;
 }
 /**

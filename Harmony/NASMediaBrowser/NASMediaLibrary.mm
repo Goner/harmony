@@ -13,8 +13,8 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 
-#define FAKE_INTERFACE 1
-#define FAKE_NASSERVER 1
+#define FAKE_INTERFACE 0
+#define FAKE_NASSERVER 0
 
 @implementation ProtocolInfo
 @synthesize protocol;
