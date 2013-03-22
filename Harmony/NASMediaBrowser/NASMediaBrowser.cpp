@@ -126,6 +126,9 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
         
         NPT_Int32 tm = 0;
         arguments["TotalMatches"].ToInteger(tm);
+        if(!tm) {
+            break;
+        }
         PLT_MediaObjectListReference items;
         PLT_Didl::FromDidl(arguments["Result"], items);
         

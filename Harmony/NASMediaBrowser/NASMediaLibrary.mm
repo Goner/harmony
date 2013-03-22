@@ -101,8 +101,13 @@
 #else
     for(Resource* resource in resources) {
         NSRange rng = [resource.uri rangeOfString:key options:NSCaseInsensitiveSearch];
-        if(rng.location != NSNotFound)
-            return resource.uri;
+        if(rng.location != NSNotFound) {
+            NSString *url = resource.uri;
+            if([NASMediaLibrary isRemoteAccess]) {
+                url = [[NASMediaLibrary getServerBaseURL] stringByAppendingString:[[NSURL URLWithString:url] path]];
+            }
+            return url;
+        }
     }
     return nil;
 #endif

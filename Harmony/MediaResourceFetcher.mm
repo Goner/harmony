@@ -30,12 +30,9 @@
         NSLog(@"hit fetcher cache.\n");
         return;
     }
-    NSURL *mediaURL = [NSURL URLWithString:url];
-    if (REMOTE_NETWORK == networkMode){
-        mediaURL = [NSURL URLWithString:[[NASMediaLibrary getServerBaseURL] stringByAppendingString:[mediaURL path]]];
-    }
+
     if (LOCAL_NETWORK == networkMode || REMOTE_NETWORK == networkMode) {
-        ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:mediaURL];
+        ASIHTTPRequest * __block request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
         [request setCompletionBlock:^{
             NSData *responseData = [request responseData];
             dispatch_async(dispatch_get_main_queue(), ^{

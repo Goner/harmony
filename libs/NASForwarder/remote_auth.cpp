@@ -304,7 +304,7 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
             {
                 printf("box is not online\n");
                 return -1;
-            }
+            }	
             else
             {
                 build_channel_ack_msg.status = p_build_channel_ack_msg->status;

@@ -89,7 +89,7 @@
     AddSharingCell *aCell = (AddSharingCell *)[self.tableView cellForRowAtIndexPath: indexPath];
     if(!aCell.isShared){
         [aCell setIsShared: YES];
-        [_shareFolders addObject:[_folderPath stringByAppendingPathComponent:[_subFolders objectAtIndex:row]]];
+        [_shareFolders addObject:[_subFolders objectAtIndex:row]];
     }
     
 }

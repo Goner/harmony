@@ -100,6 +100,7 @@
     sCell.row = indexPath.row;
     
     sCell.title.text = [_shareFolders objectAtIndex:indexPath.row];
+    sCell.cellDelegate = self;
     
     UIView *bgView = [[UIView alloc] init];
     [bgView setBackgroundColor:[UIColor colorWithRed:0.69 green:0.69 blue:0.588 alpha:1]];
@@ -132,7 +133,9 @@
 }
 
 - (void)cancelSharedItem:(int)row{
-    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [NASMediaLibrary unshareFolder:[_shareFolders objectAtIndex:row] withFriends:nil];
+    [_shareFolders removeObjectAtIndex:row];
+    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 @end
