@@ -41,20 +41,28 @@ private:
 
 class NASMediaBrowser  {
 public:
+    NASMediaBrowser(const char* account, const char* password):_account(account),_password(password){};
     virtual NPT_Result Connect() = 0;
+    virtual NPT_Result Reconnect() = 0;
+    virtual void Close() = 0;
     virtual NPT_Result Browser(const char*  obj_id,
                                PLT_MediaObjectListReference& list,
                                NPT_Int32                     start = 0,
                                NPT_Cardinal                  max_results = 0) = 0;
     virtual NPT_String GetIpAddress() = 0;
+protected:
+    NPT_String _account;
+    NPT_String _password;
 };
 
 
 class NASLocalMediaBrowser : public NASMediaBrowser
 {
 public:
-    NASLocalMediaBrowser();
+    NASLocalMediaBrowser(const char* account, const char* password);
     NPT_Result Connect();
+    NPT_Result Reconnect();
+    void Close();
     NPT_Result Browser(const char*  obj_id,
                                PLT_MediaObjectListReference& list,
                                NPT_Int32                     start = 0,
@@ -71,9 +79,10 @@ class NASRemoteMediaBrowser : public NASMediaBrowser
 {
 public:
     NASRemoteMediaBrowser(const char* account,
-                          const char* password,
-                          const char* license);
+                          const char* password);
     NPT_Result Connect();
+    NPT_Result Reconnect();
+    void Close();
     NPT_Result Browser(const char*  obj_id,
                        PLT_MediaObjectListReference& list,
                        NPT_Int32                     start = 0,
@@ -93,9 +102,7 @@ private:
                             NPT_Cardinal    max_results);
 private:
     NPT_String _ipAddress;
-    NPT_String _account;
-    NPT_String _password;
-    NPT_String _license;
+ 
 };
 
 #endif /* defined(____NASMediaBrowser__) */

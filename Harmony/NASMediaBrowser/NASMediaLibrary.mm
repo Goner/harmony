@@ -215,13 +215,13 @@ typedef std::shared_ptr<NASMediaBrowser> NASMediaBrowserPtr;
 @end
 
 @implementation NASMediaLibrary
-static NASMediaBrowserPtr nasMediaBrowserPtr;
+static NASMediaBrowserPtr nasMediaBrowserPtr = nullptr;
 static bool bRemoteAccess;
 static NPT_String ipAddress;
-static NSString * loginedUserName;
+static NSString *loginedUserName;
+static NSString *loginedPassword;
 
 + (BOOL) initWithUser:(NSString *)user password:(NSString *)passwd {
-    nasMediaBrowserPtr = nullptr;
     bRemoteAccess = FALSE;
     const char* userName = [user UTF8String];
     const char* password = [passwd UTF8String];
@@ -233,27 +233,40 @@ static NSString * loginedUserName;
     if(![NetWorkStateMonitor isNetworkAvailable]) {
         return false;
     }
-    nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
+    nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>(userName,  password);
     if(NPT_SUCCEEDED(nasMediaBrowserPtr->Connect())){
-        ipAddress = nasMediaBrowserPtr->GetIpAddress();
-        if(local_access_auth(ipAddress, userName, password) != 0){
-            return FALSE;
-        }
         bRemoteAccess = FALSE;
     } else {
         if(![NetWorkStateMonitor startRemoteServerMonitor]) {
             return FALSE;
         }
-        nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
+        nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password);
         if(NPT_FAILED(nasMediaBrowserPtr->Connect())){
             return FALSE;
         }
-        ipAddress = nasMediaBrowserPtr->GetIpAddress();
         bRemoteAccess = TRUE;
     }
+    ipAddress = nasMediaBrowserPtr->GetIpAddress();
     loginedUserName = user;
     return TRUE;
 #endif
+}
+
++ (BOOL) reconnect {
+    if(!nasMediaBrowserPtr) {
+        return NO;
+    }
+    if(NPT_SUCCEEDED(nasMediaBrowserPtr->Reconnect())){
+        ipAddress = nasMediaBrowserPtr->GetIpAddress();
+        return YES;
+    }
+    return NO;
+}
+
++ (void) closeConnection {
+    if(nasMediaBrowserPtr) {
+        nasMediaBrowserPtr->Close();
+    }
 }
 
 + (NSString *)getServerBaseURL{

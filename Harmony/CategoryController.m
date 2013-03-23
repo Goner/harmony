@@ -55,35 +55,30 @@
 }
 
 - (IBAction)onButton1Pressed:(id)sender {
-    NSLog(@"button1 pressed");
     [self.rootController setCategoryIndex: 0];
     [self.view setHidden: YES];
     
 }
 
 - (IBAction)onButton2Pressed:(id)sender {
-    NSLog(@"button2 pressed");
     [self.rootController setCategoryIndex: 1];
     [self.view setHidden: YES];
     
 }
 
 - (IBAction)onButton3Pressed:(id)sender {
-    NSLog(@"button3 pressed");
     [self.rootController setCategoryIndex: 2];
     [self.view setHidden: YES];
     
 }
 
 - (IBAction)onButton4Pressed:(id)sender {
-    NSLog(@"button4 pressed");
     [self.rootController setCategoryIndex: 3];
     [self.view setHidden: YES];
     
 }
 
 - (IBAction)onButton5Pressed:(id)sender {
-    NSLog(@"button5 pressed");
     [self.rootController setCategoryIndex: 4];
     [self.view setHidden: YES];
     

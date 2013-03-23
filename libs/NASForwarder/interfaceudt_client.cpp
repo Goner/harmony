@@ -71,15 +71,15 @@ int udt_connect(UDTSOCKET *client,const char *udt_ip,char *udt_port,int con_type
    if(CON_MSG==con_type)
    {
 	   hints.ai_socktype = SOCK_DGRAM;
-	    printf("SOCK_DGRAM\n");
+	    //printf("SOCK_DGRAM\n");
    }else
    {
        hints.ai_socktype = SOCK_STREAM;
-	   printf("SOCK_STREAM\n");
+	   //printf("SOCK_STREAM\n");
    }
    if (0 != getaddrinfo(NULL, udt_port, &hints, &local))
    {
-      cout << "incorrect network address.\n" << endl;
+      //cout << "incorrect network address.\n" << endl;
       return INTERFACE_ERROR;
    }
    cout<<"local->ai_family==" << local->ai_family<<endl;
@@ -96,19 +96,19 @@ int udt_connect(UDTSOCKET *client,const char *udt_ip,char *udt_port,int con_type
     UDT::setsockopt(*client, 0, UDP_RCVBUF, &rcv_buf, sizeof(int));
     
    freeaddrinfo(local);
-   printf("udt_ip==%s\n",udt_ip);
-   printf("udt_port==%s\n",udt_port);
+   //printf("udt_ip==%s\n",udt_ip);
+   //printf("udt_port==%s\n",udt_port);
    if (0 != getaddrinfo(udt_ip, udt_port, &hints, &peer))
    {
-      cout << "incorrect server/peer address. " << udt_ip << ":" << udt_port << endl;
+      //cout << "incorrect server/peer address. " << udt_ip << ":" << udt_port << endl;
       return INTERFACE_ERROR;
    }
 
-   printf("peer->ai_addrlen==%ud \n",peer->ai_addrlen);
+   //printf("peer->ai_addrlen==%ud \n",peer->ai_addrlen);
    while(i<4&&UDT::ERROR==udt_con)
    {
        udt_con=UDT::connect(*client, peer->ai_addr, peer->ai_addrlen);
-       cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
+       //cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
 	   i++;
 #ifdef WIN32
 	   Sleep(100);
@@ -119,13 +119,13 @@ int udt_connect(UDTSOCKET *client,const char *udt_ip,char *udt_port,int con_type
 
    if(i>=4&&UDT::ERROR==udt_con)
    {
-	  cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
+	  //cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
       return INTERFACE_ERROR;
    }
 #if 0
    if (UDT::ERROR == UDT::connect(*client, peer->ai_addr, peer->ai_addrlen))
    {
-      cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
+      //cout << "connect: " << UDT::getlasterror().getErrorMessage() << endl;
       return INTERFACE_ERROR;
    }
 #endif
@@ -202,12 +202,12 @@ const char* transact_proc_call (const char *in_param)
 {
 	char *temp_buf=NULL;
 	char buf[MAX_CHAR_P]={0};
-	printf("in_param=%s\n",in_param);
+	//printf("in_param=%s\n",in_param);
 	strncpy(buf,in_param,MAX_CHAR_P);
 	int temp_len=strlen(buf)+1;
 	int result_len=0;
 	int ret=-1;
-	printf("buf==%s\n",buf);
+	//printf("buf==%s\n",buf);
 	enter_critical(g_msgSemaphore);
 
 	ret=send_msg_common(&g_msg_client,in_param,strlen(in_param));
@@ -219,31 +219,31 @@ const char* transact_proc_call (const char *in_param)
 	}
 
    temp_len=0;
-   printf("recv json\n");
+   //printf("recv json\n");
    if (UDT::ERROR == UDT::recvmsg(g_msg_client, (char*)&temp_len, sizeof(int)))
    {
-      cout << " transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
+      //cout << " transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
 	  release_critical(g_msgSemaphore); 
       return NULL;
    }
     temp_buf=(char *)malloc(temp_len+1);
    if(NULL==temp_buf)
    {
-	  cout << " transact_proc_call:malloc faild!" << endl;
+	  //cout << " transact_proc_call:malloc faild!" << endl;
 	  release_critical(g_msgSemaphore);
 	  return NULL;
    }
     memset(temp_buf, 0, temp_len + 1);
-    printf("temp_len==%d\n",temp_len);
+    //printf("temp_len==%d\n",temp_len);
     
    if (UDT::ERROR == UDT::recvmsg(g_msg_client, temp_buf, temp_len))
    {
-      cout << "transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
+      //cout << "transact_proc_call:recvmsg: " << UDT::getlasterror().getErrorMessage() << endl;
 	  release_critical(g_msgSemaphore);
       return NULL;
    }
     
-   printf("out_param==%s\n",temp_buf);
+   //printf("out_param==%s\n",temp_buf);
    release_critical(g_msgSemaphore);
    return temp_buf;
 }
@@ -273,60 +273,60 @@ int get_vcard_data(const char *device_id, char **pvcard_data)
     }
 
     len=strlen(myjson)+1;
-    printf("json success:%s\n",myjson);
+    //printf("json success:%s\n",myjson);
 
     if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
     {
 		free(myjson);
 		myjson=NULL;
 		cJSON_Delete (root);
-        cout << "get_file: send:json len " << UDT::getlasterror().getErrorMessage() << endl;
+        //cout << "get_file: send:json len " << UDT::getlasterror().getErrorMessage() << endl;
         return -1;
     }
-    printf("send len success\n");
+    //printf("send len success\n");
     if (UDT::ERROR == UDT::send(g_file_client, myjson, len, 0))
     {
         free(myjson);
         myjson=NULL;
         cJSON_Delete (root);
-        cout <<  "get_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
+        //cout <<  "get_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
         return -1;
     }
     free(myjson);
     myjson=NULL;
     cJSON_Delete (root);
-    printf("send json success\n");
+    //printf("send json success\n");
     
 
     if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
     {
-        cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
+        //cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
         return -1;
     }
 
     if (size < 0)
     {
-        cout << "cann not get vcard file on the server\n";
+        //cout << "cann not get vcard file on the server\n";
         return -1;
     }
-    printf("vcard data size=%lld\n",size);
+    //printf("vcard data size=%lld\n",size);
 
     char *vcard_data = (char *)malloc(size);
     while(size-data_size>0)
     {
         memset( buf,0,MAX_CHAR_P);
         recv_size=UDT::recv(g_file_client, buf, MAX_CHAR_P, 0);
-        printf("received package size==%d\n",recv_size);
+        //printf("received package size==%d\n",recv_size);
         if (UDT::ERROR == recv_size){
-            cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
+            //cout << "get_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
             free(vcard_data);
             return -1;
         }
        memcpy(vcard_data + data_size, buf, recv_size);
 	   data_size += recv_size;
-	   printf("received data size == %d\n", data_size);
+	   //printf("received data size == %d\n", data_size);
     }
-    printf("get vcard file\n");
+    //printf("get vcard file\n");
 
     release_critical(g_fileSemaphore);
     *pvcard_data = vcard_data;
@@ -348,23 +348,23 @@ int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
 	len=strlen(json_cmd)+1;
     if (UDT::ERROR == UDT::send(g_file_client, (char*)&len, sizeof(int), 0))
     {
-      cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
+      //cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
     }
 
     if (UDT::ERROR == UDT::send(g_file_client, json_cmd, len, 0))
     {
-      cout <<  "transfer_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
+      //cout <<  "transfer_file: send: "<< UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
     }
 
     if (UDT::ERROR == UDT::recv(g_file_client, (char*)&size, sizeof(int64_t), 0))
     {
-      cout << "transfer_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
+      //cout << "transfer_file: recv" << UDT::getlasterror().getErrorMessage() << endl;
       return GET_FILE_FAILD;
     }
 
-    printf("size==%lld\n",size);
+    //printf("size==%lld\n",size);
 
     while(data_pos < data_size) {
         memset(buf,0,MAX_CHAR_P);
@@ -378,12 +378,12 @@ int transfer_data_for_cmd(const char *data, int data_size, const char *json_cmd)
 
         send_size = UDT::send(g_file_client, buf, send_size, 0);
         if (UDT::ERROR == send_size) {
-            cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
+            //cout << "transfer_file: send: " << UDT::getlasterror().getErrorMessage() << endl;
             return GET_FILE_FAILD;
         }
         data_pos += send_size;
    }
-   printf("send data %d\n", data_pos);
+   //printf("send data %d\n", data_pos);
 
    release_critical(g_fileSemaphore);
    return SUCCESS;

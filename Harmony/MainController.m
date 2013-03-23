@@ -226,7 +226,7 @@ static MainController *currentMainController;
 }
 
 - (void)autoFadeAlter{
-    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:@"操作完成" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"" message:@"操作请求已处理。" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     [alert show];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
         [alert dismissWithClickedButtonIndex:0 animated:YES];
@@ -269,6 +269,7 @@ static MainController *currentMainController;
 - (void) logout
 {
     [SimpleKeychain delete:@"merry99"];
+    [NASMediaLibrary closeConnection];
     [self dismissViewControllerAnimated: YES completion:nil];
 }
 

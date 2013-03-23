@@ -36,12 +36,13 @@ MediaBrowserEx::OnDeviceAdded(PLT_DeviceDataReference& device)
 NPT_Result
 MediaBrowserEx::WaitForDeviceDiscover()
 {
-    return shared_var.WaitUntilEquals(1, 9000);
+    return shared_var.WaitUntilEquals(1, 5000);
 }
 
 
-NASLocalMediaBrowser::NASLocalMediaBrowser()
-    :ctrlPoint(new PLT_CtrlPoint(NULL)),
+NASLocalMediaBrowser::NASLocalMediaBrowser(const char* account, const char* password)
+    :NASMediaBrowser(account, password),
+     ctrlPoint(new PLT_CtrlPoint(NULL)),
      mediaBrowser(NASDeviceID, ctrlPoint)
 {
     upnp.AddCtrlPoint(ctrlPoint);
@@ -55,9 +56,25 @@ NASLocalMediaBrowser::Connect()
     ctrlPoint->Search(NPT_HttpUrl("239.255.255.250", 1900, "*"),
                       "upnp:rootdevice", 2, 100., NPT_TimeInterval(10.));
     NPT_Result ret = mediaBrowser.WaitForDeviceDiscover();
-    if(ret != NPT_SUCCESS)
+    if(ret != NPT_SUCCESS) {
         upnp.Stop();
+    } else {
+        ret = local_access_auth(GetIpAddress(), _account, _password);
+    }
     return ret;
+}
+NPT_Result
+NASLocalMediaBrowser::Reconnect()
+{
+    Close();
+    return Connect();
+}
+
+void
+NASLocalMediaBrowser::Close()
+{
+    upnp.Stop();
+    udt_close();
 }
  
 NPT_Result
@@ -76,11 +93,8 @@ NASLocalMediaBrowser::GetIpAddress() {
 }
 
 NASRemoteMediaBrowser::NASRemoteMediaBrowser(const char* account,
-                                             const char* password,
-                                             const char* license)
-    :_account(account),
-    _password(password),
-    _license(license)
+                                             const char* password)
+    :NASMediaBrowser(account, password)
 
 {
 }
@@ -92,6 +106,19 @@ NASRemoteMediaBrowser::Connect()
     int ret = remote_auth(_account, _password, ipAdress);
     _ipAddress = ipAdress;
     return ret != -1 ? NPT_SUCCESS : NPT_FAILURE;
+}
+
+NPT_Result
+NASRemoteMediaBrowser::Reconnect()
+{
+    Close();
+    return Connect();
+}
+
+void
+NASRemoteMediaBrowser::Close()
+{
+    remote_close();
 }
 
 NPT_Result

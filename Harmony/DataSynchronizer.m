@@ -196,7 +196,6 @@ static  dispatch_queue_t sync_queue = nil;
                            {
                                if (err)
                                {
-                                   NSLog(@"UploadFail error:ALAssetTypePhoto, Error reading asset:%@",[err localizedDescription]);
                                    free(buf);
                                }
                                else

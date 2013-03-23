@@ -50,7 +50,6 @@
 
 -(void) onTap: (UIGestureRecognizer *) recognizer
 {
-    NSLog(@"%s", __func__);
     [self.delegate onTap: self];
 }
 

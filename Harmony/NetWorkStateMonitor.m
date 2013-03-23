@@ -16,6 +16,7 @@
 static Reachability *reachability = nil;
 static Reachability *localReachability = nil;
 static Reachability *remoteReachability = nil;
+static BOOL bReachable = NO;
 
 + (void)showAlert{
     dispatch_async(dispatch_get_main_queue(), ^(){
@@ -32,6 +33,7 @@ static Reachability *remoteReachability = nil;
     }
     reachability = localReachability;
     if([reachability currentReachabilityStatus] != NotReachable) {
+        bReachable = YES;
         return YES;
     }
     [self showAlert];
@@ -40,17 +42,19 @@ static Reachability *remoteReachability = nil;
 
 + (BOOL) startRemoteServerMonitor{
     if(!remoteReachability) {
-        struct sockaddr_in serverAddress;
-        bzero(&serverAddress, sizeof(serverAddress));
-        serverAddress.sin_len = sizeof(serverAddress);
-        serverAddress.sin_family = AF_INET;
-        serverAddress.sin_addr.s_addr = inet_addr(SERVERIP);
-        remoteReachability = [Reachability reachabilityWithAddress:&serverAddress];
+//        struct sockaddr_in serverAddress;
+//        bzero(&serverAddress, sizeof(serverAddress));
+//        serverAddress.sin_len = sizeof(serverAddress);
+//        serverAddress.sin_family = AF_INET;
+//        serverAddress.sin_addr.s_addr = inet_addr(SERVERIP);
+//        remoteReachability = [Reachability reachabilityWithAddress:&serverAddress];
+        remoteReachability = [Reachability reachabilityForInternetConnection];
         [remoteReachability startNotifier];
     }
 
     reachability = remoteReachability;
     if([reachability currentReachabilityStatus] != NotReachable) {
+        bReachable = YES;
         return YES;
     }
     [self showAlert];
@@ -59,10 +63,22 @@ static Reachability *remoteReachability = nil;
 
 + (void) handleNetworkChange:(NSNotificationCenter *)notice {
     if([localReachability currentReachabilityStatus] == NotReachable) {
-        [self showAlert];
+        if(bReachable) {
+            [self showAlert];
+            bReachable = NO;
+        }
+        return;
     }
-    if([NASMediaLibrary isRemoteAccess] && [remoteReachability currentReachabilityStatus] ==NotReachable){
-        [self showAlert];
+    if([remoteReachability currentReachabilityStatus] == NotReachable){
+        if([NASMediaLibrary isRemoteAccess]  && bReachable) {
+            [self showAlert];
+            bReachable = NO;
+        }
+        return;
+    }
+    if(!bReachable) {
+        [NASMediaLibrary reconnect];
+        bReachable = YES;
     }
 }
 

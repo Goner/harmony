@@ -70,7 +70,6 @@
 
 - (int) numberOfCellsInView: (ScrollGridView *) gridView;
 {
-    NSLog(@"objects coutn:%d", self.mediaObjects.count);
     return self.mediaObjects.count;
 }
 
@@ -137,7 +136,6 @@
     if (index < 0 && index >= self.mediaObjects.count) {
         return nil;
     }
-    NSLog(@"getContentAtIndex%d", index);
     
     return [self.mediaObjects objectAtIndex: index];
 }
@@ -148,7 +146,6 @@
 - (void)backToParentCatogery{
     self.currentCategory = self.currentCategory.parentCategory;
     if (self.currentCategory == nil) {
-        NSLog(@"GridViewController:Eorr on back to parent catogery.");
         if(_rootController.mediaCategories.count > 0){
             _rootController.categoryIndex = -1;
             [_rootController hideButtonBack:YES];

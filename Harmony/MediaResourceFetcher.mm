@@ -27,7 +27,6 @@
     NSData* data = [self getCacheDataForURL:url];
     if (data != nil){
         processData(data);
-        NSLog(@"hit fetcher cache.\n");
         return;
     }
 

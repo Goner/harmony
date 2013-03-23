@@ -101,6 +101,8 @@
 @interface NASMediaLibrary : NSObject
 + (BOOL) initWithUser:(NSString*) user password:(NSString*) passwd;
 + (BOOL) isRemoteAccess;
++ (BOOL) reconnect;
++ (void) closeConnection;
 + (NSString *)getServerBaseURL;
 + (NSString *)getLoginedUserName;
 

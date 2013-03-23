@@ -85,7 +85,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (!bRet) {
-                NSLog(@"Initialize failed.");
                 return;
             }
             
