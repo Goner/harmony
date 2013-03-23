@@ -86,12 +86,14 @@
 @end
 
 @interface Friend : User {
-    BOOL   isOnline;
-    BOOL   isShield;
+    BOOL isOnline;
+    BOOL isShield;
+    BOOL isShared;
 }
 
 @property (assign) BOOL isOnline;
 @property (assign) BOOL isShield;
+@property (assign) BOOL isShared;
 
 - (NSString *)description;
 @end

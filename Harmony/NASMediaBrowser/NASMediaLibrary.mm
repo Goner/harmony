@@ -12,6 +12,7 @@
 #import "interfaceudt_client.h"
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "NetWorkStateMonitor.h"
 
 #define FAKE_INTERFACE 0
 #define FAKE_NASSERVER 0
@@ -149,6 +150,7 @@
 @implementation Friend
 @synthesize isOnline;
 @synthesize isShield;
+@synthesize isShared;
 
 - (NSString *)description {
     return [[super description] stringByAppendingFormat:@", online: %d, shield: %d", isOnline, isShield];
@@ -228,6 +230,9 @@ static NSString * loginedUserName;
     ipAddress = "127.0.0.1";
     return TRUE;
 #else
+    if(![NetWorkStateMonitor isNetworkAvailable]) {
+        return false;
+    }
     nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>();
     if(NPT_SUCCEEDED(nasMediaBrowserPtr->Connect())){
         ipAddress = nasMediaBrowserPtr->GetIpAddress();
@@ -235,7 +240,10 @@ static NSString * loginedUserName;
             return FALSE;
         }
         bRemoteAccess = FALSE;
-    } else {    
+    } else {
+        if(![NetWorkStateMonitor startRemoteServerMonitor]) {
+            return FALSE;
+        }
         nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password, "license");
         if(NPT_FAILED(nasMediaBrowserPtr->Connect())){
             return FALSE;
@@ -342,6 +350,10 @@ static NSString * loginedUserName;
     }
     return array;
 #else
+    if(![NetWorkStateMonitor isNetworkAvailable]){
+        return nil;
+    }
+    
     if (!nasMediaBrowserPtr) {
         return nil;
     }
@@ -363,9 +375,16 @@ static NSString * loginedUserName;
 }
 
 + (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict{
+    if(![NetWorkStateMonitor isNetworkAvailable]) {
+        return nil;
+    }
+    
     NSString* parameter  = [[[SBJsonWriter alloc] init] stringWithObject:paramDict];
     const char* inParameter = [parameter UTF8String];
     const char* outParameter = transact_proc_call(inParameter);
+    if(!outParameter) {
+        return nil;
+    }
     NSString* result = [NSString stringWithCString:outParameter encoding:NSUTF8StringEncoding];
     free((void*)outParameter);
     return [[[SBJsonParser alloc] init] objectWithString:result];
@@ -486,6 +505,7 @@ static NSString * loginedUserName;
         f.sn = [obj objectForKey:@"SN"];
         f.isOnline = [[obj objectForKey:@"ONLINE"] boolValue];
         f.isShield = [[obj objectForKey:@"SHIELD"] boolValue];
+        f.isShared = [[obj objectForKey:@"SHAREFLAG"] boolValue];
         [friends addObject:f];
     }
     
@@ -601,6 +621,9 @@ static NSString * loginedUserName;
 //file data exchange interface
 static NSString *uniqueID = [[UIDevice currentDevice] uniqueDeviceIdentifier];;
 + (NSData *) getVCardData{
+    if(![NetWorkStateMonitor isNetworkAvailable]){
+        return nil;
+    }
     char *vcardData = NULL;
     int len = get_vcard_data([uniqueID UTF8String], &vcardData);
     if(len < 0) {
@@ -610,12 +633,18 @@ static NSString *uniqueID = [[UIDevice currentDevice] uniqueDeviceIdentifier];;
 }
 
 + (BOOL) backupVCardData:(NSData *)vCardData{
-    int ret =transfer_vcard((const char*)[vCardData bytes], [vCardData length], [uniqueID UTF8String]);
-    return ret == 0;
+    if([NetWorkStateMonitor isNetworkAvailable]) {
+        int ret =transfer_vcard((const char*)[vCardData bytes], [vCardData length], [uniqueID UTF8String]);
+        return ret == 0;
+    }
+    return NO;
 }
 
 + (BOOL) backupPhotoData:(NSData *)photoData withName:(NSString *)name{
-    int ret =transfer_photo((const char*)[photoData bytes], [photoData length], [name UTF8String], [uniqueID UTF8String]);
-    return ret == 0;
+    if ([NetWorkStateMonitor isNetworkAvailable]) {
+        int ret =transfer_photo((const char*)[photoData bytes], [photoData length], [name UTF8String], [uniqueID UTF8String]);
+        return ret == 0;
+    }
+    return NO;
 }
 @end

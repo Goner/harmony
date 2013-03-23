@@ -112,6 +112,7 @@ struct cancel_friend_sharing_message
 	char torrent_filename[MAX_TORRENT_FILENAME_SIZE];
 };
 #pragma pack(pop)
+#define SERVERIP "202.85.216.203" //"10.1.8.253"
 
 #endif 
 

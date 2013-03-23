@@ -10,6 +10,7 @@
 #import "NASMediaLibrary.h"
 #import "SimpleKeychain.h"
 #import "MBProgressHUD.h"
+#import "NetWorkStateMonitor.h"
 
 @interface LoginViewController()
 -(void)loginWithUser:(NSString *)user withPassword:(NSString *)pass updateLoginRecord:(BOOL)update;
@@ -35,6 +36,9 @@
 
 }
 - (void) viewDidAppear:(BOOL)animated {
+    if(![NetWorkStateMonitor startLocalNetworkMonitor]) {
+        return;
+    }
     NSDictionary *data = [SimpleKeychain load:@"merry99"];
     if(data == nil) {
         return;

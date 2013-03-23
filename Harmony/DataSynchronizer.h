@@ -20,5 +20,5 @@
 + (void) startRestoreContacts;
 + (NSString *) getLastSyncContactsTime;
 + (NSInteger) getLastSyncContactsCount;
-+ (NSInteger) getCurrentContactsCount;
++ (void) getCurrentContactsCountWithBlock:(void (^)(int nCount)) block;
 @end

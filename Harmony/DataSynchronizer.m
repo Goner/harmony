@@ -10,7 +10,7 @@
 #import "AssetsLibrary/ALAsset.h"
 #import "AssetsLibrary/ALAssetRepresentation.h"
 #import "NASMediaLibrary.h"
-#import "Reachability.h"
+#import "NetWorkStateMonitor.h"
 
 @interface DataSynchronizer()
 + (dispatch_queue_t) getSyncDispatchQueue;
@@ -32,15 +32,15 @@
 }
 
 + (void) startAutoBackupPhoto{
-    [[self getReachability] startNotifier];
-    NetworkStatus status = [[self getReachability] currentReachabilityStatus];
-    if(status == ReachableViaWiFi) {
+    Reachability *reachability = [NetWorkStateMonitor getCurReachability];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
+    if([reachability currentReachabilityStatus] == ReachableViaWiFi) {
         [self startBackupPhoto];
     }
 }
 
 + (void) stopAutoBackupPhoto{
-    [[self getReachability] stopNotifier];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 + (void) startBackupContacts {
@@ -63,32 +63,22 @@
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"syncContactsCount"];
 }
 
-+ (NSInteger) getCurrentContactsCount {
-    __block NSInteger count = 0;
++ (void) getCurrentContactsCountWithBlock:(void (^)(int nCount)) block{
     [self accessContactsWithBlock:^(ABAddressBookRef addressBook) {
         CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
-        count = CFArrayGetCount(people);
+        block(CFArrayGetCount(people));
         CFRelease(people);
     }];
-    return count;
 }
 
 static  dispatch_queue_t sync_queue = nil;
-static  Reachability *reachability;
+
 
 + (dispatch_queue_t) getSyncDispatchQueue {
     if(!sync_queue){
         sync_queue = dispatch_queue_create("merry99_sync_data", NULL);
     }
     return sync_queue;
-}
-
-+ (Reachability *) getReachability{
-    if(reachability)
-        return reachability;
-    reachability = [Reachability reachabilityForLocalWiFi];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
-    return reachability;
 }
 
 + (void) handleNetworkChange:(NSNotificationCenter *)notice {
@@ -122,7 +112,7 @@ static  Reachability *reachability;
         addressBook = ABAddressBookCreateWithOptions(NULL,&error);
         ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
             // callback can occur in background, address book must be accessed on thread it was created on
-            dispatch_async(dispatch_get_main_queue(), ^{
+            //dispatch_async(dispatch_get_main_queue(), ^{
                 if (error) {
                     //todo
                 } else if (!granted) {
@@ -132,7 +122,7 @@ static  Reachability *reachability;
                     addressOperationBlock(addressBook);
                     CFRelease(addressBook);
                 }
-            });
+            //});
         });
     } else {
         // iOS 4/5
@@ -147,7 +137,7 @@ static  Reachability *reachability;
     if(!vCardData) {
         return;
     }
-    __block NSInteger count = 0;
+    
     [self accessContactsWithBlock:^(ABAddressBookRef addressBook) {
         //empyt contacts
         CFArrayRef people=ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -161,7 +151,7 @@ static  Reachability *reachability;
  
         ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(addressBook);
         CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, (__bridge CFDataRef)(vCardData));
-        count = CFArrayGetCount(vCardPeople);
+        int count = CFArrayGetCount(vCardPeople);
         for (CFIndex index = 0; index < count; index++)
         {
             ABRecordRef person = CFArrayGetValueAtIndex(vCardPeople, index);
@@ -171,20 +161,21 @@ static  Reachability *reachability;
         CFRelease(defaultSource);
         
         ABAddressBookSave(addressBook, nil);
+        [self saveSyncContactsTimeAndCount:count];
     }];
-    [self saveSyncContactsTimeAndCount:count];
+    
 }
 
 + (void) backupContacts{
-    __block NSInteger count = 0;
+
     [self accessContactsWithBlock:^(ABAddressBookRef addressBook) {
         CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
-        count = CFArrayGetCount(people);
         NSData *vCardsData = (__bridge_transfer NSData *)ABPersonCreateVCardRepresentationWithPeople(people);
         [NASMediaLibrary backupVCardData:vCardsData];
+        [self saveSyncContactsTimeAndCount:CFArrayGetCount(people)];
         CFRelease(people);
     }];
-    [self saveSyncContactsTimeAndCount:count];
+
 }
 
 + (void) backupPhotos{

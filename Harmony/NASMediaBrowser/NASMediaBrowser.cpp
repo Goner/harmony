@@ -112,7 +112,7 @@ NASRemoteMediaBrowser::Browser(const char*                      obj_id,
         char* requestStr = cJSON_Print(requestJSONObj);
         const char* resultStr = transact_proc_call(requestStr);
         cJSON_Delete(requestJSONObj);
-        if(*resultStr == '\0') {
+        if(!resultStr || *resultStr == '\0') {
             return NPT_FAILURE;
         }
         cJSON* resultJSONObj = cJSON_Parse(resultStr);

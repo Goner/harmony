@@ -29,8 +29,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [DataSynchronizer getCurrentContactsCountWithBlock:^(int nCount){
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            _currentContactsCount.text = [NSString stringWithFormat:@"%d条", nCount];
+        });
+    }];
     
-    _currentContactsCount.text = [NSString stringWithFormat:@"%d条",[DataSynchronizer getCurrentContactsCount]];
     _lastBackupedContactsCount.text = [NSString stringWithFormat:@"%d条", [DataSynchronizer getLastSyncContactsCount]];
     _lastBAckupedTime.text = [DataSynchronizer getLastSyncContactsTime];
 }

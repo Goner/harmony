@@ -237,6 +237,7 @@
         NSString *file =[ self.fetcher getFileNameFromURL:[item getMediaURL]];
         [array addObject:file];
     }];
+    [NASMediaLibrary shareAlbumWithFiles:array];
     [self clearSelections];
 }
 

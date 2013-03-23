@@ -12,7 +12,6 @@
 
 @interface FriendsListController ()
 @property (retain) NSArray *friends;
-@property (retain) NSMutableArray *sharedFriends;
 @end
 
 @implementation FriendsListController
@@ -36,16 +35,31 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    _friends = [NASMediaLibrary getFriendList];
-    _sharedFriends = [NSMutableArray arrayWithArray:[NASMediaLibrary getFriendsSharedWithFolder:_curFolderPath]];
+    //_friends = [NASMediaLibrary getFriendList];
+    _friends = [NSMutableArray arrayWithArray:[NASMediaLibrary getFriendsSharedWithFolder:_curFolderPath]];
     
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
-    if([_sharedFolders count] == 0){
-        [_sharedFolders removeObject:_curFolderPath];
+    NSMutableArray *sharedFriends = [[NSMutableArray alloc] init];
+    NSMutableArray *unSharedFriends = [[NSMutableArray alloc] init];
+    for (Friend * friend in self.friends) {
+        if(friend.isShared) {
+            [sharedFriends addObject:friend];
+        } else {
+            [unSharedFriends addObject:friend];
+        }
     }
-    [NASMediaLibrary shareFolder:_curFolderPath withFriends:_sharedFriends];
+    if([sharedFriends count] == 0){
+        [self.sharedFolders removeObject:self.curFolderPath];
+    }
+    if ([sharedFriends count] != 0) {
+        [NASMediaLibrary shareFolder:_curFolderPath withFriends:sharedFriends];
+    }
+    
+    if([unSharedFriends count] != 0){
+        [NASMediaLibrary unshareFolder:_curFolderPath withFriends:unSharedFriends];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,8 +94,7 @@
     FriendCell *friendCell = (FriendCell *)cell;
     Friend *friend= [_friends objectAtIndex:indexPath.row];
     friendCell.friendNameLable.text = friend.name;
-    BOOL bContain = [_sharedFriends containsObject:friend];
-    friendCell.checkStateImageView.hidden = !bContain;
+    friendCell.checkStateImageView.hidden = !friend.isShared;
     
     UIView *bgView = [[UIView alloc] init];
     [bgView setBackgroundColor:[UIColor colorWithRed:0.69 green:0.69 blue:0.588 alpha:1]];
@@ -93,12 +106,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FriendCell *cell = (FriendCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if(cell.checkStateImageView.hidden){
-        [_sharedFriends addObject:[_friends objectAtIndex:indexPath.row]];
-    } else {
-        [_sharedFriends removeObject:[_friends objectAtIndex:indexPath.row]];
-    }
+    Friend *friend = [_friends objectAtIndex:indexPath.row];
+    friend.isShared = cell.checkStateImageView.hidden;
     cell.checkStateImageView.hidden = !cell.checkStateImageView.hidden;
 }	
-
 @end
