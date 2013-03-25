@@ -194,8 +194,8 @@ Arguments NASRemoteMediaBrowser::SetActionArguments(const char*     obj_id,
 }
 
 NPT_Result
-NASRemoteMediaBrowser::FormatSoapRequest(const char*        actionName,
-                                         const char*        serviceType,
+NASRemoteMediaBrowser::FormatSoapRequest(const char*        serviceType,
+                                         const char*        actionName,
                                          const Arguments&   arguments,
                                          NPT_String&        soapRequest)
 {

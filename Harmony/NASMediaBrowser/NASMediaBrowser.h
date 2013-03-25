@@ -89,8 +89,8 @@ public:
                        NPT_Cardinal                  max_results = 0);
     NPT_String GetIpAddress() {return _ipAddress;}
 private:
-    NPT_Result FormatSoapRequest(const char*        actionName,
-                                 const char*        serviceType,
+    NPT_Result FormatSoapRequest(const char*        serviceType,
+                                 const char*        actionName,
                                  const Arguments&   arguments,
                                  NPT_String&        soapRequest);
     NPT_Result ParseSoapResponse(const char*  soapResponse,
