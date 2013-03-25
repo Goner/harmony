@@ -14,9 +14,7 @@
 
 @implementation NetWorkStateMonitor
 static Reachability *reachability = nil;
-static Reachability *localReachability = nil;
-static Reachability *remoteReachability = nil;
-static BOOL bReachable = NO;
+static int lastNetworkStatus = NotReachable;
 
 + (void)showAlert{
     dispatch_async(dispatch_get_main_queue(), ^(){
@@ -25,61 +23,27 @@ static BOOL bReachable = NO;
     });
 }
 
-+ (BOOL) startLocalNetworkMonitor{
-    if(!localReachability){
-        localReachability = [Reachability reachabilityForLocalWiFi];
++ (BOOL) startNetworkMonitor{
+    if(!reachability){
+        reachability = [Reachability reachabilityForLocalWiFi];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
-        [localReachability startNotifier];
+        [reachability startNotifier];
     }
-    reachability = localReachability;
-    if([reachability currentReachabilityStatus] != NotReachable) {
-        bReachable = YES;
-        return YES;
+    
+    lastNetworkStatus = [reachability currentReachabilityStatus];
+    if(lastNetworkStatus == NotReachable) {
+        [self showAlert];
+        return NO;
     }
-    [self showAlert];
-    return NO;
-}
-
-+ (BOOL) startRemoteServerMonitor{
-    if(!remoteReachability) {
-//        struct sockaddr_in serverAddress;
-//        bzero(&serverAddress, sizeof(serverAddress));
-//        serverAddress.sin_len = sizeof(serverAddress);
-//        serverAddress.sin_family = AF_INET;
-//        serverAddress.sin_addr.s_addr = inet_addr(SERVERIP);
-//        remoteReachability = [Reachability reachabilityWithAddress:&serverAddress];
-        remoteReachability = [Reachability reachabilityForInternetConnection];
-        [remoteReachability startNotifier];
-    }
-
-    reachability = remoteReachability;
-    if([reachability currentReachabilityStatus] != NotReachable) {
-        bReachable = YES;
-        return YES;
-    }
-    [self showAlert];
-    return NO;
+    return YES;
 }
 
 + (void) handleNetworkChange:(NSNotificationCenter *)notice {
-    if([localReachability currentReachabilityStatus] == NotReachable) {
-        if(bReachable) {
+    if([reachability currentReachabilityStatus] == NotReachable && lastNetworkStatus != NotReachable) {
             [self showAlert];
-            bReachable = NO;
-        }
-        return;
+            lastNetworkStatus = NotReachable;
     }
-    if([remoteReachability currentReachabilityStatus] == NotReachable){
-        if([NASMediaLibrary isRemoteAccess]  && bReachable) {
-            [self showAlert];
-            bReachable = NO;
-        }
-        return;
-    }
-    if(!bReachable) {
-        [NASMediaLibrary reconnect];
-        bReachable = YES;
-    }
+    lastNetworkStatus = [reachability currentReachabilityStatus];
 }
 
 + (BOOL) isNetworkAvailable{

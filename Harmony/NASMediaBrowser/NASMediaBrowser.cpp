@@ -36,7 +36,7 @@ MediaBrowserEx::OnDeviceAdded(PLT_DeviceDataReference& device)
 NPT_Result
 MediaBrowserEx::WaitForDeviceDiscover()
 {
-    return shared_var.WaitUntilEquals(1, 5000);
+    return shared_var.WaitUntilEquals(1, 3000);
 }
 
 

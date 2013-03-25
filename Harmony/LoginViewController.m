@@ -36,9 +36,6 @@
 
 }
 - (void) viewDidAppear:(BOOL)animated {
-    if(![NetWorkStateMonitor startLocalNetworkMonitor]) {
-        return;
-    }
     NSDictionary *data = [SimpleKeychain load:@"merry99"];
     if(data == nil) {
         return;

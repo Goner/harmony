@@ -10,8 +10,7 @@
 #import "Reachability.h"
 
 @interface NetWorkStateMonitor : NSObject
-+ (BOOL) startLocalNetworkMonitor;
-+ (BOOL) startRemoteServerMonitor;
++ (BOOL) startNetworkMonitor;
 + (BOOL) isNetworkAvailable;
 + (Reachability *)getCurReachability;
 @end

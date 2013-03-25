@@ -219,7 +219,6 @@ static NASMediaBrowserPtr nasMediaBrowserPtr = nullptr;
 static bool bRemoteAccess;
 static NPT_String ipAddress;
 static NSString *loginedUserName;
-static NSString *loginedPassword;
 
 + (BOOL) initWithUser:(NSString *)user password:(NSString *)passwd {
     bRemoteAccess = FALSE;
@@ -237,7 +236,7 @@ static NSString *loginedPassword;
     if(NPT_SUCCEEDED(nasMediaBrowserPtr->Connect())){
         bRemoteAccess = FALSE;
     } else {
-        if(![NetWorkStateMonitor startRemoteServerMonitor]) {
+        if(![NetWorkStateMonitor isNetworkAvailable]) {
             return FALSE;
         }
         nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password);
