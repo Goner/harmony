@@ -381,7 +381,7 @@ int user_outer_login(struct outer_login_message msg, struct outer_login_ack_mess
     std::string md5_result = md5.md5();   
     //printf("md5 result is:%s \n", md5_result.c_str());
 
-    strcpy(url, "http://123.127.240.137:6005/merrycloud/box/weblogin.json");
+    strcpy(url, "http://cloud.99merry.com:8080/merrycloud/box/weblogin.json");
     sprintf(request, "username=%s&password=%s", msg.username, md5_result.c_str());
     
     exchange_with_mysql(url, request, response);

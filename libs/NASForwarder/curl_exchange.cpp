@@ -58,7 +58,7 @@ int exchange_with_mysql(char *url, char *request, char *response)
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
     //curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-    */
+    */	
     res = curl_easy_perform(curl);  
     curl_easy_cleanup(curl); 
 
