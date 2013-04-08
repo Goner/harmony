@@ -132,20 +132,20 @@ int init1()
           return -1;
     }
 #endif
-	/*´´½¨UDPÌ×½Ú×Ö£¬½øĞĞ°ó¶¨,ÎŞÂÛÊÇ½ÓÊÕĞÄÌø»Ø¸´ÏûÏ¢»¹ÊÇ´ò¶´ÏûÏ¢»òÕß´«ÊäÖÖ×ÓÎÄ¼şÏûÏ¢µÈ£¬ËùÓĞUDP°ü¶¼ÊÇ
-	Í¨¹ıÍ¬Ò»¸ösocket£¬ÒòÎªÖ»ÓĞÕâ¸ösocketÓëbalance±£³ÖĞÄÌøÁ¬½Ó£¬ÄÜ¹»ËæÊ±±»balanceÕÒµ½*/
+	/*Â¥Â¥Î©Â®UDPÃƒâ—ŠÎ©â„â—ŠÃ·Â£Â¨Î©Â¯â€“â€“âˆÃ›âˆ‚Â®,Å’ï¬Â¬â‚¬Â Â«Î©â€Â â€™â€“Æ’ÃƒÂ¯ÂªÃ¿âˆÂ¥Å“ËšÅ“Â¢ÂªÏ€Â Â«Â¥Ãšâˆ‚Â¥Å“ËšÅ“Â¢ÂªÃšâ€™ï¬‚Â¥Â´Â â€°Ã·Ã·â—Šâ€Å’Æ’ÂºË›Å“ËšÅ“Â¢ÂµÂ»Â£Â¨Ã€Ë˜â€â€“UDPâˆÂ¸âˆ‚ÂºÂ Â«
+	Ã•Â®Ï€ËÃ•Â¨â€œÂªâˆË†socketÂ£Â¨â€œÃšÅ’â„¢Ã·Âªâ€â€“â€™â€šâˆË†socketâ€ÃbalanceÂ±Â£â‰¥Ã·â€“Æ’ÃƒÂ¯Â¡Â¨Î©â€Â£Â¨Æ’â€¹Ï€ÂªÃ€ÃŠÂ Â±Â±Âªbalanceâ€™â€œÂµÎ©*/
 	sockfd1 = mysocket();
     if (sockfd1 < 0)
     {
         return -1;
     }
-    /*UDP clientÈç¹û²»µ÷ÓÃbind£¬Ôò¿Í»§¶ËÔÚÏòÍâ·¢°üÊ±£¬»áÓÉÏµÍ³×Ô¼º¾ö¶¨Ê¹ÓÃµÄ½Ó¿ÚµÄÔ´¶Ë¿Ú£¬¶øµ÷ÓÃbindÔò¿ÉÒÔÖ¸¶¨ÏàÓ¦µÄ²ÎÊı¡£*/
+    /*UDP clientÂ»ÃÏ€Ëšâ‰¤ÂªÂµËœâ€âˆšbindÂ£Â¨â€˜ÃšÃ¸Ã•ÂªÃŸâˆ‚Ã€â€˜â„Å“ÃšÃ•â€šâˆ‘Â¢âˆÂ¸Â Â±Â£Â¨ÂªÂ·â€â€¦Å“ÂµÃ•â‰¥â—Šâ€˜Âºâˆ«Ã¦Ë†âˆ‚Â®Â Ï€â€âˆšÂµÆ’Î©â€Ã¸â„ÂµÆ’â€˜Â¥âˆ‚Ã€Ã¸â„Â£Â¨âˆ‚Â¯ÂµËœâ€âˆšbindâ€˜ÃšÃ¸â€¦â€œâ€˜Ã·âˆâˆ‚Â®Å“â€¡â€Â¶ÂµÆ’â‰¤Å’Â ËÂ°Â£*/
     ret = mybind(sockfd1, CLIENT_LOCAL_PORT1);
     if (ret == -1)
     {
         return -1;
     }
-    // ·şÎñÆ÷ÍøÂçĞÅÏ¢
+    // âˆ‘Ë›Å’Ã’âˆ†ËœÃ•Â¯Â¬Ãâ€“â‰ˆÅ“Â¢
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr(SERVERIP);
     server_addr.sin_port = htons(SERVERPORT);
@@ -165,23 +165,23 @@ int init()
           return -1;
     }
 #endif
-	/*´´½¨UDPÌ×½Ú×Ö£¬½øĞĞ°ó¶¨,ÎŞÂÛÊÇ½ÓÊÕĞÄÌø»Ø¸´ÏûÏ¢»¹ÊÇ´ò
-	¶´ÏûÏ¢»òÕß´«ÊäÖÖ×ÓÎÄ¼şÏûÏ¢µÈ£¬ËùÓĞUDP°ü¶¼ÊÇ
-	Í¨¹ıÍ¬Ò»¸ösocket£¬ÒòÎªÖ»ÓĞÕâ¸ösocketÓëbalance±£³ÖĞÄÌøÁ¬½Ó£¬ÄÜ¹»ËæÊ±±»balanceÕÒµ½*/
+	/*Â¥Â¥Î©Â®UDPÃƒâ—ŠÎ©â„â—ŠÃ·Â£Â¨Î©Â¯â€“â€“âˆÃ›âˆ‚Â®,Å’ï¬Â¬â‚¬Â Â«Î©â€Â â€™â€“Æ’ÃƒÂ¯ÂªÃ¿âˆÂ¥Å“ËšÅ“Â¢ÂªÏ€Â Â«Â¥Ãš
+	âˆ‚Â¥Å“ËšÅ“Â¢ÂªÃšâ€™ï¬‚Â¥Â´Â â€°Ã·Ã·â—Šâ€Å’Æ’ÂºË›Å“ËšÅ“Â¢ÂµÂ»Â£Â¨Ã€Ë˜â€â€“UDPâˆÂ¸âˆ‚ÂºÂ Â«
+	Ã•Â®Ï€ËÃ•Â¨â€œÂªâˆË†socketÂ£Â¨â€œÃšÅ’â„¢Ã·Âªâ€â€“â€™â€šâˆË†socketâ€ÃbalanceÂ±Â£â‰¥Ã·â€“Æ’ÃƒÂ¯Â¡Â¨Î©â€Â£Â¨Æ’â€¹Ï€ÂªÃ€ÃŠÂ Â±Â±Âªbalanceâ€™â€œÂµÎ©*/
 	sockfd = mysocket();
     if (sockfd < 0)
     {
         return -1;
     }
-    /*UDP clientÈç¹û²»µ÷ÓÃbind£¬Ôò¿Í»§¶ËÔÚÏòÍâ·¢°üÊ±£¬
-    »áÓÉÏµÍ³×Ô¼º¾ö¶¨Ê¹ÓÃµÄ½Ó¿ÚµÄÔ´¶Ë¿Ú£¬
-    ¶øµ÷ÓÃbindÔò¿ÉÒÔÖ¸¶¨ÏàÓ¦µÄ²ÎÊı¡£*/
+    /*UDP clientÂ»ÃÏ€Ëšâ‰¤ÂªÂµËœâ€âˆšbindÂ£Â¨â€˜ÃšÃ¸Ã•ÂªÃŸâˆ‚Ã€â€˜â„Å“ÃšÃ•â€šâˆ‘Â¢âˆÂ¸Â Â±Â£Â¨
+    ÂªÂ·â€â€¦Å“ÂµÃ•â‰¥â—Šâ€˜Âºâˆ«Ã¦Ë†âˆ‚Â®Â Ï€â€âˆšÂµÆ’Î©â€Ã¸â„ÂµÆ’â€˜Â¥âˆ‚Ã€Ã¸â„Â£Â¨
+    âˆ‚Â¯ÂµËœâ€âˆšbindâ€˜ÃšÃ¸â€¦â€œâ€˜Ã·âˆâˆ‚Â®Å“â€¡â€Â¶ÂµÆ’â‰¤Å’Â ËÂ°Â£*/
     ret = mybind(sockfd, CLIENT_LOCAL_PORT);
     if (ret == -1)
     {
         return -1;
     }
-    // ·şÎñÆ÷ÍøÂçĞÅÏ¢
+    // âˆ‘Ë›Å’Ã’âˆ†ËœÃ•Â¯Â¬Ãâ€“â‰ˆÅ“Â¢
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr(SERVERIP);
     server_addr.sin_port = htons(SERVERPORT);
@@ -220,7 +220,7 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
     memset(&recv_buffer, 0, sizeof(recv_buffer));
     memset(&remote_addr, 0, sizeof(remote_addr));
 
-    //´´½¨socket
+    //Â¥Â¥Î©Â®socket
 	/*socketfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (socketfd == -1)
     {
@@ -232,7 +232,7 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
         //printf("create socket OK\n");
     }*/
 
-    /*UDP clientÈç¹û²»µ÷ÓÃbind£¬Ôò¿Í»§¶ËÔÚÏòÍâ·¢°üÊ±£¬»áÓÉÏµÍ³×Ô¼º¾ö¶¨Ê¹ÓÃµÄ½Ó¿ÚµÄÔ´¶Ë¿Ú£¬¶øµ÷ÓÃbindÔò¿ÉÒÔÖ¸¶¨¹Ì¶¨µÄ¶Ë¿Ú¡£*/
+    /*UDP clientÂ»ÃÏ€Ëšâ‰¤ÂªÂµËœâ€âˆšbindÂ£Â¨â€˜ÃšÃ¸Ã•ÂªÃŸâˆ‚Ã€â€˜â„Å“ÃšÃ•â€šâˆ‘Â¢âˆÂ¸Â Â±Â£Â¨ÂªÂ·â€â€¦Å“ÂµÃ•â‰¥â—Šâ€˜Âºâˆ«Ã¦Ë†âˆ‚Â®Â Ï€â€âˆšÂµÆ’Î©â€Ã¸â„ÂµÆ’â€˜Â¥âˆ‚Ã€Ã¸â„Â£Â¨âˆ‚Â¯ÂµËœâ€âˆšbindâ€˜ÃšÃ¸â€¦â€œâ€˜Ã·âˆâˆ‚Â®Ï€Ãƒâˆ‚Â®ÂµÆ’âˆ‚Ã€Ã¸â„Â°Â£*/
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));  
     serveraddr.sin_family = AF_INET;  
@@ -241,7 +241,7 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
     ret = ::bind(socketfd, (struct sockaddr *) &serveraddr, sizeof(serveraddr));
     if (ret == -1)
     {
-        perror("bind error");
+        //perror("bind error");
         return -1;
     }
     else
@@ -249,11 +249,11 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
         //printf("bind OK\n");
     }
     
-    // ·şÎñÆ÷ÍøÂçĞÅÏ¢
+    // âˆ‘Ë›Å’Ã’âˆ†ËœÃ•Â¯Â¬Ãâ€“â‰ˆÅ“Â¢
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr(SERVERIP);
     server_addr.sin_port = htons(SERVERPORT);
-    //ĞÎ³É·¢ËÍÏûÏ¢
+    //â€“Å’â‰¥â€¦âˆ‘Â¢Ã€Ã•Å“ËšÅ“Â¢
     send_buffer[0] = MSG_BUILD_CHANNEL_C2S;
     memcpy(send_buffer+1, &build_channel_msg, sizeof(build_channel_msg));
     
@@ -262,60 +262,71 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
     {
 		perror(" sendto error");
 		return -1;
-	}    
-    //×èÈû½ÓÊÕ·µ»ØºĞ×ÓµÄÍâÍøĞÅÏ¢
-    recv_num = recvfrom(socketfd, recv_buffer, sizeof(recv_buffer), 0, (struct sockaddr *)&remote_addr, (socklen_t *)&sin_size);
-    if(recv_num == -1)
-	{
-		perror(" recvfrom error");
-		return -1;
 	}
-    if (recv_buffer[0] == MSG_BUILD_CHANNEL_S2C)
+    
+    fd_set rset;
+    struct timeval tv;
+    time_t lasttime;
+    time_t curtime;
+    lasttime = time(NULL);
+    while (1)
     {
-        p_build_channel_ack_msg = (struct build_channel_s2c_message *)(recv_buffer+1);
-        //printf("1:recv box info OK\n");
-        //printf("box_status:%d box_outer_ip:%s box_outer_port:%d\n", p_build_channel_ack_msg->status, p_build_channel_ack_msg->box_ip, p_build_channel_ack_msg->box_port);
-        if ((p_build_channel_ack_msg->status == 0) || (p_build_channel_ack_msg->status == 2) ||(strlen(p_build_channel_ack_msg->box_ip) == 0) || (p_build_channel_ack_msg->box_port == 0))
+        curtime = time(NULL);
+        if ((curtime - lasttime) > 30)
         {
-            //printf("box is not online\n");
+            //printf("no get box outer info over 30 seconds\n");
+            //æœåŠ¡å™¨æ— å“åº”
+            return E_SERVER_NOT_RESPONSE;
         }
-        else
+        
+        tv.tv_sec = 2;
+        tv.tv_usec = 0;
+        FD_ZERO(&rset);
+        FD_SET(socketfd, &rset);
+        ret = select(socketfd + 1, &rset, NULL, NULL, &tv);
+        if (ret == 0)
         {
-            build_channel_ack_msg.status = p_build_channel_ack_msg->status;
-            memcpy(build_channel_ack_msg.box_ip, p_build_channel_ack_msg->box_ip, sizeof(p_build_channel_ack_msg->box_ip));
-            build_channel_ack_msg.box_port = p_build_channel_ack_msg->box_port;
+            printf("select timeout......\n");
+            continue;
         }
-    }
-    else
-    {
-        memset(&recv_buffer, 0, sizeof(recv_buffer));
-        recv_num = recvfrom(socketfd, recv_buffer, sizeof(recv_buffer), 0, (struct sockaddr *)&remote_addr, (socklen_t *)&sin_size);
-        if(recv_num == -1)
-    	{
-    		perror(" recvfrom error");
-    		return -1;
-    	}
-        if (recv_buffer[0] == MSG_BUILD_CHANNEL_S2C)
+        else if (ret == -1)
         {
-            p_build_channel_ack_msg = (struct build_channel_s2c_message *)(recv_buffer+1);
-            //printf("2:recv box info OK\n");
-            //printf("box_status:%d box_outer_ip:%s box_outer_port:%d\n", p_build_channel_ack_msg->status, p_build_channel_ack_msg->box_ip, p_build_channel_ack_msg->box_port);
-            if ((p_build_channel_ack_msg->status == 0) || (p_build_channel_ack_msg->status == 2) || (strlen(p_build_channel_ack_msg->box_ip) == 0) || (p_build_channel_ack_msg->box_port == 0))
+            perror("slect error");
+            return -1;
+        }
+        else if (ret > 0)
+        {
+            memset(&recv_buffer, 0, sizeof(recv_buffer));
+            recv_num = recvfrom(socketfd, recv_buffer, sizeof(recv_buffer), 0, (struct sockaddr *)&remote_addr, (socklen_t *)&sin_size);
+            if(recv_num == -1)
             {
-                //printf("box is not online\n");
+                perror(" recvfrom error");
                 return -1;
-            }	
+            }
+            if (recv_buffer[0] == MSG_BUILD_CHANNEL_S2C)
+            {
+                p_build_channel_ack_msg = (struct build_channel_s2c_message *)(recv_buffer+1);
+                printf("2:recv box info OK\n");
+                printf("box_status:%d box_outer_ip:%s box_outer_port:%d\n", p_build_channel_ack_msg->status, p_build_channel_ack_msg->box_ip, p_build_channel_ack_msg->box_port);
+                if ((p_build_channel_ack_msg->status == 0) || (p_build_channel_ack_msg->status == 2) || (strlen(p_build_channel_ack_msg->box_ip) == 0) || (p_build_channel_ack_msg->box_port == 0))
+                {
+                    //ç›’å­ä¸åœ¨çº¿
+                    //printf("box is not online\n");
+                    return E_BOX_NOT_ONLINE;
+                }
+                else
+                {
+                    printf("box is online\n");
+                    build_channel_ack_msg.status = p_build_channel_ack_msg->status;
+                    memcpy(build_channel_ack_msg.box_ip, p_build_channel_ack_msg->box_ip, sizeof(p_build_channel_ack_msg->box_ip));
+                    build_channel_ack_msg.box_port = p_build_channel_ack_msg->box_port;
+                    break;
+                }
+            }
             else
             {
-                build_channel_ack_msg.status = p_build_channel_ack_msg->status;
-                memcpy(build_channel_ack_msg.box_ip, p_build_channel_ack_msg->box_ip, sizeof(p_build_channel_ack_msg->box_ip));
-                build_channel_ack_msg.box_port = p_build_channel_ack_msg->box_port;
+                printf("recv wrong data:%s\n", recv_buffer);
             }
-        }
-        else
-        {
-            //printf("recv wrong data:%s\n", recv_buffer);
-            return -1;
         }
     }
     
@@ -323,7 +334,7 @@ int build_channel(int socketfd, int port, struct build_channel_c2s_message build
 }
 
 #if 0
-/*¹«¹²µ÷ÓÃ·¢ËÍº¯Êı*/
+/*Ï€Â´Ï€â‰¤ÂµËœâ€âˆšâˆ‘Â¢Ã€Ã•âˆ«Ã˜Â Ë*/
 int send_msg_common(UDTSOCKET usocket, char *buf, int len)
 {
    int ilen=strlen(buf)+1;
@@ -343,7 +354,7 @@ int send_msg_common(UDTSOCKET usocket, char *buf, int len)
    return 0;
 }
 
-/*¹«¹²½ÓÊÕº¯Êı*/
+/*Ï€Â´Ï€â‰¤Î©â€Â â€™âˆ«Ã˜Â Ë*/
 
 int recv_msg_common(UDTSOCKET usocket,char *buf,int *len)
 {
@@ -386,7 +397,7 @@ int user_outer_login(struct outer_login_message msg, struct outer_login_ack_mess
     
     exchange_with_mysql(url, request, response);
     //printf("response data:\n%s\n", response);
-    //¹ıÂËºóÌ¨·µ»ØµÄjsonÊı¾İ
+    //Ï€ËÂ¬Ã€âˆ«Ã›ÃƒÂ®âˆ‘ÂµÂªÃ¿ÂµÆ’jsonÂ ËÃ¦â€º
     filter_response(response, json_response);
     //printf("json_response:%s\n", json_response);
 
@@ -412,16 +423,16 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
     memset(&build_channel_msg1, 0, sizeof(build_channel_msg1));
     memset(&build_channel_ack_msg1, 0, sizeof(build_channel_ack_msg1));
 
-	//ÍâÍøµÇÂ¼
+	//Ã•â€šÃ•Â¯ÂµÂ«Â¬Âº
     strcpy(msg.username, user);
     strcpy(msg.password, pwd);
     ret = user_outer_login(msg, ack_msg);
     if (ack_msg.flag == 0)
     {
         //printf("outer_login failed\n");
-        return -1;
+        return E_WRONG_USER_OR_PASSWORD;
     }
- //½¨Á¢´«ËÍÏûÏ¢Í¨µÀ
+ //Î©Â®Â¡Â¢Â¥Â´Ã€Ã•Å“ËšÅ“Â¢Ã•Â®ÂµÂ¿
     build_channel_msg.flag = 1;
     strcpy(build_channel_msg.username, msg.username);
     strcpy(build_channel_msg.serialnum, ack_msg.serialnum);
@@ -437,20 +448,20 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
     {
         close(sockfd);
         //printf("build_channel failed\n");
-        return -1;
+        return ret;
     }
 
 
-	   //ÊÕµ½ºĞ×ÓÍâÍøĞÅÏ¢ºó£¬¹Ø±Õ¸Ãsocket£¬ÖØĞÂbindÍ¬Ò»¸ö¶Ë¿Ú£¬½»¸øudt¹ı³Ì
+	   //Â â€™ÂµÎ©âˆ«â€“â—Šâ€Ã•â€šÃ•Â¯â€“â‰ˆÅ“Â¢âˆ«Ã›Â£Â¨Ï€Ã¿Â±â€™âˆâˆšsocketÂ£Â¨Ã·Ã¿â€“Â¬bindÃ•Â¨â€œÂªâˆË†âˆ‚Ã€Ã¸â„Â£Â¨Î©ÂªâˆÂ¯udtÏ€Ëâ‰¥Ãƒ
     myclose(sockfd);
 
-    //ÖØĞÂbindÍ¬Ò»¸ö¶Ë¿Ú£¬½»¸øudt´¦Àí
+    //Ã·Ã¿â€“Â¬bindÃ•Â¨â€œÂªâˆË†âˆ‚Ã€Ã¸â„Â£Â¨Î©ÂªâˆÂ¯udtÂ¥Â¶Â¿ÃŒ
     ret = init();
     if(ret == -1)
     {
         close(sockfd);
 	    //printf("reinit failed\n");
-	    return -1;
+	    return E_NETWORK_NOT_AVAILABLE;
     }
     else
     {
@@ -466,7 +477,6 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
     ret = mysendto(sockfd, send, strlen(send), 0, (struct sockaddr *)&box_addr);
     if (ret == -1)
     {
-        close(sockfd);
         //printf("send to box p2p test data failed\n ");
     }
     else
@@ -489,7 +499,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd);
         close(g_msg_client);
         //printf("setsockopt SO_REUSEADDR %s \n",UDT::getlasterror().getErrorMessage());
-        return -1;
+        return E_LOW_NETWORK_QUALITY;
     }
                  
     if (UDT::ERROR == UDT::bind(g_msg_client, sockfd))
@@ -497,7 +507,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd);
         close(g_msg_client);
         //printf("UDT bind failed:%s\n" , UDT::getlasterror().getErrorMessage());
-        return -1;         
+        return E_LOW_NETWORK_QUALITY;
     }    
 
     if (UDT::ERROR == UDT::connect(g_msg_client, (struct sockaddr *)&box_addr,sizeof(box_addr)))
@@ -505,7 +515,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd);
         close(g_msg_client);
         //printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());
-        return -1;
+        return E_LOW_NETWORK_QUALITY;
     }
     else
     {
@@ -516,7 +526,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
     UDT::setsockopt(g_file_client, 0, UDT_RCVBUF, &rcv_buf, sizeof(int));
     UDT::setsockopt(g_file_client, 0, UDP_SNDBUF, &snd_buf, sizeof(int));
     UDT::setsockopt(g_file_client, 0, UDP_RCVBUF, &rcv_buf, sizeof(int));
-  //½¨Á¢´«ÊäÎÄ¼şÍ¨µÀ
+  //Î©Â®Â¡Â¢Â¥Â´Â â€°Å’Æ’ÂºË›Ã•Â®ÂµÂ¿
     build_channel_msg1.flag = 2;
     strcpy(build_channel_msg1.username, msg.username);
     strcpy(build_channel_msg1.serialnum, ack_msg.serialnum);
@@ -534,13 +544,13 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd1);
         close(g_file_client);
         //printf("build_channel failed\n");
-        return -1;
+        return ret;
     }
 
-    //ÊÕµ½ºĞ×ÓÍâÍøĞÅÏ¢ºó£¬¹Ø±Õ¸Ãsocket£¬ÖØĞÂbindÍ¬Ò»¸ö¶Ë¿Ú£¬½»¸øudt¹ı³Ì
+    //Â â€™ÂµÎ©âˆ«â€“â—Šâ€Ã•â€šÃ•Â¯â€“â‰ˆÅ“Â¢âˆ«Ã›Â£Â¨Ï€Ã¿Â±â€™âˆâˆšsocketÂ£Â¨Ã·Ã¿â€“Â¬bindÃ•Â¨â€œÂªâˆË†âˆ‚Ã€Ã¸â„Â£Â¨Î©ÂªâˆÂ¯udtÏ€Ëâ‰¥Ãƒ
   myclose(sockfd1);
 
-    //ÖØĞÂbindÍ¬Ò»¸ö¶Ë¿Ú£¬½»¸øudt´¦Àí
+    //Ã·Ã¿â€“Â¬bindÃ•Â¨â€œÂªâˆË†âˆ‚Ã€Ã¸â„Â£Â¨Î©ÂªâˆÂ¯udtÂ¥Â¶Â¿ÃŒ
     ret = init1();
     if(ret == -1)
     {
@@ -549,7 +559,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd1);
         close(g_file_client);
 	    //printf("reinit failed\n");
-	    return -1;
+	    return E_NETWORK_NOT_AVAILABLE;
     }
     else
     {
@@ -565,10 +575,6 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
     ret = mysendto(sockfd1, send1, strlen(send1), 0, (struct sockaddr *)&box_addr);
     if (ret == -1)
     {
-        close(sockfd);
-        close(g_msg_client);
-        close(sockfd1);
-        close(g_file_client);
         //printf("send to box p2p test data failed\n ");
     }
     else
@@ -583,7 +589,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd1);
         close(g_file_client);
         //printf("setsockopt SO_REUSEADDR %s \n",UDT::getlasterror().getErrorMessage());
-        return -1;
+        return E_LOW_NETWORK_QUALITY;
     }
                  
     if (UDT::ERROR == UDT::bind(g_file_client, sockfd1))
@@ -593,7 +599,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd1);
         close(g_file_client);
         //printf("UDT bind failed:%s\n" , UDT::getlasterror().getErrorMessage());
-        return -1;         
+        return E_LOW_NETWORK_QUALITY;
     }    
 
     if (UDT::ERROR == UDT::connect(g_file_client, (struct sockaddr *)&box_addr,sizeof(box_addr)))
@@ -603,7 +609,7 @@ int remote_auth(char *user,char *pwd, char (&ipAddress)[16])
         close(sockfd1);
         close(g_file_client);
         //printf("UDT connect failed:%s\n ",UDT::getlasterror().getErrorMessage());
-        return -1;            
+        return E_LOW_NETWORK_QUALITY;
     }
     else
     {

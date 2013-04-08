@@ -13,9 +13,7 @@
 #import "SBJson.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "NetWorkStateMonitor.h"
-
-#define FAKE_INTERFACE 0
-#define FAKE_NASSERVER 0
+#import "NASError.h"
 
 @implementation ProtocolInfo
 @synthesize protocol;
@@ -92,14 +90,6 @@
 }
 
 - (NSString *)getURLForKey:(NSString *)key{
-#if FAKE_NASSERVER
-    static NSDictionary* fakeURLs = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"http://img3.cache.netease.com/photo/0008/2012-03-27/t_7TK32ME629A50008.jpg",@"Thumbnails",
-                                     @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"Resized",
-                                     @"http://pic15.nipic.com/20110701/5198878_162433615197_2.jpg",@"MediaItems",nil];
-    NSString *url = [fakeURLs objectForKey:key];
-    return url;
-#else
     for(Resource* resource in resources) {
         NSRange rng = [resource.uri rangeOfString:key options:NSCaseInsensitiveSearch];
         if(rng.location != NSNotFound) {
@@ -111,7 +101,6 @@
         }
     }
     return nil;
-#endif
 }
 - (NSString *)getThumbnailURL {
     return [self getURLForKey:@"Thumbnails"];
@@ -220,35 +209,30 @@ static bool bRemoteAccess;
 static NPT_String ipAddress;
 static NSString *loginedUserName;
 
-+ (BOOL) initWithUser:(NSString *)user password:(NSString *)passwd {
++ (NSInteger) initWithUser:(NSString *)user password:(NSString *)passwd {
     bRemoteAccess = FALSE;
     const char* userName = [user UTF8String];
     const char* password = [passwd UTF8String];
-#if FAKE_NASSERVER
-    loginedUserName = user;
-    ipAddress = "127.0.0.1";
-    return TRUE;
-#else
     if(![NetWorkStateMonitor isNetworkAvailable]) {
-        return false;
+        return E_NETWORK_NOT_AVAILABLE;
     }
     nasMediaBrowserPtr = std::make_shared<NASLocalMediaBrowser>(userName,  password);
     if(NPT_SUCCEEDED(nasMediaBrowserPtr->Connect())){
         bRemoteAccess = FALSE;
     } else {
         if(![NetWorkStateMonitor isNetworkAvailable]) {
-            return FALSE;
+            return E_NETWORK_NOT_AVAILABLE;
         }
         nasMediaBrowserPtr = std::make_shared<NASRemoteMediaBrowser>(userName,  password);
-        if(NPT_FAILED(nasMediaBrowserPtr->Connect())){
-            return FALSE;
+        int ret = nasMediaBrowserPtr->Connect();
+        if(NPT_FAILED(ret)){
+            return ret;
         }
         bRemoteAccess = TRUE;
     }
     ipAddress = nasMediaBrowserPtr->GetIpAddress();
     loginedUserName = user;
-    return TRUE;
-#endif
+    return SUCCESS;
 }
 
 + (BOOL) reconnect {
@@ -341,27 +325,6 @@ static NSString *loginedUserName;
 }
 
 + (NSArray *) getMediaObjects:(MediaCategory *)category withMaxResults:(int)maxResults{
-#if FAKE_NASSERVER
-    NSMutableArray* array = [[NSMutableArray alloc] init];
-//    for(int i = 0; i < 5; i++) {
-//        MediaCategory* categoryChild = [[MediaCategory alloc] init];
-//        categoryChild.title = [NSString  stringWithFormat:@"title%d",i ];
-//        categoryChild.id = [NSString  stringWithFormat:@"id%d",i];
-//        categoryChild.childrenCount = i+1;
-//        categoryChild.parentCategory = category;
-//        [array addObject:categoryChild];
-//    }
-    for(int i = 0; i < 16; i++) {
-        MediaItem* item = [[MediaItem alloc] init];
-        item.title = [NSString  stringWithFormat:@"item_title_%d", i];
-        item.id = [NSString  stringWithFormat:@"item_id_%d", i];
-        item.creator = [NSString  stringWithFormat:@"item_creator_%d", i];
-        item.date = [NSString  stringWithFormat:@"item_date_%d", i];
-        item.parentCategory = category;
-        [array addObject:item];
-    }
-    return array;
-#else
     if(![NetWorkStateMonitor isNetworkAvailable]){
         return nil;
     }
@@ -383,7 +346,6 @@ static NSString *loginedUserName;
         [array addObject: object];
     }
     return array;
-#endif
 }
 
 + (NSDictionary *) callCTransactProcWithParam:(NSDictionary *)paramDict{
@@ -410,12 +372,7 @@ static NSString *loginedUserName;
     NSDictionary *paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                             @"FRIEND", @"METHOD",
                                @"GETFRIENDLIST", @"TYPE", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
-#else
-     NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
-     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     if(![self checkResultWithJSON: resultDict])
         return nil;
     
@@ -444,12 +401,7 @@ static NSString *loginedUserName;
                   @"ADD", @"TYPE",
                   folder, @"FOLDER",
                    users, @"FRIENDLIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
-     NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
    
     return [self checkResultWithJSON: resultDict];
 }
@@ -465,12 +417,7 @@ static NSString *loginedUserName;
                         @"REMOVE", @"TYPE",
                         folder, @"FOLDER",
                         users, @"FRIENDLIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     return [self checkResultWithJSON: resultDict];
 }
 
@@ -478,12 +425,7 @@ static NSString *loginedUserName;
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"SHARE", @"METHOD",
                                @"QUERYFOLDER", @"TYPE", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
-#else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\":[{\"FOLDER\":\"FODLDER1\"},{\"FOLDER\":\"FODLDER2\"}]}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     if (![self checkResultWithJSON: resultDict])
         return nil;
     NSArray* array = [resultDict objectForKey:@"LIST"];
@@ -500,12 +442,7 @@ static NSString *loginedUserName;
                                @"SHARE", @"METHOD",
                                @"QUERY", @"TYPE",
                                folder, @"FOLDER",nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
-#else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"LIST\": [{\"NAME\":\"123\", \"SN\":\"22\", \"ONLINE\":true, \"SHIELD\":false},{\"NAME\":\"WWW\", \"SN\":\"333\", \"ONLINE\":false, \"SHIELD\":true}]}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     if(![self checkResultWithJSON: resultDict])
         return nil;
     
@@ -529,12 +466,7 @@ static NSString *loginedUserName;
                                @"SHARE", @"METHOD",
                                @"GETFOLDER", @"TYPE",
                                [folder stringByAppendingString:@"/"], @"FOLDER",nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
-#else
-    NSString* out =  @"{\"RESULT\":\"SUCCESS\", \"FOLDERLIST\":[\"FODLDER1\", \"FODLDER2\"]}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     if (![self checkResultWithJSON: resultDict])
         return nil;
     return [resultDict objectForKey:@"FOLDERLIST"];
@@ -546,12 +478,7 @@ static NSString *loginedUserName;
                         @"FAVOR", @"METHOD",
                         @"ADD", @"TYPE",
                         favors, @"OBJECTIDLIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam: paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     return [self checkResultWithJSON: resultDict];
 }
 
@@ -560,12 +487,7 @@ static NSString *loginedUserName;
                         @"FAVOR", @"METHOD",
                         @"DELETE", @"TYPE",
                         unFavors, @"OBJECTIDLIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"STATE\":\"80\"}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     return [self checkResultWithJSON: resultDict];
 }
 
@@ -574,12 +496,7 @@ static NSString *loginedUserName;
                           @"ALBUMSHARE", @"METHOD",
                           @"ADD", @"TYPE",
                           files, @"FILELIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\", \"ID\":\"112\"}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     if(![self checkResultWithJSON:resultDict])
         return @"";
     return [resultDict objectForKey:@"ID"];
@@ -599,12 +516,7 @@ static NSString *loginedUserName;
                                @"SERVICE", @"METHOD",
                                @"COMMITPRINT", @"TYPE",
                                printTask, @"PRINTLIST", nil];
-#if !FAKE_INTERFACE
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\"}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     return [self checkResultWithJSON: resultDict];
 }
 
@@ -612,12 +524,8 @@ static NSString *loginedUserName;
     NSDictionary* paramDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"SERVICE", @"METHOD",
                                @"GETSERVICESTATUS", @"TYPE", nil];
-#if !FAKE_INTERFACE
+
     NSDictionary* resultDict = [self callCTransactProcWithParam:paramDict];
-#else
-    NSString* out  = @"{\"RESULT\":\"SUCCESS\",\"SERVICELOGLIST\":[{\"NOTIFY\":\"久久相册共享已经成功\"},{\"NOTIFY\":\"久久冲印小图已经上传，可以开始制作影集了！大图传送中….\"},{\"NOTIFY\":\"久久冲印大图已经上传成功，订单号码:xxx\"}]}";
-    NSDictionary* resultDict = [[[SBJsonParser alloc] init] objectWithString:out];
-#endif
     NSMutableArray *messages = [[NSMutableArray alloc] init];
     if(![self checkResultWithJSON: resultDict]) {
         return messages;

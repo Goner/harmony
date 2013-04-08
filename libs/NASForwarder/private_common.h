@@ -3,11 +3,11 @@
 
 #include "cJSON.h"
 #include "cc.h"
+#include "NASError.h"
 
 #define MAX_SEM_COUNT 1
 #define THREADCOUNT 12
 #define MAX_CHAR_P 1024
-#define SUCCESS    0
 #define MAX_IP     16
 #define MAX_PORT   16
 #define AUTH_S_CON_F -3

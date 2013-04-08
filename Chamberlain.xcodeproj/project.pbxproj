@@ -474,6 +474,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		003974D117123D5F0023D1BE /* NASError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NASError.h; path = libs/NASForwarder/NASError.h; sourceTree = "<group>"; };
 		00B2E00E16FD8F0800DB3A0F /* NetWorkStateMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkStateMonitor.h; sourceTree = "<group>"; };
 		00B2E00F16FD8F0800DB3A0F /* NetWorkStateMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkStateMonitor.m; sourceTree = "<group>"; };
 		00F6E2C117000EC20067955D /* AppIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon@2x.png"; sourceTree = "<group>"; };
@@ -1535,6 +1536,7 @@
 		0E77681316BC0A8500FD3668 /* NASForwarder */ = {
 			isa = PBXGroup;
 			children = (
+				003974D117123D5F0023D1BE /* NASError.h */,
 				0E17DB0A16EB0AC90002EF0A /* message.h */,
 				0E17DAFD16EB0A2C0002EF0A /* curl_exchange.cpp */,
 				0E17DAFE16EB0A2C0002EF0A /* curl_exchange.h */,

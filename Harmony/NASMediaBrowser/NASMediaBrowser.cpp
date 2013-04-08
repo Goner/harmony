@@ -105,7 +105,7 @@ NASRemoteMediaBrowser::Connect()
     char ipAdress[16] = {};
     int ret = remote_auth(_account, _password, ipAdress);
     _ipAddress = ipAdress;
-    return ret != -1 ? NPT_SUCCESS : NPT_FAILURE;
+    return ret;
 }
 
 NPT_Result
